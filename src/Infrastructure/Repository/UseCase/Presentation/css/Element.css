@@ -1,0 +1,314 @@
+@font-face {
+  font-family: Dia;
+  src: local('DiaPro-Regular');
+  unicode-range: U+0005-0006, U+0030-0039, U+002d, U+0124, U+1e??, U+1f??, U+2000-2bff, U+2d??, U+3251-3251, U+329f, U+e0??, U+ff10-ff19;
+}
+
+* {
+  font-family: Dia;
+  appearance: none;
+  transition: all .2s;
+}
+
+header {
+  height: 2rem;
+  & nav {
+    position: fixed;
+    width: 100%;
+    height: 2rem;
+    background-color: blue;
+    z-index: 2;
+    & ul {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      & li {
+        margin: 0;
+      }
+      & li:has(h1) {
+        width: 100%;
+        padding: 0 1rem;
+        & h1 {
+          width: 100%;
+          margin: 0;
+          font-size: 1rem;
+          line-height: 2.5rem;
+          overflow: hidden;
+          text-overflow: clip;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+main {
+  & nav {
+    height: 1.25rem;
+    & ul {
+      position: fixed;
+      display: flex;
+      width: 100%;
+      height: 1.25rem;
+      background-color: gray;
+      z-index: 2;
+      & li {
+        /* position: relative; */
+        margin: auto 0;
+        /* padding: auto; */
+        & input:checked + label {
+          background-color: white;
+        } 
+        & img {
+          width: 2rem;
+          /* height: auto; */
+          fill: black;
+          margin: auto;
+        }
+      }
+      
+    }
+  }
+  & section {
+    display: flex;
+    width: 100%;
+    & nav {
+      width: 16rem;
+      & fieldset {
+        position: fixed;
+        width: 16rem;
+        height: calc(100% - 3.25rem);
+        & :after {
+          position: absolute;
+          content: "";
+          top: 1.25rem;
+          left: 0.0625rem;
+          width: 1.125rem;
+          height: 0.25rem;
+          background-color: gray;
+          z-index: 1;
+        }
+        .border {
+          &:after {
+            position: absolute;
+            content: "";
+            bottom: -0.25rem !important;
+            left: 0;
+            width: 1.25rem;
+            height: 0.125rem;
+            background-color: black;
+            z-index: 1;
+          }
+        }
+        
+        .gray {
+          color: gray;
+          &:before {
+            border-color: gray;
+          }
+        }
+      }
+    }
+    & article {
+      /* display: auto; */
+      width: calc(100% - 18rem);
+      & dl {
+        width: 100%;
+        margin: 1rem;
+        & dt {
+          margin: 0 0 0.5rem 0;
+          font-size: 1.5rem;
+          line-height: 1.5rem;
+          & input {
+            width: 100%;
+          }
+        }
+        & dd {
+          /* width: 100%; */
+          margin: 0 0 1rem 1.5rem;
+          & table {
+            width: 100%;
+            border-spacing: 0;
+            & thead {font-size: 0.5rem;} 
+            & thead, tbody, tfoot {
+              width: 100%;
+              & tr {
+                & th, td {
+                  box-sizing: border-box;
+                  line-height: 1em;
+                  padding: 0.125rem;
+                }
+                & th {
+                  width: 100%;
+                  text-align: left;
+                  font-weight: normal;
+                  & * {
+                    width: 100%;
+                  }
+                }
+                & :first-child {padding-left: 0;}
+                & :last-child {padding-right: 0;}
+              }
+            }
+            & :first-child {> :first-child {& th, td {padding-top: 0;}}}
+            & :last-child {> :last-child {& th, td {padding-bottom: 0;}}}
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+/* 枠 */
+[data-logo]:before, .data-logo, button, input[type=text], .checkbox, .radio, details {
+  display: block;
+  left: 0;
+  height: calc(1em + 0.25rem);
+  padding: calc(0.125rem - 1px);
+  border: 1px solid black;
+  box-sizing: border-box;
+  font-size: 1em;
+  line-height: 1em;
+  z-index: 1;
+  background-color: white;
+}
+
+/* 正方形 */
+[data-logo]:before, .data-logo, .checkbox, .radio {
+  content: "";
+  width: calc(1em + 0.25rem);
+  text-align: center;
+  font-weight: normal;
+}
+
+/* インデックス用 :before */
+[data-logo] {
+  padding-left: calc(1.5em);
+  position: relative;
+  &:before {
+    position: absolute;
+    content: attr(data-logo);
+  }
+}
+
+/* 入力欄 */
+inputE[type~="text number"], select, details {
+  outline: none;
+  width: 12rem;
+}
+
+/* ボタン */
+button {
+  padding-left: calc(0.5em - 1px);
+  padding-right: calc(0.5em - 1px);
+}
+
+/* ホバー */
+:where(button, input[type="text"], .checkbox):hover {
+  background-color: silver;
+}
+
+/* アクティブ */
+button:active,
+input[type=text]:focus,
+:where(input[type=checkbox], input[type="radio"]):checked + :where(.checkbox, .radio) {
+  background-color: black;
+  color: white;
+}
+
+input[type=checkbox], input[type=radio] {display: none;}
+
+.checkbox {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 5px;
+    width: 6px;
+    height: 12px;
+    transform: rotate(45deg); 
+    border: solid white;
+    border-width: 0 2px 2px 0;
+  }
+}
+
+fieldset {
+  overflow-x: hidden;
+  position: absolute;
+  padding: 0;
+  border: none;
+  margin: 0;
+  /* & legend {
+    display: none;
+  } */
+  & input:checked + label {
+    background-color: black;
+    color: white;
+  }
+  & label {
+    display: block;
+    height: 1.25rem;
+    margin: 0.25rem 0 0.25rem 1.25rem;
+    line-height: 1.25rem;
+  }
+}
+
+details {
+  padding-left: 1.25rem;
+  /* list-style-position: outside; */
+  & summary {
+    position: relative;
+    list-style-type: none;
+    &::marker {list-style-type: none;}
+    &::before {
+      position: absolute;
+      content: "";
+      top: 0.1rem;
+      left: -1.025rem;
+      border: 0 solid transparent;
+      border-width: 0.8rem 0.4rem 0 0.4rem;
+      border-top-color: black;
+    }
+    & {
+      position: absolute;
+    }
+  }
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  & li {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.25em;
+    margin: 0 0 0.25rem 0;
+    & span {
+      display: flex;
+    }
+  }
+}
+
+/* option {line-height: rem;} */
+
+.bold {
+  font-weight: bold;
+  & * {
+    font-weight: initial;
+  }
+}
+
+.caption {
+  font-size: 0.5em;
+}
+
+
+select:-internal-list-box {
+  /* background: #0f0;
+  overflow: visible !important; */
+
+  display: none !important;
+}
