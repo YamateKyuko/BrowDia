@@ -21,6 +21,8 @@ import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
 import Input from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
+import { promises } from "dns";
+import OuterTerminal from "./SetOuterTerminalPresentation";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
@@ -41,7 +43,7 @@ function Component(props: ComponentProps) {
   return (
     <section>
       <nav>
-        <StationIndexListbox stations={props.stations} staionIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
+        <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
       </nav>
       <article>
         <dl>
@@ -116,55 +118,11 @@ function Component(props: ComponentProps) {
             directionName={props.directionName}
             SetStationProperty={props.SetStationProperty}
           />
-          <>
-            <dt>路線外発着駅</dt>
-            <dd>
-              <ul>
-                {props.station.outerTerminal &&
-                  <li>
-                    <table>
-                      <thead>
-                        <tr className="outerTerminalsTr">
-                          <td></td>
-                          <th>名称</th>
-                          <td>表略</td>
-                          <td>有無</td>
-                          <td>ﾀﾞｲﾔ略</td>
-                          <td>有無</td>
-                          <td></td>
-                        </tr>
-                      </thead>
-                        <tbody>
-                          {props.station.outerTerminal.map((outerTerminal: template_outerTerminal, index: number) => (
-                            <tr className="outerTerminalsTr" key={index}>
-                              <td><div className="data-logo">{index}</div></td>
-                              <th><input type="text" value={outerTerminal.name} readOnly /></th>
-                              <td>{outerTerminal.diagramName ? <input type="text" value={outerTerminal.diagramName} readOnly /> : <div></div>}</td>
-                              <td><Checkbox KE="" IN={0} onChange={insted()} /></td>
-                              <td>{outerTerminal.timetableName ? <input type="text" value={outerTerminal.timetableName} readOnly /> : <div></div>}</td>
-                              <td><Checkbox KE="" IN={0} onChange={insted()} /></td>
-                              <td><button>削除</button></td>
-                            </tr>
-                          ))}
-                        </tbody>
-                        <tfoot>
-                          <tr className="outerTerminalsTr">
-                            <td></td>
-                            <th></th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button>追加</button></td>
-                          </tr>
-                        </tfoot>
-                    </table>
-                  </li>
-                }
-                <li>有無<Checkbox IN={null} KE="" onChange={insted()} /></li>
-              </ul>
-            </dd>
-          </>
+          <OuterTerminal
+            station={props.station}
+            directionName={props.directionName}
+            SetStationProperty={props.SetStationProperty}
+          />
           <Tracks
             station={props.station}
             directionName={props.directionName}
@@ -178,18 +136,12 @@ function Component(props: ComponentProps) {
                   {directionName}本線
                   <details>
                     <summary>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary>
-                    <select multiple>
-                      {props.station.tracks.map((track: template_track, index: number) => (
-                        <option data-logo={index + 1} key={index}>
-                          {track.name}
-                        </option>
-                      ))}
-                    </select>
+                    <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
                   </details>
                 </li>
               ))}
-              <StationElementsHandler station={props.station} stationKey="customTimetableStyle" SetStationProperty={props.SetStationProperty} />
-              <StationElementsHandler station={props.station} stationKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
+              {/* <StationElementsHandler station={props.station} stationKey="customTimetableStyle" SetStationProperty={props.SetStationProperty} /> */}
+              {/* <StationElementsHandler station={props.station} stationKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} /> */}
             </ul>
           </dd>
           <dt>
@@ -278,38 +230,79 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
   )
 }
 
-type StationIndexListboxProps = {
+function isStation(value: template_station | template_track): value is template_station {
+  return "customTimetableStyle" in value;
+}
+
+type stationIndexHandlerProps = {
   stations: template_station[];
-  staionIndex: number;
+  stationIndex: number;
   setStationIndex: SetterOrUpdater<number>;
 }
 
-function StationIndexListbox(props: StationIndexListboxProps) {
+function StationIndexHandler(props: stationIndexHandlerProps) {
+  const set = (index: number): void => {
+    props.setStationIndex(index)
+  }
+
+  return (<IndexListbox for="stationIndex" values={props.stations} selectedIndex={props.stationIndex} set={set} />)
+}
+
+type MainTrackHandlerProps = {
+  index: number;
+  setStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
+  mainTrack: number[];
+  tracks: template_track[];
+}
+
+function MainTrackHandler(props: MainTrackHandlerProps) {
+  const set = (value: number): void => {
+    props.setStationProperty("mainTrack", props.mainTrack.map((mainTrack: number, mapIndex: number) => (props.index == mapIndex ? value : mainTrack)))
+  }
+
+  return (<IndexListbox for={"mainTrack" + props.index} values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
+}
+
+type IndexListboxProps = {
+  for: string;
+  values: template_station[] | template_track[];
+  selectedIndex: number;
+  set: (index: number) => void;
+}
+
+function IndexListbox(props: IndexListboxProps) {
+  const className = (value: template_station | template_track, index: number): string => {
+    if (isStation(value)) {
+      return `${!value.border && (index == props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
+    }
+    return "";
+  }
+
   return (
     <fieldset>
-      {props.stations.map((station: template_station, index: number) => (
-          <StationIndexListboxHandler stationIndex={props.staionIndex} setStationIndex={props.setStationIndex} index={index} label={station.name} className={`${!station.border && (index == props.stations.length && "line")} ${station.brunchCoreStationIndex && "gray"}`} key={index} />
+      {props.values.map((value: template_station | template_track, index: number) => (
+        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} for={props.for} index={index} label={value.name} className={className(value, index)} key={index} />
       ))}
     </fieldset>
-    
   )
 }
 
-type StationIndexListboxHandlerProps = {
+type IndexListboxHandlerProps = {
   index: number;
-  stationIndex: number;
-  setStationIndex: SetterOrUpdater<number>;
+  for: string;
+  selectedIndex: number;
+  set: (index: number) => void;
   label: string;
   className?: string;
 }
 
-function StationIndexListboxHandler(props: StationIndexListboxHandlerProps) {
-  const onChange: () => void = (() => {
-    props.setStationIndex(props.index)
-  })
+function IndexListboxHandler(props: IndexListboxHandlerProps) {
+  const onChange = (): void => {
+    props.set(props.index)
+  }
 
   return (
-    <Input for={"stationIndex" + props.index} value={props.stationIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
+    <Input for={props.for + props.index} value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
   )
 }
 
@@ -348,20 +341,19 @@ const Checkbox = ({KE: KE, IN: IN, onChange}: {KE: string; IN: number | null; on
   )
 }
 
-const Radio = ({name, index}: {name: string; index: number; event: (event: React.MouseEvent<HTMLInputElement>) => void;}) => {
-  return (
-    <>
-      <input type="radio" id={name + index} name={name} />
-      <label className="radio" htmlFor={name + index} />
-    </>
-  )
-}
+// const Radio = ({name, index}: {name: string; index: number; event: (event: React.MouseEvent<HTMLInputElement>) => void;}) => {
+//   return (
+//     <>
+//       <input type="radio" id={name + index} name={name} />
+//       <label className="radio" htmlFor={name + index} />
+//     </>
+//   )
+// }
 
-type SetStationPresentationProps = {
-  // stations: template_station[];
-}
+// type SetStationPresentationProps = {}
+// props: SetStationPresentationProps
 
-function SetStationPresentation(props: SetStationPresentationProps) {
+function SetStationPresentation() {
   const [stationIndex, SetStationIndex] = useRecoilState(Infrastructure().StationIndex)
 
   const Stations: template_station[] = useRecoilValue(StationRepository().Stations);

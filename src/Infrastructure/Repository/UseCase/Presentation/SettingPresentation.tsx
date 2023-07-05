@@ -45,7 +45,7 @@ function Setting() {
       <nav>
         <ul>
           {settingIndexArray.map((value: settingIndexArrayType, index: number) => (
-            <li><SettingIndexInputHandler SettingIndex={SettingIndex} SetSettingIndex={SetSettingIndex} label={<img src={value.src} />} index={index} /></li>
+            <li key={index}><SettingIndexInputHandler SettingIndex={SettingIndex} SetSettingIndex={SetSettingIndex} label={<img src={value.src} />} index={index} /></li>
           ))}
         </ul>
       </nav>

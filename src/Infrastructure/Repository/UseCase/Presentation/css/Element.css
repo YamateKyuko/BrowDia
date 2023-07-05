@@ -53,15 +53,12 @@ main {
       background-color: gray;
       z-index: 2;
       & li {
-        /* position: relative; */
         margin: auto 0;
-        /* padding: auto; */
         & input:checked + label {
           background-color: white;
         } 
         & img {
           width: 2rem;
-          /* height: auto; */
           fill: black;
           margin: auto;
         }
@@ -274,6 +271,16 @@ details {
     & {
       position: absolute;
     }
+  }
+  & fieldset {
+    position: relative;
+    top: calc(1rem + 1px);
+    left: calc(-1.25rem - 1px);
+    width: 12rem;
+    border: 1px solid black;
+    background-color: white;
+    box-sizing: border-box;
+    z-index: 2;
   }
 }
 
