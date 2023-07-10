@@ -215,6 +215,7 @@ type CustomTimetableStyleCheckboxProps = {
 }
 
 function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
+
   const SetCustomTimetableStyle: React.ChangeEventHandler<HTMLInputElement> = (() => {
     props.SetStationProperty(
       "customTimetableStyle",
@@ -225,7 +226,7 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
 
   return (
     <>
-      <Input for={props.PropertyKey + props.ArrayIndex} value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
+      <Input value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
     </>
   )
 }
@@ -302,7 +303,7 @@ function IndexListboxHandler(props: IndexListboxHandlerProps) {
   }
 
   return (
-    <Input for={props.for + props.index} value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
+    <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
   )
 }
 
@@ -324,7 +325,7 @@ function StationElementsHandler(props: StationElementsHundlerProps) {
   })
 
   return (
-    <Input for={props.stationKey} value={props.station[props.stationKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <Input value={props.station[props.stationKey]} onChange={onChange} className={props.className ? props.className : ""} />
   )
 }
 

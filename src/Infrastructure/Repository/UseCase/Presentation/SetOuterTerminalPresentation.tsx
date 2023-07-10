@@ -31,16 +31,16 @@ type TracksComponentProps = {
   directionName: string[];
   // stationIndex: number;
   // SetStationIndex: SetterOrUpdater<number>;
-  SetTracksArray: (index: number, newValue: template_track) => void;
-  DeleteTracksArray: (index: number) => void;
-  AddTracksArray: () => void;
+  SetOuterTerminalChild: (index: number, newValue: template_outerTerminal) => void;
+  DeleteOuterTerminalChild: (index: number) => void;
+  AddOuterTerminalChild: () => void;
 
   nullChange: () => void;
 }
 
 function OuterTerminalComponent(props: TracksComponentProps) {
   const onClick = (): void => {
-    props.AddTracksArray()
+    props.AddOuterTerminalChild()
   }
 
   return (
@@ -53,26 +53,25 @@ function OuterTerminalComponent(props: TracksComponentProps) {
               <table>
                 <thead>
                   <tr className="outerTerminalsTr">
-                    <td></td>
-                    <th>名称</th>
-                    <td>表略</td>
-                    <td>有無</td>
-                    <td>ﾀﾞｲﾔ略</td>
-                    <td>有無</td>
+                    <td><span></span></td>
+                    <th><span>名称</span></th>
+                    <td><span>表略</span></td>
+                    <td><span>有無</span></td>
+                    <td><span>ﾀﾞｲﾔ略</span></td>
+                    <td><span>有無</span></td>
                     <td></td>
                   </tr>
                 </thead>
                   <tbody>
                     {props.outerTerminal.map((outerTerminal: template_outerTerminal, index: number) => (
-                      <tr className="outerTerminalsTr" key={index}>
-                        <td><div className="data-logo">{index}</div></td>
-                        <th><input type="text" value={outerTerminal.name} readOnly /></th>
-                        <td>{outerTerminal.diagramName ? <input type="text" value={outerTerminal.diagramName} readOnly /> : <div></div>}</td>
-                        {/* <td><Checkbox KE="" IN={0} onChange={insted()} /></td> */}
-                        <td>{outerTerminal.timetableName ? <input type="text" value={outerTerminal.timetableName} readOnly /> : <div></div>}</td>
-                        {/* <td><Checkbox KE="" IN={0} onChange={insted()} /></td> */}
-                        <td><button>削除</button></td>
-                      </tr>
+                      <OuterTerminalChild
+                        outerTerminal={outerTerminal}
+                        SetOuterTerminalArray={props.SetOuterTerminalChild}
+                        DeleteOuterTerminalArray={props.DeleteOuterTerminalChild}
+                        AddOuterTerminalArray={props.AddOuterTerminalChild}
+                        index={index}
+                        key={index}
+                      />
                     ))}
                   </tbody>
                   <tfoot>
@@ -89,7 +88,7 @@ function OuterTerminalComponent(props: TracksComponentProps) {
               </table>
             </li>
           }
-          <li>有無<NullHandler outerTerminal={props.outerTerminal} nullChange={props.nullChange} /></li>
+          <li>有無<NullHandler outerTerminal={props.outerTerminal} for="outerTerminal" nullChange={props.nullChange} /></li>
           {/* <li>有無<Checkbox IN={null} KE="" onChange={insted()} /></li> */}
         </ul>
       </dd>
@@ -99,6 +98,7 @@ function OuterTerminalComponent(props: TracksComponentProps) {
 
 type NullHandlerProps = {
   outerTerminal: template_outerTerminal[] | null;
+  for: string;
   nullChange: () => void;
 }
 
@@ -107,150 +107,172 @@ function NullHandler(props: NullHandlerProps) {
     props.nullChange()
   }
 
-  return (<Input for="OuterTerminal" value={!!props.outerTerminal} onChange={onChange} />)
+  return (<Input value={!!props.outerTerminal} onChange={onChange} />)
 }
 
-type TrackComponentProps = {
-  track: template_track;
-  directionName: string[];
+type OuterTerminalChildProps = {
+  outerTerminal: template_outerTerminal;
   index: number;
-  setTrackProperty: <K extends keyof template_track, P extends template_track[K]>(key: K, property: P) => void;
-  DeleteTracksArray: (index: number) => void;
+
+  SetOuterTerminalArray: (index: number, newValue: template_outerTerminal) => void;
+  DeleteOuterTerminalArray: (index: number) => void;
+  AddOuterTerminalArray: () => void;
 }
 
-function TrackComponent(props: TrackComponentProps) {
+function OuterTerminalChild(props: OuterTerminalChildProps) {
+  const SetOuterTerminalChildProperty = <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P): void => {
+    props.SetOuterTerminalArray(props.index, {...props.outerTerminal, [key]: property})
+  }
+
   return (
-    <tr className="tracksTr" key={props.index}>
+    <OuterTerminalChildComponent
+      outerTerminal={props.outerTerminal}
+      SetOuterTerminalArrayProperty={SetOuterTerminalChildProperty}
+      // SetOuterTerminalArray={props.SetOuterTerminalArray}
+      DeleteOuterTerminalArray={props.DeleteOuterTerminalArray}
+      AddOuterTerminalArray={props.AddOuterTerminalArray}
+      index={props.index}
+    />
+  )
+}
+
+type OuterTerminalChildComponentProps = {
+  outerTerminal: template_outerTerminal;
+  index: number;
+
+  SetOuterTerminalArrayProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
+  // SetOuterTerminalArray: (index: number, newValue: template_outerTerminal) => void;
+  DeleteOuterTerminalArray: (index: number) => void;
+  AddOuterTerminalArray: () => void;
+}
+
+function OuterTerminalChildComponent(props: OuterTerminalChildComponentProps) {
+  
+
+  return (
+    <tr className="outerTerminalsTr">
       <td><div className="data-logo">{props.index + 1}</div></td>
-      <th><TrackElementsHandler track={props.track} trackKey="name" SetTrackProperty={props.setTrackProperty} /></th>
-      {props.directionName.map((directionName: string, index: number) => (
-        <td key={index}><TrackArrayElementsHandler track={props.track} trackKey="abbrName" SetTrackProperty={props.setTrackProperty} index={index} /></td>
-      ))}
-      {/* <td><input type="text" value={props.track.abbrName[0]} readOnly /></td>
-      <td><input type="text" value={props.track.abbrName[1]} readOnly /></td> */}
-      <td><TrackDelete index={props.index} DeleteTracksArray={props.DeleteTracksArray} /></td>
+      <th><OuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} PropertyKey="name" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} /></th>
+      <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="timetableName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
+      <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="diagramName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
+      {/* <td>{props.outerTerminal.diagramName ? <input type="text" value={props.outerTerminal.diagramName} readOnly /> : <div></div>}</td>
+      <td>
+        <Checkbox KE="" IN={0} onChange={insted()} />
+      </td> */}
+      {/* <td>{props.outerTerminal.timetableName ? <input type="text" value={props.outerTerminal.timetableName} readOnly /> : <div></div>}</td>
+      <td>
+        <Checkbox KE="" IN={0} onChange={insted()} />
+      </td> */}
+      <td><OuterTerminalDelete index={props.index} DeleteOuterTerminalArray={props.DeleteOuterTerminalArray} /></td>
     </tr>
   )
 }
 
-type trackDeleteProps = {
-  index: number;
-  DeleteTracksArray: (index: number) => void;
+type CanNullOuterTerminalChildPropertyHandlerProps = {
+  outerTerminal: template_outerTerminal;
+  propertyKey: keyof template_outerTerminal;
+  SetOuterTerminalProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
+  className?: string;
 }
 
-function TrackDelete(props: trackDeleteProps) {
-  const trackDeleteOnClick: React.MouseEventHandler<HTMLButtonElement> = (() => {
-    props.DeleteTracksArray(props.index)
-  })
+function CanNullOuterTerminalChildPropertyHandler(props: CanNullOuterTerminalChildPropertyHandlerProps) {
+  const onChange: React.ChangeEventHandler<HTMLElement> = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.SetOuterTerminalProperty(props.propertyKey, event.target.value)
+  }
 
-  return (
-    <button onClick={trackDeleteOnClick}>削除</button>
-  )
-}
-
-type TrackProps = {
-  track: template_track;
-  directionName: string[];
-  index: number;
-  SetTrackArray: (index: number, newValue: template_track) => void;
-  DeleteTracksArray: (index: number) => void;
-}
-
-function Track(props: TrackProps) {
-  const SetTrackProperty = <K extends keyof template_track, P extends template_track[K]>(key: K, property: P): void => {
-    props.SetTrackArray(props.index, {...props.track, [key]: property})
+  const nullOnChange = () => {
+    console.log("Ninomiya!")
+    if (props.outerTerminal[props.propertyKey] === null) {props.SetOuterTerminalProperty(props.propertyKey, "")}
+    if (props.outerTerminal[props.propertyKey] !== null) {props.SetOuterTerminalProperty(props.propertyKey, null)}
   }
 
   return (
-    <TrackComponent track={props.track} directionName={props.directionName} setTrackProperty={SetTrackProperty} DeleteTracksArray={props.DeleteTracksArray} index={props.index} />
+    <>
+      <td>
+        {typeof props.outerTerminal[props.propertyKey] == "string" ?
+          <Input value={props.outerTerminal[props.propertyKey]} onChange={onChange} />
+        :
+          <Input value="" onChange={onChange} disabled={true} />
+        }
+      </td>
+      <td><Input value={props.outerTerminal[props.propertyKey] !== null} onChange={nullOnChange}/></td>
+    </>
   )
 }
 
-type TrackElementsHandlerProps = {
-  track: template_track;
-  trackKey: keyof template_track;
-  SetTrackProperty: <K extends keyof template_track, P extends template_track[K]>(key: K, property: P) => void;
-  className?: string;
-  arrayKey?: number;
+type OuterTerminalDeleteProps = {
+  index: number;
+  DeleteOuterTerminalArray: (index: number) => void;
 }
 
-function TrackElementsHandler(props: TrackElementsHandlerProps) {
+function OuterTerminalDelete(props: OuterTerminalDeleteProps) {
+  const OnClick: React.MouseEventHandler<HTMLButtonElement> = (() => {
+    props.DeleteOuterTerminalArray(props.index)
+  })
+
+  return (
+    <button onClick={OnClick}>削除</button>
+  )
+}
+
+type OuterTerminalChildPropertyHandlerProps = {
+  outerTerminal: template_outerTerminal;
+  PropertyKey: keyof template_outerTerminal;
+  SetOuterTerminalProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
+  className?: string;
+}
+
+function OuterTerminalChildPropertyHandler(props: OuterTerminalChildPropertyHandlerProps) {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.track[props.trackKey] === "string") {
-      props.SetTrackProperty(props.trackKey, event.target.value)
+    if (typeof props.outerTerminal[props.PropertyKey] === "string") {
+      props.SetOuterTerminalProperty(props.PropertyKey, event.target.value)
     }
   })
 
   return (
-    <Input for={props.trackKey} value={props.track[props.trackKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <Input value={props.outerTerminal[props.PropertyKey]} onChange={onChange} className={props.className ? props.className : ""} />
   )
 }
 
-type TrackArrayElementsHandlerProps = {
-  track: template_track;
-  trackKey: keyof template_track;
-  index: number;
-  SetTrackProperty: <K extends keyof template_track, P extends template_track[K]>(key: K, property: P) => void;
-  className?: string;
-}
-
-function TrackArrayElementsHandler(props: TrackArrayElementsHandlerProps) {
-  const property: template_track[keyof template_track] = props.track[props.trackKey]
-  if (Array.isArray(property)) {
-    const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-      if (typeof props.track[props.trackKey][props.index] === "string") {
-        props.SetTrackProperty(props.trackKey, property.map((value: string, mapIndex: number) => (mapIndex == props.index ? event.target.value : value)))
-      }
-    })
-
-    return (
-      <Input for={props.trackKey} value={props.track[props.trackKey][props.index]} onChange={onChange} className={props.className ? props.className : ""} />
-    )
-  }
-  return (<>Error</>)
-}
-
-type TracksProps = {
+type OuterTerminalProps = {
   station: template_station;
   directionName: string[];
   SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
 }
 
-function OuterTerminal(props: TracksProps) {
-  // const SetTracksProperty = ((key: keyof template_station["tracks"], property) => {
-  //   props.SetStationProperty("tracks", (prevState: template_station) => {...prevState, key: property})
-  // })
-
-  // const SetTracksArray = <K extends keyof template_station["tracks"], P extends template_station["tracks"][K]>(key: K, property: P): void => {
+function OuterTerminal(props: OuterTerminalProps) {
+  const SetOuterTerminalChild = (index: number, newValue: template_outerTerminal): void => {
+    if (props.station.outerTerminal) {
+      props.SetStationProperty(
+        "outerTerminal",
+        props.station.outerTerminal.map((outerTerminal: template_outerTerminal, mapIndex: number) => (mapIndex == index ? newValue : outerTerminal))
+      )
+    }
     
-  //   props.SetStationProperty("tracks", (prev: template_station["tracks"]) => ({...prev, [key]: property}))
-  // }
-  
-
-  const SetTracksArray = (index: number, newValue: template_track): void => {
-    props.SetStationProperty(
-      "tracks",
-      props.station.tracks.map((track: template_track, mapIndex: number) => (mapIndex == index ? newValue : track))
-    )
   }
 
-  const DeleteTrackArray = (index: number): void => {
-    props.SetStationProperty(
-      "tracks",
-      props.station.tracks.filter((track: template_track, filterIndex: number) => (index !== filterIndex))
-    )
+  const DeleteOuterTerminalChild = (index: number): void => {
+    if (props.station.outerTerminal) {
+      props.SetStationProperty(
+        "outerTerminal",
+        props.station.outerTerminal.filter((outerTerminal: template_outerTerminal, filterIndex: number) => (index !== filterIndex))
+      )
+    }
   }
 
-  const AddTrackArray = (): void => {
-    props.SetStationProperty(
-      "tracks",
-      [...props.station.tracks,
-        {
-          name: "",
-          abbrName: ["", ""]
-        }
-      ]
-    )
+  const AddOuterTerminalChild = (): void => {
+    if (props.station.outerTerminal) {
+      props.SetStationProperty(
+        "outerTerminal",
+        [...props.station.outerTerminal,
+          {
+            name: "",
+            timetableName: null,
+            diagramName: null
+          }
+        ]
+      )
+    }
   }
 
   const nullChange = (): void => {
@@ -261,7 +283,7 @@ function OuterTerminal(props: TracksProps) {
   }
  
   return (
-    <OuterTerminalComponent outerTerminal={props.station.outerTerminal} directionName={props.directionName} SetTracksArray={SetTracksArray} DeleteTracksArray={DeleteTrackArray} AddTracksArray={AddTrackArray} nullChange={nullChange} />
+    <OuterTerminalComponent outerTerminal={props.station.outerTerminal} directionName={props.directionName} SetOuterTerminalChild={SetOuterTerminalChild} DeleteOuterTerminalChild={DeleteOuterTerminalChild} AddOuterTerminalChild={AddOuterTerminalChild} nullChange={nullChange} />
   )
 }
 

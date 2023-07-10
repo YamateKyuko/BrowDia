@@ -68,7 +68,7 @@ function SettingIndexInputHandler(props: ImageInputProps) {
   })
 
   return (
-    <Input for={"Setting" + props.index} value={SettingIndex == props.index} onChange={onChange} label={props.label} />
+    <Input value={SettingIndex == props.index} onChange={onChange} label={props.label} />
   )
 }
 

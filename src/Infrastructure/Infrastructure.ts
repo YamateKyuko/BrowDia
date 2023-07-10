@@ -17,7 +17,7 @@ const Infrastructure = () => {
   const PageIndex = atom<number>({key: "PageIndex", default: 0,})
   const SettingIndex = atom<number>({key: "SettingIndex", default: 0,})
 
-  const StationIndex = atom<number>({key: "StationIndex", default: 0,})
+  const StationIndex = atom<number>({key: "StationIndex", default: 2,})
   const TypeIndex = atom<number>({key: "TypeIndex", default: 0,})
   const ID = atom<number>({key: "ID", default: 0,})
   

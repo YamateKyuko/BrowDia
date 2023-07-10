@@ -48,12 +48,12 @@ function TracksComponent(props: TracksComponentProps) {
         <table>
           <thead>
             <tr className="tracksTr">
-              <td></td>
-              <th>名称</th>
+              <td><span></span></td>
+              <th><span>名称</span></th>
               {props.directionName.map((directionName: string, index: number) => (
-                <td key={index}>{directionName}略</td>
+                <td key={index}><span>{directionName}略</span></td>
               ))}
-              <td></td>
+              <td><span></span></td>
             </tr>
           </thead>
           <tbody>
@@ -148,7 +148,7 @@ function TrackElementsHandler(props: TrackElementsHandlerProps) {
   })
 
   return (
-    <Input for={props.trackKey} value={props.track[props.trackKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <Input value={props.track[props.trackKey]} onChange={onChange} className={props.className ? props.className : ""} />
   )
 }
 
@@ -170,7 +170,7 @@ function TrackArrayElementsHandler(props: TrackArrayElementsHandlerProps) {
     })
 
     return (
-      <Input for={props.trackKey} value={props.track[props.trackKey][props.index]} onChange={onChange} className={props.className ? props.className : ""} />
+      <Input value={props.track[props.trackKey][props.index]} onChange={onChange} className={props.className ? props.className : ""} />
     )
   }
   return (<>Error</>)
