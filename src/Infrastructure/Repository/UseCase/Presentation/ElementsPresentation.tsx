@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track } from "./Entity/Entity"
+import { template, template_station, template_outerTerminal, template_track , template_rgb } from "./Entity/Entity"
 
 import {
   RecoilRoot,
@@ -15,6 +15,14 @@ import {
   useSetRecoilState,
   SetterOrUpdater
 } from 'recoil';
+
+function isRgb(value: any): value is template_rgb {
+  return value !== null && typeof value == "object" && "r" in value && "g" in value && "b" in value;
+}
+
+function RgbConverter(value: template_rgb): string {
+  return `#${value.r.toString(16).padStart(2, "0")}${value.g.toString(16).padStart(2, "0")}${value.b.toString(16).padStart(2, "0")}`;
+}
 
 type InputProps = {
   // for: string;
@@ -33,13 +41,18 @@ function Input(props: InputProps) {
       {typeof props.value === "string" &&
         <input type="text" className={props.className} value={props.value} onChange={props.onChange} disabled={props.disabled} />
       }
+      {typeof props.value === "number" &&
+        <input type="number" className={props.className} value={props.value} onChange={props.onChange} disabled={props.disabled} />
+      }
+      {isRgb(props.value) &&
+        <input type="color" className={props.className} value={RgbConverter(props.value)} onChange={props.onChange} disabled={props.disabled} />
+      }
       {typeof props.value === "boolean" && (!props.label
         ?
           <>
             <label className={"checkbox " + props.className}>
               <input type="checkbox" onChange={props.onChange} checked={props.value} />
             </label>
-
             {/* id={props.for}  htmlFor={props.for} */}
           </>
         : (!props.dataLogo

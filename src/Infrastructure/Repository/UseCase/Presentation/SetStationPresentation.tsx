@@ -41,11 +41,11 @@ function Component(props: ComponentProps) {
   const insted: any = (() => {return("")})
 
   return (
-    <section>
+    <article>
       <nav>
         <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
       </nav>
-      <article>
+      <section>
         <dl>
           <dt data-logo={props.stationIndex + 1} className="">
             <StationElementsHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
@@ -148,8 +148,8 @@ function Component(props: ComponentProps) {
             <button>削除</button>
           </dt>
         </dl>
-      </article>
-    </section>
+      </section>
+    </article>
   );
 }
 

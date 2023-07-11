@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 // import './App.css';
 import SetStationPresentation from './SetStationPresentation';
+import SetDisplayPresentation from './SetDisplayPropertyPresentetion'
 
 import Infrastructure from '../../../Infrastructure';
 
@@ -29,13 +30,13 @@ type settingIndexArrayType = {
 }
 
 function Setting() {
-  const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().PageIndex);
+  const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().SettingIndex);
 
   const Atom = useRecoilValue<template>(Infrastructure().Atom)
 
   const settingIndexArray: settingIndexArrayType[] = [
     {src: General, component: <SetStationPresentation />},
-    {src: Style, component: <SetStationPresentation />},
+    {src: Style, component: <SetDisplayPresentation />},
     {src: Station, component: <SetStationPresentation />},
     {src: Type, component: <SetStationPresentation />},
   ]
@@ -49,7 +50,7 @@ function Setting() {
           ))}
         </ul>
       </nav>
-      <SetStationPresentation />
+      {settingIndexArray[SettingIndex].component}
     </main>
   );
 }

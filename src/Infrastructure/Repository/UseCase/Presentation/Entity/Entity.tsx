@@ -205,78 +205,21 @@ export type template = {
   }
 };
 
-type template_displayProperty = { // スタイル設定 非対応
+export type template_displayProperty = { // スタイル設定 非対応
   "timetableFont": template_timetableFont[],
-  "timetableVFont": { // ? 時刻表フォント?
-    "height": number, // 高さ
-    "family": string, // フォント種類
-    "bold": boolean, // 太字
-    "italic": boolean // 斜体
-  },
-  "diagramStationFont": { // ダイヤ駅フォント
-    "height": number,
-    "family": string,
-    "bold": boolean,
-    "italic": boolean
-  },
-  "diagramTimeFont": { // ダイヤ時間フォント
-    "height": number,
-    "family": string,
-    "bold": boolean,
-    "italic": boolean
-  },
-  "commentFont": { // コメント用フォント
-    "height": number,
-    "family": string,
-    "bold": boolean,
-    "italic": boolean
-  },
-  "diagramTrainFont": { // ダイヤ駅フォント
-    "height": number,
-    "family": string,
-    "bold": boolean,
-    "italic": boolean
-  },
-  "diagramTextColor": { // ダイヤ文字色
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "diagramBackgroundColor": { // ダイヤ背景色
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "diagramTrainColor": { // ? ダイヤ列車色?
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "diagramAxisColor": { // ?
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "stdOpeTimeLowerColor": { // ?
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "stdOpeTimeHigherColor": { // ?
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "stdOpeTimeUndefColor": { // ?
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "stdOpeTimeIllegalColor": { // ?
-    "r": number,
-    "g": number,
-    "b": number
-  },
+  "timetableVFont": template_timetableFont, // ? 時刻表ビューフォント?
+  "diagramStationFont": template_timetableFont, // ダイヤ駅フォント
+  "diagramTimeFont": template_timetableFont, // ダイヤ時間フォント
+  "commentFont": template_timetableFont, // コメント用フォント
+  "diagramTrainFont": template_timetableFont, // ダイヤ駅フォント
+  "diagramTextColor": template_rgb, // ダイヤ文字色
+  "diagramBackgroundColor": template_rgb, // ダイヤ背景色
+  "diagramTrainColor": template_rgb, // ? ダイヤ列車色?
+  "diagramAxisColor": template_rgb, // ?
+  "stdOpeTimeLowerColor": template_rgb, // ?
+  "stdOpeTimeHigherColor": template_rgb, // ?
+  "stdOpeTimeUndefColor": template_rgb, // ?
+  "stdOpeTimeIllegalColor": template_rgb, // ?
   "stationNameLength": number, // ?
   "timetableTrainWidth": number, // 時刻表列車セル幅
   "anySecondIncDec1": number, // 任意秒移動1
@@ -292,6 +235,12 @@ export type template_timetableFont = {
   "family": string,
   "bold": boolean,
   "italic": boolean
+}
+
+export type template_rgb = {
+  "r": number,
+  "g": number,
+  "b": number
 }
 
 export type template_station = { // 駅リスト
