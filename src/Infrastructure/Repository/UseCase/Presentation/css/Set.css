@@ -15,6 +15,7 @@
 
 .timetableFontTr {
   & * > * {display: block;}
+  & :nth-child(1) > * {width: 1.25rem;}
   & :nth-child(3) > * {width: 3.25rem;}
   & :nth-child(4) > * {width: 1.25rem;}
   & :nth-child(5) > * {width: 1.25rem;}

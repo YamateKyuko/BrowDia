@@ -214,22 +214,28 @@ button {
   padding-right: calc(0.5em - 1px);
 }
 
-/* ホバー */
-:where(button, input[type=text], .checkbox):hover {
-  background-color: #;
-}
-
-/* アクティブ */
+/* 活性 */
 button:active,
-input[type=text]:focus,
-/* :where(input[type=checkbox], input[type="radio"]):checked + :where(.checkbox, .radio), */
+input:focus,
 :where(.checkbox, .radio):has(:where(input[type=checkbox], input[type=radio]):checked) {
   background-color: black;
   color: white;
 }
 
+/* 非活性時ホバー */
+button:hover, input[type=text]:hover, input[type=number]:hover, .checkbox:hover {
+  background-color: #c0c0c0;
+}
+
+/* 活性時ホバー */
+:is(.checkbox, .radio):has(:where(input:checked, input:focus):hover) {
+  background-color: #404040;
+  color: white;
+}
+
+/* 選択不可 */
 input:disabled {
-  background-color: #ccc;
+  background-color: #808080;
   color: black;
 }
 

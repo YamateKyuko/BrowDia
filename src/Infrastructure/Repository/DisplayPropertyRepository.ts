@@ -1,5 +1,5 @@
 import React from "react";
-import Infrastructure from "./../Infrastructure"
+import Infrastructure from "../Infrastructure"
 
 import { template, template_displayProperty, template_station } from "./UseCase/Presentation/Entity/Entity"
 import {

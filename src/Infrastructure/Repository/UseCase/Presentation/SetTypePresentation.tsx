@@ -21,7 +21,6 @@ import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
 import Input from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
-import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]

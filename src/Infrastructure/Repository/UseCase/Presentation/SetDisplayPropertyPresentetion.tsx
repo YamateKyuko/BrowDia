@@ -24,6 +24,8 @@ import Tracks from "./TracksPresentation";
 import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
 import DisplayPropertyRepository from "../../DisplayPropertyRepository";
+import TimetableFont from "./SetTimetableFontPresentetion";
+import NamedFont from "./SetNamedFontPresentation";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
@@ -35,9 +37,7 @@ type ComponentProps = {
   SetDisplayPropertyProp: <K extends keyof template_displayProperty, P extends template_displayProperty[K]>(key: K, property: P) => void;
 }
 
-function isTimetableFont(value: template_displayProperty[keyof template_displayProperty]): value is template_timetableFont {
-  return typeof value == "object" && "height" in value && "family" in value && "bold" in value && "italic" in value;
-}
+
 
 function isRgb(value: template_displayProperty[keyof template_displayProperty]): value is template_rgb {
   return typeof value == "object" && "r" in value && "g" in value && "b" in value;
@@ -81,7 +81,8 @@ function Component(props: ComponentProps) {
               ))}
             </ul>
           </dd>
-          <dt>時刻表フォント</dt>
+          <TimetableFont displayProperty={props.displayProperty} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
+          {/* <dt>時刻表フォント</dt>
           <dd>
             <table>
               <thead>
@@ -117,8 +118,9 @@ function Component(props: ComponentProps) {
                 </tr>
               </tfoot>
             </table>
-          </dd>
-          <dt>各種フォント</dt>
+          </dd> */}
+          <NamedFont displayProperty={props.displayProperty} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
+          {/* <dt>各種フォント</dt>
           <dd>
             <table>
               <thead>
@@ -161,7 +163,7 @@ function Component(props: ComponentProps) {
                 </tr>
               </tfoot>
             </table>
-          </dd>
+          </dd> */}
           <dt>色</dt>
           <dd>
             <ul>
@@ -218,52 +220,6 @@ function DisplayPropertyPropHandler(props: StationElementsHundlerProps) {
 
   return (
     <Input value={props.displayProperty[props.displayPropertyPropKey]} onChange={onChange} className={props.className ? props.className : ""} />
-  )
-}
-
-type ConsoleLogProps = {
-  value: any;
-}
-
-function ConsoleLog(props: ConsoleLogProps) {
-  console.log(props.value)
-  return (<></>)
-}
-
-type CustomTimetableStyleCheckboxProps = {
-  station: template_station;
-  PropertyKey: keyof template_station["customTimetableStyle"];
-  ArrayIndex: number;
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-}
-
-function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
-
-  const SetCustomTimetableStyle: React.ChangeEventHandler<HTMLInputElement> = (() => {
-    props.SetStationProperty(
-      "customTimetableStyle",
-        {...props.station.customTimetableStyle,
-        [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex == index ? !property : property))}
-    )
-  })
-
-  return (
-    <>
-      <Input value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
-    </>
-  )
-}
-
-const Checkbox = ({KE: KE, IN: IN, onChange}: {KE: string; IN: number | null; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;}) => {
-  const onChangeHundler: React.ChangeEventHandler<HTMLInputElement> = (() => {
-    
-  })
-
-  return (
-    <>
-      <input type="checkbox" id={IN ? KE + IN : KE} name={KE} onChange={onChangeHundler} />
-      <label className="checkbox" htmlFor={IN ? KE + IN : KE} />
-    </>
   )
 }
 
