@@ -3,34 +3,13 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track } from "./Entity/Entity"
+import { template_station, template_outerTerminal } from "./Entity/Entity"
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
-  SetterOrUpdater
-} from 'recoil';
-
-import Infrastructure from "../../../Infrastructure";
-import StationRepository from "../../StationRepository";
-import DirectionNameRepository from "../../DirectionRepositry";
-import Input from "./ElementsPresentation"
-
-type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
-
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
+import { Input } from "./ElementsPresentation"
 
 type TracksComponentProps = {
-  // stations: template_station[];
   outerTerminal: template_outerTerminal[] | null;
   directionName: string[];
-  // stationIndex: number;
-  // SetStationIndex: SetterOrUpdater<number>;
   SetOuterTerminalChild: (index: number, newValue: template_outerTerminal) => void;
   DeleteOuterTerminalChild: (index: number) => void;
   AddOuterTerminalChild: () => void;
@@ -89,7 +68,6 @@ function OuterTerminalComponent(props: TracksComponentProps) {
             </li>
           }
           <li>有無<NullHandler outerTerminal={props.outerTerminal} for="outerTerminal" nullChange={props.nullChange} /></li>
-          {/* <li>有無<Checkbox IN={null} KE="" onChange={insted()} /></li> */}
         </ul>
       </dd>
     </>

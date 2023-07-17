@@ -3,31 +3,22 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track } from "./Entity/Entity"
+import { template, template_station, template_track } from "./Entity/Entity"
 
 import {
-  RecoilRoot,
-  atom,
-  selector,
   useRecoilState,
   useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
   SetterOrUpdater
 } from 'recoil';
 
 import Infrastructure from "../../../Infrastructure";
 import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
-import Input from "./ElementsPresentation"
+import { Input, IndexListbox } from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
-import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
-import { isStation } from "./SharedFunction";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
-
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
 type ComponentProps = {
   stations: template_station[];
@@ -47,25 +38,25 @@ function Component(props: ComponentProps) {
       <section>
         <dl>
           <dt data-logo={props.stationIndex + 1} className="">
-            <StationElementsHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
+            <StationPropHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
           </dt>
           <dd>
             <ul>
               <li>
                 略称
-                <StationElementsHandler station={props.station} stationKey="abbrName" SetStationProperty={props.SetStationProperty} />
+                <StationPropHandler station={props.station} stationKey="abbrName" SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 主要駅
-                <StationElementsHandler station={props.station} stationKey="isMain" SetStationProperty={props.SetStationProperty} />
+                <StationPropHandler station={props.station} stationKey="isMain" SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 下線
-                <StationElementsHandler station={props.station} stationKey="border" SetStationProperty={props.SetStationProperty} />
+                <StationPropHandler station={props.station} stationKey="border" SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 ダイヤ番線表示
-                <StationElementsHandler station={props.station} stationKey="visibleDiagramTrack" SetStationProperty={props.SetStationProperty} />
+                <StationPropHandler station={props.station} stationKey="visibleDiagramTrack" SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 <table>
@@ -261,55 +252,14 @@ function MainTrackHandler(props: MainTrackHandlerProps) {
   return (<IndexListbox values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
 }
 
-type IndexListboxProps = {
-  values: template_station[] | template_track[];
-  selectedIndex: number;
-  set: (index: number) => void;
-}
-
-function IndexListbox(props: IndexListboxProps) {
-  const className = (value: template_station | template_track, index: number): string => {
-    if (isStation(value)) {
-      return `${!value.border && (index == props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
-    }
-    return "";
-  }
-
-  return (
-    <fieldset>
-      {props.values.map((value: template_station | template_track, index: number) => (
-        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} index={index} label={value.name} className={className(value, index)} key={index} />
-      ))}
-    </fieldset>
-  )
-}
-
-type IndexListboxHandlerProps = {
-  index: number;
-  selectedIndex: number;
-  set: (index: number) => void;
-  label: string;
-  className?: string;
-}
-
-function IndexListboxHandler(props: IndexListboxHandlerProps) {
-  const onChange = (): void => {
-    props.set(props.index)
-  }
-
-  return (
-    <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
-  )
-}
-
-type StationElementsHundlerProps = {
+type StationPropHandlerProps = {
   station: template_station;
   stationKey: keyof template_station;
   SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
   className?: string;
 }
 
-function StationElementsHandler(props: StationElementsHundlerProps) {
+function StationPropHandler(props: StationPropHandlerProps) {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
     if (typeof props.station[props.stationKey] === "string") {
       props.SetStationProperty(props.stationKey, event.target.value)

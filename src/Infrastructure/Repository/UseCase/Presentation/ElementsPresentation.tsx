@@ -3,22 +3,10 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track , template_rgb } from "./Entity/Entity"
-import { isRgb, RgbConverter } from "./SharedFunction";
-
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
-  SetterOrUpdater
-} from 'recoil';
+import { template, template_station, template_track, template_trainType } from "./Entity/Entity"
+import { isStation, isRgb, RgbConverter } from "./SharedFunction";
 
 type InputProps = {
-  // for: string;
   value: any;
   onChange: React.ChangeEventHandler<HTMLElement>;
   className?: string;
@@ -28,7 +16,7 @@ type InputProps = {
   disabled?: boolean;
 }
 
-function Input(props: InputProps) {
+export function Input(props: InputProps) {
   return (
     <>
       {typeof props.value === "string" &&
@@ -46,7 +34,6 @@ function Input(props: InputProps) {
             <label className={"checkbox " + props.className}>
               <input type="checkbox" onChange={props.onChange} checked={props.value} />
             </label>
-            {/* id={props.for}  htmlFor={props.for} */}
           </>
         : (!props.dataLogo
           ?
@@ -66,6 +53,47 @@ function Input(props: InputProps) {
         )
       )}
     </>
+  )
+}
+
+type IndexListboxProps = {
+  values: template_station[] | template_track[] | template_trainType[];
+  selectedIndex: number;
+  set: (index: number) => void;
+}
+
+export function IndexListbox(props: IndexListboxProps) {
+  const className = (value: template_station | template_track | template_trainType, index: number): string => {
+    if (isStation(value)) {
+      return `${!value.border && (index == props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
+    }
+    return "";
+  }
+
+  return (
+    <fieldset>
+      {props.values.map((value: template_station | template_track | template_trainType, index: number) => (
+        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} index={index} label={value.name} className={className(value, index)} key={index} />
+      ))}
+    </fieldset>
+  )
+}
+
+type IndexListboxHandlerProps = {
+  index: number;
+  selectedIndex: number;
+  set: (index: number) => void;
+  label: string;
+  className?: string;
+}
+
+function IndexListboxHandler(props: IndexListboxHandlerProps) {
+  const onChange = (): void => {
+    props.set(props.index)
+  }
+
+  return (
+    <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
   )
 }
 

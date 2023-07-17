@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track } from "./Entity/Entity"
+import { template, template_station, template_outerTerminal, template_track, template_trainType } from "./Entity/Entity"
 
 import {
   RecoilRoot,
@@ -19,30 +19,49 @@ import {
 import Infrastructure from "../../../Infrastructure";
 import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
-import Input from "./ElementsPresentation"
+import { Input, IndexListbox } from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
 import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
 
 import { isStation } from "./SharedFunction";
+import TrainTypeRepository from "../../TrainTypeRepository";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
 type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
+
 type ComponentProps = {
-  stations: template_station[];
-  station: template_station;
+  trainTypes: template_trainType[];
+  trainType: template_trainType;
   directionName: string[];
   stationIndex: number;
-  SetStationIndex: SetterOrUpdater<number>;
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
+  SetTrainTypeIndex: SetterOrUpdater<number>;
+  SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
 }
 
 function Component(props: ComponentProps) {
   return (
     <article>
       <nav>
+        <StationIndexHandler trainTypes={props.trainTypes} trainTypeIndex={props.stationIndex} setTrainTypeIndex={props.SetTrainTypeIndex} />
+      </nav>
+      <section>
+        <dl>
+          <dt data-logo={props.stationIndex + 1}>
+            <TrainTypePropHandler trainType={props.trainType} propKey="name" SetTrainTypeProperty={props.SetTrainTypeProperty} />
+          </dt>
+          <dd>
+            <ul>
+              <li>
+                
+              </li>
+            </ul>
+          </dd>
+        </dl>
+      </section>
+      {/* <nav>
         <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
       </nav>
       <section>
@@ -115,7 +134,7 @@ function Component(props: ComponentProps) {
             <button>削除</button>
           </dt>
         </dl>
-      </section>
+      </section> */}
     </article>
   );
 }
@@ -234,119 +253,63 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
 }
 
 type stationIndexHandlerProps = {
-  stations: template_station[];
-  stationIndex: number;
-  setStationIndex: SetterOrUpdater<number>;
+  trainTypes: template_trainType[];
+  trainTypeIndex: number;
+  setTrainTypeIndex: SetterOrUpdater<number>;
 }
 
 function StationIndexHandler(props: stationIndexHandlerProps) {
   const set = (index: number): void => {
-    props.setStationIndex(index)
+    props.setTrainTypeIndex(index)
   }
 
-  return (<IndexListbox values={props.stations} selectedIndex={props.stationIndex} set={set} />)
+  return (<IndexListbox values={props.trainTypes} selectedIndex={props.trainTypeIndex} set={set} />)
 }
 
-type MainTrackHandlerProps = {
-  index: number;
-  setStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-  mainTrack: number[];
-  tracks: template_track[];
-}
-
-function MainTrackHandler(props: MainTrackHandlerProps) {
-  const set = (value: number): void => {
-    props.setStationProperty("mainTrack", props.mainTrack.map((mainTrack: number, mapIndex: number) => (props.index == mapIndex ? value : mainTrack)))
-  }
-
-  return (<IndexListbox values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
-}
-
-type IndexListboxProps = {
-  values: template_station[] | template_track[];
-  selectedIndex: number;
-  set: (index: number) => void;
-}
-
-function IndexListbox(props: IndexListboxProps) {
-  const className = (value: template_station | template_track, index: number): string => {
-    if (isStation(value)) {
-      return `${!value.border && (index == props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
-    }
-    return "";
-  }
-
-  return (
-    <fieldset>
-      {props.values.map((value: template_station | template_track, index: number) => (
-        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} index={index} label={value.name} className={className(value, index)} key={index} />
-      ))}
-    </fieldset>
-  )
-}
-
-type IndexListboxHandlerProps = {
-  index: number;
-  selectedIndex: number;
-  set: (index: number) => void;
-  label: string;
+type TrainTypePropHandlerProps = {
+  trainType: template_trainType;
+  propKey: keyof template_trainType;
+  SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
   className?: string;
 }
 
-function IndexListboxHandler(props: IndexListboxHandlerProps) {
-  const onChange = (): void => {
-    props.set(props.index)
-  }
-
-  return (
-    <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
-  )
-}
-
-type StationElementsHundlerProps = {
-  station: template_station;
-  stationKey: keyof template_station;
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-  className?: string;
-}
-
-function StationElementsHandler(props: StationElementsHundlerProps) {
+function TrainTypePropHandler(props: TrainTypePropHandlerProps) {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.station[props.stationKey] === "string") {
-      props.SetStationProperty(props.stationKey, event.target.value)
+    if (typeof props.trainType[props.propKey] === "string") {
+      props.SetTrainTypeProperty(props.propKey, event.target.value)
     }
-    if (typeof props.station[props.stationKey] === "boolean") {
-      props.SetStationProperty(props.stationKey, event.target.checked)
+    if (typeof props.trainType[props.propKey] === "boolean") {
+      props.SetTrainTypeProperty(props.propKey, event.target.checked)
     }
   })
 
   return (
-    <Input value={props.station[props.stationKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <Input value={props.trainType[props.propKey]} onChange={onChange} className={props.className ? props.className : ""} />
   )
 }
 
 function SetTrainTypePresentation() {
-  const [trainTypeIndex, SetStationIndex] = useRecoilState(Infrastructure().TrainTypeIndex)
+  const [trainTypeIndex, SetTrainTypeIndex] = useRecoilState(Infrastructure().TrainTypeIndex)
 
-  const Stations: template_station[] = useRecoilValue(StationRepository().Stations);
-  const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station(trainTypeIndex));
+  const trainTypes: template_trainType[] = useRecoilValue<template_trainType[]>(TrainTypeRepository().TrainTypes);
+  const [trainType, setTrainType] = useRecoilState<template_trainType>(TrainTypeRepository().TrainType(trainTypeIndex));
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
 
   const Atom: template = useRecoilValue(Infrastructure().Atom);
 
-  const SetStationProperty = <K extends keyof template_station, P extends template_station[K]>(key: K, property: P): void => {
-    SetStation((prev: template_station) => ({...prev, [key]: property}))
+  const SetTrainTypeProperty = <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P): void => {
+    setTrainType((prev: template_trainType) => ({...prev, [key]: property}))
   }
 
   return (
     <Component
-      stations={Stations}
-      station={Station}
+      trainTypes={trainTypes}
+      trainType={trainType}
       stationIndex={trainTypeIndex}
-      SetStationIndex={SetStationIndex}
+      SetTrainTypeIndex={SetTrainTypeIndex}
       directionName={DirectionName}
-      SetStationProperty={SetStationProperty}
+      SetTrainTypeProperty={SetTrainTypeProperty}
     />
   )
 }

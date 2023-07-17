@@ -1,6 +1,6 @@
-import { template_station, template_track, template_timetableFont, template_rgb, template_displayProperty } from "./Entity/Entity";
+import { template_station, template_track, template_timetableFont, template_rgb, template_displayProperty, template_trainType } from "./Entity/Entity";
 
-export function isStation(value: template_station | template_track): value is template_station {
+export function isStation(value: template_station | template_track | template_trainType): value is template_station {
   return "customTimetableStyle" in value;
 }
 

@@ -1,36 +1,14 @@
 import React from "react";
-import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track } from "./Entity/Entity"
+import { template_station, template_track } from "./Entity/Entity"
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
-  SetterOrUpdater
-} from 'recoil';
-
-import Infrastructure from "../../../Infrastructure";
-import StationRepository from "../../StationRepository";
-import DirectionNameRepository from "../../DirectionRepositry";
-import Input from "./ElementsPresentation"
-
-type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
-
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
+import { Input } from "./ElementsPresentation"
 
 type TracksComponentProps = {
-  // stations: template_station[];
   tracks: template_station["tracks"];
   directionName: string[];
-  // stationIndex: number;
-  // SetStationIndex: SetterOrUpdater<number>;
   SetTracksArray: (index: number, newValue: template_track) => void;
   DeleteTracksArray: (index: number) => void;
   AddTracksArray: () => void;
