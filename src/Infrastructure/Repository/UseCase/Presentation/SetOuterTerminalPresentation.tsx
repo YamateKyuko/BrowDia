@@ -155,14 +155,6 @@ function OuterTerminalChildComponent(props: OuterTerminalChildComponentProps) {
       <th><OuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} PropertyKey="name" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} /></th>
       <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="timetableName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
       <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="diagramName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
-      {/* <td>{props.outerTerminal.diagramName ? <input type="text" value={props.outerTerminal.diagramName} readOnly /> : <div></div>}</td>
-      <td>
-        <Checkbox KE="" IN={0} onChange={insted()} />
-      </td> */}
-      {/* <td>{props.outerTerminal.timetableName ? <input type="text" value={props.outerTerminal.timetableName} readOnly /> : <div></div>}</td>
-      <td>
-        <Checkbox KE="" IN={0} onChange={insted()} />
-      </td> */}
       <td><OuterTerminalDelete index={props.index} DeleteOuterTerminalArray={props.DeleteOuterTerminalArray} /></td>
     </tr>
   )
@@ -181,7 +173,6 @@ function CanNullOuterTerminalChildPropertyHandler(props: CanNullOuterTerminalChi
   }
 
   const nullOnChange = () => {
-    console.log("Ninomiya!")
     if (props.outerTerminal[props.propertyKey] === null) {props.SetOuterTerminalProperty(props.propertyKey, "")}
     if (props.outerTerminal[props.propertyKey] !== null) {props.SetOuterTerminalProperty(props.propertyKey, null)}
   }

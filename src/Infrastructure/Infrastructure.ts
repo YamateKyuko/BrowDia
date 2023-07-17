@@ -15,7 +15,7 @@ const Infrastructure = () => {
   const Atom = atom<template>({key: "Data", default: JSON as template,})
 
   const PageIndex = atom<number>({key: "PageIndex", default: 0,})
-  const SettingIndex = atom<number>({key: "SettingIndex", default: 1,})
+  const SettingIndex = atom<number>({key: "SettingIndex", default: 2,})
 
   const StationIndex = atom<number>({key: "StationIndex", default: 2,})
   const TypeIndex = atom<number>({key: "TypeIndex", default: 0,})
