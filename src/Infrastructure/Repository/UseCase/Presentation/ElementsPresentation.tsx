@@ -4,6 +4,7 @@ import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
 import { template, template_station, template_outerTerminal, template_track , template_rgb } from "./Entity/Entity"
+import { isRgb, RgbConverter } from "./SharedFunction";
 
 import {
   RecoilRoot,
@@ -15,14 +16,6 @@ import {
   useSetRecoilState,
   SetterOrUpdater
 } from 'recoil';
-
-function isRgb(value: any): value is template_rgb {
-  return value !== null && typeof value == "object" && "r" in value && "g" in value && "b" in value;
-}
-
-function RgbConverter(value: template_rgb): string {
-  return `#${value.r.toString(16).padStart(2, "0")}${value.g.toString(16).padStart(2, "0")}${value.b.toString(16).padStart(2, "0")}`;
-}
 
 type InputProps = {
   // for: string;

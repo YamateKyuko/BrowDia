@@ -21,11 +21,9 @@ import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
 import Input from "./ElementsPresentation"
 
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
+import { isTimetableFont } from "./SharedFunction";
 
-function isTimetableFont(value: template_displayProperty[keyof template_displayProperty]): value is template_timetableFont {
-  return typeof value == "object" && "height" in value && "family" in value && "bold" in value && "italic" in value;
-}
+type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
 type NamedFontComponentProps = {
   timetableFont: template_displayProperty["timetableFont"];

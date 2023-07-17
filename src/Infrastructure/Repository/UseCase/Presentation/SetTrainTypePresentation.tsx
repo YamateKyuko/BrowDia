@@ -21,6 +21,7 @@ import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
 import Input from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
+import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
 
 import { isStation } from "./SharedFunction";
@@ -39,8 +40,6 @@ type ComponentProps = {
 }
 
 function Component(props: ComponentProps) {
-  const insted: any = (() => {return("")})
-
   return (
     <article>
       <nav>
@@ -75,39 +74,8 @@ function Component(props: ComponentProps) {
                     <tr><th></th><td>駅</td><td>有無</td></tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th>支線分岐駅</th>
-                      <td>
-                      <StationElementsHandler station={props.station} stationKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
-                        <details>
-                          <summary></summary>
-                          <select size={4} required>
-                            {props.stations.map((station: template_station, index: number) => (
-                              <option data-logo={index + 1} className={`${station.border ? "border" : ""} ${index == 0 ? "start" : ""} ${station.isMain ? "bold" : ""} `} key={index}>
-                                {station.name}
-                              </option>
-                            ))}
-                          </select>
-                        </details>
-                      </td>
-                      <td><Checkbox IN={null} KE="" onChange={insted()} /></td>
-                    </tr>
-                    <tr>
-                      <th>環状線開始駅</th>
-                      <td>
-                        <details>
-                          <summary></summary>
-                          <select size={4} required>
-                            {props.stations.map((station: template_station, index: number) => (
-                              <option data-logo={index + 1} className={`${station.border ? "border" : ""} ${index == 0 ? "start" : ""} ${station.isMain ? "bold" : ""} `} key={index}>
-                                {station.name}
-                              </option>
-                            ))}
-                          </select>
-                        </details>
-                      </td>
-                      <td><Checkbox IN={null} KE="" onChange={insted()} /></td>
-                    </tr>
+                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
+                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
                   </tbody>
                 </table>
               </li>
@@ -133,16 +101,14 @@ function Component(props: ComponentProps) {
           <dd>
             <ul>
               {props.directionName.map((directionName: string, index: number) => (
-                <li className="mainTrackLi" key={index}>
+                <li key={index}>
                   {directionName}本線
                   <details>
-                    <summary>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary>
+                    <summary data-logo={index + 1}>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary>
                     <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
                   </details>
                 </li>
               ))}
-              {/* <StationElementsHandler station={props.station} stationKey="customTimetableStyle" SetStationProperty={props.SetStationProperty} /> */}
-              {/* <StationElementsHandler station={props.station} stationKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} /> */}
             </ul>
           </dd>
           <dt>
@@ -152,6 +118,50 @@ function Component(props: ComponentProps) {
       </section>
     </article>
   );
+}
+
+type CanNullStationPropStationIndexHandlerProps = {
+  stations: template_station[];
+  station: template_station;
+  propKey: keyof template_station;
+  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
+}
+
+function CanNullStationPropStationIndexHandler(props: CanNullStationPropStationIndexHandlerProps) {
+  const set = (index: number): void => {
+    props.SetStationProperty(props.propKey, index)
+  }
+
+  const nullOnChange = () => {
+    if (props.station[props.propKey] === null) {props.SetStationProperty(props.propKey, 0)}
+    if (props.station[props.propKey] !== null) {props.SetStationProperty(props.propKey, null)}
+  }
+
+  const selectedIndex: template_station[keyof template_station] = props.station[props.propKey]
+
+  return (
+    <>
+      <tr>
+        <th>支線分岐駅</th>
+        <td>
+          {typeof selectedIndex == "number" ?
+            <details>
+              <summary data-logo={selectedIndex + 1}>{props.stations[selectedIndex].name}</summary>
+              <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
+            </details>
+          :
+            <Input value={""} onChange={() => {}} disabled={true} />
+          }
+        </td>
+        {/* <td></td> */}
+        <td><Input value={props.station[props.propKey] !== null} onChange={nullOnChange}/></td>
+      </tr>
+      {/* <td>
+        
+      </td>
+      <td><Input value={props.outerTerminal[props.propertyKey] !== null} onChange={nullOnChange}/></td> */}
+    </>
+  )
 }
 
 type CustomTimetableStyleProps = {
@@ -234,7 +244,7 @@ function StationIndexHandler(props: stationIndexHandlerProps) {
     props.setStationIndex(index)
   }
 
-  return (<IndexListbox for="stationIndex" values={props.stations} selectedIndex={props.stationIndex} set={set} />)
+  return (<IndexListbox values={props.stations} selectedIndex={props.stationIndex} set={set} />)
 }
 
 type MainTrackHandlerProps = {
@@ -249,11 +259,10 @@ function MainTrackHandler(props: MainTrackHandlerProps) {
     props.setStationProperty("mainTrack", props.mainTrack.map((mainTrack: number, mapIndex: number) => (props.index == mapIndex ? value : mainTrack)))
   }
 
-  return (<IndexListbox for={"mainTrack" + props.index} values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
+  return (<IndexListbox values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
 }
 
 type IndexListboxProps = {
-  for: string;
   values: template_station[] | template_track[];
   selectedIndex: number;
   set: (index: number) => void;
@@ -270,7 +279,7 @@ function IndexListbox(props: IndexListboxProps) {
   return (
     <fieldset>
       {props.values.map((value: template_station | template_track, index: number) => (
-        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} for={props.for} index={index} label={value.name} className={className(value, index)} key={index} />
+        <IndexListboxHandler selectedIndex={props.selectedIndex} set={props.set} index={index} label={value.name} className={className(value, index)} key={index} />
       ))}
     </fieldset>
   )
@@ -278,7 +287,6 @@ function IndexListbox(props: IndexListboxProps) {
 
 type IndexListboxHandlerProps = {
   index: number;
-  for: string;
   selectedIndex: number;
   set: (index: number) => void;
   label: string;
@@ -317,41 +325,15 @@ function StationElementsHandler(props: StationElementsHundlerProps) {
   )
 }
 
-const Checkbox = ({KE: KE, IN: IN, onChange}: {KE: string; IN: number | null; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;}) => {
-  const onChangeHundler: React.ChangeEventHandler<HTMLInputElement> = (() => {
-    
-  })
-
-  return (
-    <>
-      <input type="checkbox" id={IN ? KE + IN : KE} name={KE} onChange={onChangeHundler} />
-      <label className="checkbox" htmlFor={IN ? KE + IN : KE} />
-    </>
-  )
-}
-
-// const Radio = ({name, index}: {name: string; index: number; event: (event: React.MouseEvent<HTMLInputElement>) => void;}) => {
-//   return (
-//     <>
-//       <input type="radio" id={name + index} name={name} />
-//       <label className="radio" htmlFor={name + index} />
-//     </>
-//   )
-// }
-
-// type SetStationPresentationProps = {}
-// props: SetStationPresentationProps
-
-function SetStationPresentation() {
-  const [stationIndex, SetStationIndex] = useRecoilState(Infrastructure().StationIndex)
+function SetTrainTypePresentation() {
+  const [trainTypeIndex, SetStationIndex] = useRecoilState(Infrastructure().TrainTypeIndex)
 
   const Stations: template_station[] = useRecoilValue(StationRepository().Stations);
-  const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station(stationIndex));
+  const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station(trainTypeIndex));
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
 
   const Atom: template = useRecoilValue(Infrastructure().Atom);
-  console.log(Atom)
 
   const SetStationProperty = <K extends keyof template_station, P extends template_station[K]>(key: K, property: P): void => {
     SetStation((prev: template_station) => ({...prev, [key]: property}))
@@ -361,7 +343,7 @@ function SetStationPresentation() {
     <Component
       stations={Stations}
       station={Station}
-      stationIndex={stationIndex}
+      stationIndex={trainTypeIndex}
       SetStationIndex={SetStationIndex}
       directionName={DirectionName}
       SetStationProperty={SetStationProperty}
@@ -369,5 +351,4 @@ function SetStationPresentation() {
   )
 }
 
-
-export default SetStationPresentation;
+export default SetTrainTypePresentation;

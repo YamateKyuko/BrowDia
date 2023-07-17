@@ -26,6 +26,7 @@ import OuterTerminal from "./SetOuterTerminalPresentation";
 import DisplayPropertyRepository from "../../DisplayPropertyRepository";
 import TimetableFont from "./SetTimetableFontPresentetion";
 import NamedFont from "./SetNamedFontPresentation";
+import { isRgb } from "./SharedFunction"
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
@@ -36,13 +37,6 @@ type ComponentProps = {
   directionName: string[];
   SetDisplayPropertyProp: <K extends keyof template_displayProperty, P extends template_displayProperty[K]>(key: K, property: P) => void;
 }
-
-
-
-function isRgb(value: template_displayProperty[keyof template_displayProperty]): value is template_rgb {
-  return typeof value == "object" && "r" in value && "g" in value && "b" in value;
-}
-
 
 function Component(props: ComponentProps) {
   const insted: any = (() => {return("")})

@@ -21,7 +21,7 @@ const Infrastructure = () => {
   const TypeIndex = atom<number>({key: "TypeIndex", default: 0,})
   const ID = atom<number>({key: "ID", default: 0,})
   
-  return { Atom, PageIndex, SettingIndex, StationIndex, TypeIndex, ID };
+  return { Atom, PageIndex, SettingIndex, StationIndex, TrainTypeIndex: TypeIndex, ID };
 }
 
 export default Infrastructure;

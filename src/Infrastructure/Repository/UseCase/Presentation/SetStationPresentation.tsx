@@ -23,6 +23,7 @@ import Input from "./ElementsPresentation"
 import Tracks from "./TracksPresentation";
 import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
+import { isStation } from "./SharedFunction";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
@@ -229,10 +230,6 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
       <Input value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
     </>
   )
-}
-
-function isStation(value: template_station | template_track): value is template_station {
-  return "customTimetableStyle" in value;
 }
 
 type stationIndexHandlerProps = {
