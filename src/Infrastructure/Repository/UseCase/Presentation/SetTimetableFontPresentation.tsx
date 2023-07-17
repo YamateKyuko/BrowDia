@@ -19,7 +19,7 @@ import {
 import Infrastructure from "../../../Infrastructure";
 import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
-import Input from "./ElementsPresentation"
+import { Input } from "./ElementsPresentation"
 
 type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
