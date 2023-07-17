@@ -24,7 +24,7 @@ import Tracks from "./TracksPresentation";
 import { promises } from "dns";
 import OuterTerminal from "./SetOuterTerminalPresentation";
 import DisplayPropertyRepository from "../../DisplayPropertyRepository";
-import TimetableFont from "./SetTimetableFontPresentetion";
+import TimetableFont from "./SetTimetableFontPresentation";
 import NamedFont from "./SetNamedFontPresentation";
 import { isRgb } from "./SharedFunction"
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 // import './App.css';
+
+import SetDisplayPresentation from './SetDisplayPropertyPresentation'
 import SetStationPresentation from './SetStationPresentation';
-import SetDisplayPresentation from './SetDisplayPropertyPresentetion'
+import SetTrainTypePresentation from './SetTrainTypePresentation'
 
 import Infrastructure from '../../../Infrastructure';
 
@@ -38,7 +40,7 @@ function Setting() {
     {src: General, component: <SetStationPresentation />},
     {src: Style, component: <SetDisplayPresentation />},
     {src: Station, component: <SetStationPresentation />},
-    {src: Type, component: <SetStationPresentation />},
+    {src: Type, component: <SetTrainTypePresentation />},
   ]
 
   return (
