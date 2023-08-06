@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_outerTerminal, template_track, template_trainType } from "./Entity/Entity"
+import { template, template_station, template_trainType, template_listStyle } from "./Entity/Entity"
 
 import {
   RecoilRoot,
@@ -17,20 +17,22 @@ import {
 } from 'recoil';
 
 import Infrastructure from "../../../Infrastructure";
-import StationRepository from "../../StationRepository";
 import DirectionNameRepository from "../../DirectionRepositry";
 import { Input, IndexListbox } from "./ElementsPresentation"
-import Tracks from "./TracksPresentation";
-import { promises } from "dns";
-import OuterTerminal from "./SetOuterTerminalPresentation";
 
-import { isStation } from "./SharedFunction";
+import { isRgb, HexConverter } from "./SharedFunction";
 import TrainTypeRepository from "../../TrainTypeRepository";
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
+const lineStyleList: template_listStyle[] = [
+  {name: "実線", value: "Jissen", strokeDasharray: ""},
+  {name: "波線", value: "Hasen", strokeDasharray: "8, 2"},
+  {name: "点線", value: "Tensen", strokeDasharray: "2, 2"},
+  {name: "一点鎖線", value: "Ittensasen", strokeDasharray: "8, 2, 2, 2"}
+]
 
+const lineStyleListIndexConverter = (lineStyle: template_trainType["lineStyle"]): number => lineStyleList.findIndex((value: template_listStyle, index: number) => value.value == lineStyle)
 
 type ComponentProps = {
   trainTypes: template_trainType[];
@@ -42,6 +44,10 @@ type ComponentProps = {
 }
 
 function Component(props: ComponentProps) {
+  const lineStyleHandler = (index: number): void => {
+    props.SetTrainTypeProperty("lineStyle", lineStyleList[index].value)
+  }
+
   return (
     <article>
       <nav>
@@ -55,176 +61,42 @@ function Component(props: ComponentProps) {
           <dd>
             <ul>
               <li>
-                
+                略称
+                <TrainTypePropHandler trainType={props.trainType} propKey="abbrName" SetTrainTypeProperty={props.SetTrainTypeProperty} />
               </li>
+              <li>
+                フォント番号
+                <details>
+                  <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
+                  <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
+                </details>
+                {/* <TrainTypePropHandler trainType={props.trainType} propKey="fontIndex" SetTrainTypeProperty={props.SetTrainTypeProperty} /> */}
+              </li>
+              <li>
+                文字色
+                <TrainTypePropHandler trainType={props.trainType} propKey="textColor" SetTrainTypeProperty={props.SetTrainTypeProperty} />
+              </li>
+              <li>
+                線色
+                <TrainTypePropHandler trainType={props.trainType} propKey="strokeColor" SetTrainTypeProperty={props.SetTrainTypeProperty} />
+              </li>
+              <li>
+                背景色
+                <TrainTypePropHandler trainType={props.trainType} propKey="backgroundColor" SetTrainTypeProperty={props.SetTrainTypeProperty} />
+              </li>
+              <li>
+                線のスタイル
+                <details>
+                  <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
+                  <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
+                </details>
+              </li>
+              {/* "SenStyle_Jissen", "SenStyle_Hasen", "SenStyle_Tensen", "SenStyle_Ittensasen" */}
             </ul>
           </dd>
         </dl>
       </section>
-      {/* <nav>
-        <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
-      </nav>
-      <section>
-        <dl>
-          <dt data-logo={props.stationIndex + 1} className="">
-            <StationElementsHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
-          </dt>
-          <dd>
-            <ul>
-              <li>
-                略称
-                <StationElementsHandler station={props.station} stationKey="abbrName" SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                主要駅
-                <StationElementsHandler station={props.station} stationKey="isMain" SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                下線
-                <StationElementsHandler station={props.station} stationKey="border" SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                ダイヤ番線表示
-                <StationElementsHandler station={props.station} stationKey="visibleDiagramTrack" SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                <table>
-                  <thead>
-                    <tr><th></th><td>駅</td><td>有無</td></tr>
-                  </thead>
-                  <tbody>
-                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
-                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
-                  </tbody>
-                </table>
-              </li>
-              
-            </ul>
-          </dd>
-          <CustomTimetableStyle
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <OuterTerminal
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <Tracks
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <dt>本線</dt>
-          <dd>
-            <ul>
-              {props.directionName.map((directionName: string, index: number) => (
-                <li key={index}>
-                  {directionName}本線
-                  <details>
-                    <summary data-logo={index + 1}>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary>
-                    <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
-                  </details>
-                </li>
-              ))}
-            </ul>
-          </dd>
-          <dt>
-            <button>削除</button>
-          </dt>
-        </dl>
-      </section> */}
     </article>
-  );
-}
-
-type CanNullStationPropStationIndexHandlerProps = {
-  stations: template_station[];
-  station: template_station;
-  propKey: keyof template_station;
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-}
-
-function CanNullStationPropStationIndexHandler(props: CanNullStationPropStationIndexHandlerProps) {
-  const set = (index: number): void => {
-    props.SetStationProperty(props.propKey, index)
-  }
-
-  const nullOnChange = () => {
-    if (props.station[props.propKey] === null) {props.SetStationProperty(props.propKey, 0)}
-    if (props.station[props.propKey] !== null) {props.SetStationProperty(props.propKey, null)}
-  }
-
-  const selectedIndex: template_station[keyof template_station] = props.station[props.propKey]
-
-  return (
-    <>
-      <tr>
-        <th>支線分岐駅</th>
-        <td>
-          {typeof selectedIndex == "number" ?
-            <details>
-              <summary data-logo={selectedIndex + 1}>{props.stations[selectedIndex].name}</summary>
-              <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
-            </details>
-          :
-            <Input value={""} onChange={() => {}} disabled={true} />
-          }
-        </td>
-        {/* <td></td> */}
-        <td><Input value={props.station[props.propKey] !== null} onChange={nullOnChange}/></td>
-      </tr>
-      {/* <td>
-        
-      </td>
-      <td><Input value={props.outerTerminal[props.propertyKey] !== null} onChange={nullOnChange}/></td> */}
-    </>
-  )
-}
-
-type CustomTimetableStyleProps = {
-  station: template_station;
-  directionName: string[];
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-}
-
-function CustomTimetableStyle(props: CustomTimetableStyleProps) {
-  return (
-    <>
-      <dt>時刻表表示</dt>
-      <dd>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              {props.directionName.map((directionName: string, index: number) => (
-                <td key={index}>{directionName}</td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {(Object.keys(props.station.customTimetableStyle) as KeyOfCustomTimetableStyle[]).map((propertyKey: KeyOfCustomTimetableStyle, propertyIndex: number) => (
-              <tr className={propertyKey} key={propertyIndex}>
-                <th>
-                  {propertyKey == "arrival" && "到着"}
-                  {propertyKey == "departure" && "発車"}
-                  {propertyKey == "trainNumber" && "号数"}
-                  {propertyKey == "operationNumber" && "列車番号"}
-                  {propertyKey == "trainType" && "種別"}
-                  {propertyKey == "trainName" && "名称"}
-                </th>
-                {props.station.customTimetableStyle[propertyKey].map((arrayElement: boolean, arrayIndex: number) => (
-                  <td key={arrayIndex}>
-                    <CustomTimetableStyleInput station={props.station} PropertyKey={propertyKey} ArrayIndex={arrayIndex} SetStationProperty={props.SetStationProperty} />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </dd>
-    </>
   );
 }
 
@@ -278,8 +150,14 @@ function TrainTypePropHandler(props: TrainTypePropHandlerProps) {
     if (typeof props.trainType[props.propKey] === "string") {
       props.SetTrainTypeProperty(props.propKey, event.target.value)
     }
+    if (typeof props.trainType[props.propKey] === "number") {
+      props.SetTrainTypeProperty(props.propKey, Number(event.target.value))
+    }
     if (typeof props.trainType[props.propKey] === "boolean") {
       props.SetTrainTypeProperty(props.propKey, event.target.checked)
+    }
+    if (isRgb(props.trainType[props.propKey])) {
+      props.SetTrainTypeProperty(props.propKey, HexConverter(event.target.value))
     }
   })
 

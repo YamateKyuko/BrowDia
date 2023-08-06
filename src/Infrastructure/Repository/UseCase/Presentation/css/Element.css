@@ -140,8 +140,8 @@ main {
                     width: 100%;
                   }
                 }
-                & :first-child {padding-left: 0;}
-                & :last-child {padding-right: 0;}
+                > :first-child {padding-left: 0;}
+                > :last-child {padding-right: 0;}
               }
             }
             & :first-child {> :first-child {& th, td {padding-top: 0;}}}
@@ -167,7 +167,7 @@ main {
   box-sizing: border-box;
   font-size: 1em;
   line-height: 1em;
-  z-index: 1;
+  /* z-index: 1; */
   background-color: white;
 }
 
@@ -243,6 +243,7 @@ input[type=checkbox], input[type=radio] {display: none;}
 
 .checkbox {
   position: relative;
+  z-index: 0;
   &::after {
     position: absolute;
     content: "";
@@ -262,9 +263,6 @@ fieldset {
   padding: 0;
   border: none;
   margin: 0;
-  /* & legend {
-    display: none;
-  } */
   & label:has(input:checked) {
     background-color: black;
     color: white;
@@ -278,7 +276,6 @@ fieldset {
 }
 
 details {
-  padding-left: 1.25rem;
   position: relative;
   &::before {
     position: absolute;
@@ -290,26 +287,24 @@ details {
     border-left-color: black;
   }
   & summary {
-    padding-left: calc(2.75rem - 1px) !important;
+    padding-left: calc(3rem - 1px) !important;
     list-style-type: none;
     &::marker {list-style-type: none;}
     &::before {
-      top: -0.125rem;
+      top: -2px;
       left: calc(1.25rem - 1px) !important;
     }
   }
-  & *:not(summary) {
-    display: none;
-  }
+  > *:not(summary) {overflow-y: scroll;}
   & fieldset {
-    position: relative;
-    top: 1px;
+    position: absolute;
+    top: calc(1.25rem - 2px);
     left: -1px;
-    height: 7.5rem;
-    width: calc(12rem - 2px);
+    width: 12rem;
+    max-height: calc(8rem - 2px);
     border: 1px solid black;
     background-color: white;
-    box-sizing: content-box;
+    box-sizing: border-box !important;
     z-index: 5;
   }
 }
@@ -340,4 +335,27 @@ ul, ol {
 
 .caption {
   font-size: 0.5em;
+}
+
+*:has(input) {
+  position: relative;
+}
+
+input {position: relative;}
+
+.gray {
+  /* background-color: #000 !important; */
+}
+
+.gray::after {
+  content: "あああ" !important;
+  /* position: absolute;
+  top: 0;
+  left: -10rem;
+  width: 1rem;
+  height: 1rem;
+  color: #808080;
+  z-index: 3;
+  background-color: #000; */
+  /* opacity: 1; */
 }

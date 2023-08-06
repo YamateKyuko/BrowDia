@@ -15,7 +15,7 @@ import { Input } from "./ElementsPresentation"
 import DisplayPropertyRepository from "../../DisplayPropertyRepository";
 import TimetableFont from "./SetTimetableFontPresentation";
 import NamedFont from "./SetNamedFontPresentation";
-import { isRgb } from "./SharedFunction"
+import { isRgb, HexConverter } from "./SharedFunction"
 
 type ComponentProps = {
   displayProperty: template_displayProperty;
@@ -81,12 +81,6 @@ function Component(props: ComponentProps) {
       </section>
     </article>
   );
-}
-
-function HexConverter(value: string): template_rgb {
-  if (value.slice(0, 1) == "#") {value = value.slice(1)}
-
-	return {r: parseInt(value.slice(0, 2), 16), g: parseInt(value.slice(2, 4), 16), b: parseInt(value.slice(4, 6), 16)}
 }
 
 type StationElementshandlerProps = {

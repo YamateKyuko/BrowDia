@@ -6,17 +6,7 @@ export type template = {
   "fileType": string, // clowddia 0.1.0 のみ対応
   "fileTypeAppComment": string, // oudia(バージョン)
   "displayProperty": template_displayProperty, // スタイル設定 非対応
-  "railway": {
-    "name": string, // 鉄道路線系統名など
-    "directionName": string[], // 方向文字
-    "startTime": number, // ダイヤの最初にくる時刻
-    "stationInterval": number, // 駅間隔初期設定
-    "enableOperation": boolean, // ?
-    "comment": string, // 路線コメント
-    "stations": template_station[], // 駅リスト
-    "trainTypes": template_trainType[], // 種別リスト
-    "diagrams": template_diagram[] // 時刻等データ
-  }
+  "railway": template_railway
 };
 
 export type template_displayProperty = { // スタイル設定 非対応
@@ -51,10 +41,16 @@ export type template_timetableFont = {
   "italic": boolean
 }
 
-export type template_rgb = {
-  "r": number,
-  "g": number,
-  "b": number
+export type template_railway = {
+  "name": string, // 鉄道路線系統名など
+  "directionName": string[], // 方向文字
+  "startTime": number, // ダイヤの最初にくる時刻
+  "stationInterval": number, // 駅間隔初期設定
+  "enableOperation": boolean, // ?
+  "comment": string, // 路線コメント
+  "stations": template_station[], // 駅リスト
+  "trainTypes": template_trainType[], // 種別リスト
+  "diagrams": template_diagram[] // 時刻等データ
 }
 
 export type template_station = { // 駅リスト
@@ -66,7 +62,7 @@ export type template_station = { // 駅リスト
   },
   "isMain": boolean, // 主要駅判定
   "border": boolean, // ボーダーライン
-  "visibleDiagramInfo": string[], // ダイヤ列車情報
+  "visibleDiagramInfo": ("Origin" | "Anytime" | "Not")[], // ダイヤ列車情報
   "mainTrack": number[], // 本線
   "tracks": template_track[], // ホームリスト
   "outerTerminal": template_outerTerminal[] | null, // 路線外発着駅
@@ -103,23 +99,11 @@ export type template_track = { // ホームリスト
 export type template_trainType = { // 種別
   "name": string, // 名称
   "abbrName": string, // 略称
-  "textColor": { // テキスト色
-    "r": number,
-    "g": number,
-    "b": number
-  },
+  "textColor": template_rgb, // テキスト色
   "fontIndex": number, // フォント番号 未対応
-  "backgroundColor": { // 背景色
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "strokeColor": { // 線色
-    "r": number,
-    "g": number,
-    "b": number
-  },
-  "lineStyle": string, // 線のスタイル
+  "backgroundColor": template_rgb, // 背景色
+  "strokeColor": template_rgb, // 線色
+  "lineStyle": "Jissen" | "Hasen" | "Tensen" | "Ittensasen", // 線のスタイル
   "isBoldLine": boolean, // 太線
   "stopMark": boolean, // ?
   "parentIndex": null // ?
@@ -139,13 +123,15 @@ export type template_train = { // 列車
   "number": string, // 列車番号
   "name": string, // 列車名
   "count": string, // 列車番号
-  "timetable": {
-    "firstStationIndex": number, // 最初の駅番号
-    "terminalStationIndex": number, // 最後の駅番号
-    "_data": (null | template__data)[] // 駅毎発着刻等リスト
-  },
+  "timetable": template_timetable,
   "note": null | string, // 情報
   "operations": null | string // 時刻表備考
+}
+
+export type template_timetable = {
+  "firstStationIndex": number, // 最初の駅番号
+  "terminalStationIndex": number, // 最後の駅番号
+  "_data": (null | template__data)[] // 駅毎発着刻等リスト
 }
 
 export type template__data = {
@@ -155,15 +141,30 @@ export type template__data = {
   "track": number // 番線
 }
 
+export type template_rgb = {
+  "r": number,
+  "g": number,
+  "b": number
+}
 
+// 自己定義
 
+export type template_listStyle = {
+  name: string;
+  value: template_trainType["lineStyle"],
+  strokeDasharray: string
+}
 
-
-
-
-
-
-
-type LoadContextInterface = {readonly Load: any;}
-export const LoadContext = React.createContext<LoadContextInterface | undefined>(undefined);
-
+export type entitiesList =
+template |
+template_displayProperty |
+template_railway |
+template_station |
+template_outerTerminal |
+template_track |
+template_trainType |
+template_diagram |
+template_train |
+template_timetable |
+template__data |
+template_rgb

@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 
+import SetPresentation from './SetPresentation'
 import SetDisplayPresentation from './SetDisplayPropertyPresentation'
 import SetStationPresentation from './SetStationPresentation';
 import SetTrainTypePresentation from './SetTrainTypePresentation'
@@ -32,7 +33,7 @@ function Setting() {
   const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().SettingIndex);
 
   const settingIndexArray: settingIndexArrayType[] = [
-    {src: General, component: <SetStationPresentation />},
+    {src: General, component: <SetPresentation />},
     {src: Style, component: <SetDisplayPresentation />},
     {src: Station, component: <SetStationPresentation />},
     {src: Type, component: <SetTrainTypePresentation />},

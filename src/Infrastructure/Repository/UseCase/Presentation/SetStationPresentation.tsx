@@ -64,8 +64,14 @@ function Component(props: ComponentProps) {
                     <tr><th></th><td>駅</td><td>有無</td></tr>
                   </thead>
                   <tbody>
-                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
-                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
+                    <tr>
+                      <th>支線分岐駅</th>
+                      <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
+                    </tr>
+                    <tr>
+                      <th>環状線開始駅</th>
+                      <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
+                    </tr>
                   </tbody>
                 </table>
               </li>
@@ -131,25 +137,17 @@ function CanNullStationPropStationIndexHandler(props: CanNullStationPropStationI
 
   return (
     <>
-      <tr>
-        <th>支線分岐駅</th>
-        <td>
-          {typeof selectedIndex == "number" ?
-            <details>
-              <summary data-logo={selectedIndex + 1}>{props.stations[selectedIndex].name}</summary>
-              <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
-            </details>
-          :
-            <Input value={""} onChange={() => {}} disabled={true} />
-          }
-        </td>
-        {/* <td></td> */}
-        <td><Input value={props.station[props.propKey] !== null} onChange={nullOnChange}/></td>
-      </tr>
-      {/* <td>
-        
+      <td>
+        {typeof selectedIndex == "number" ?
+          <details>
+            <summary data-logo={selectedIndex + 1}>{props.stations[selectedIndex].name}</summary>
+            <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
+          </details>
+        :
+          <Input value={""} onChange={() => {}} disabled={true} />
+        }
       </td>
-      <td><Input value={props.outerTerminal[props.propertyKey] !== null} onChange={nullOnChange}/></td> */}
+      <td><Input value={props.station[props.propKey] !== null} onChange={nullOnChange}/></td>
     </>
   )
 }

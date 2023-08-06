@@ -1,45 +1,36 @@
-import Infrastructure from "./../Infrastructure"
+import React from "react";
+import Infrastructure from "../Infrastructure"
 
-import { template, template_station } from "./UseCase/Presentation/Entity/Entity"
-
+import { template, template_displayProperty, template_station } from "./UseCase/Presentation/Entity/Entity"
 import {
   RecoilRoot,
   atom,
   selector,
   useRecoilState,
   useRecoilValue,
-  DefaultValue
+  DefaultValue,
+  selectorFamily,
+  atomFamily,
+  useSetRecoilState,
+  RecoilState
 } from 'recoil';
 
-type Find = (index: number) => template_station
-type Change = (key: keyof template, property: string) => void;
-// template_station
+const DataRepository = () => {
+  const Data = selector<template>({
+    key: "Data",
+    get: ({get}) => {
+      const Data: template = get(Infrastructure().Atom)
+      return Data;
+    },
+    set: ({set}, newValue) => {
+      set(
+        Infrastructure().Atom,
+        newValue
+      )
+    },
+  });
 
-function DataRepository() {
-
-  
-
-  // const find: Find = (index: number) => {
-
-
-    
-  //   const station: template_station =  Infrastructure().Data.railway.stations[index]
-  //   return station
-  // }
-
-  const add = () => {
-    
-  }
-  
-  // const change: Change = (key, property) => {
-  //   const a = Infrastructure().setData((prevState: template) => ({...prevState, key: property}))
-  //   console.log(a)
-  // }
-  const del = () => {
-
-  }
-
-  // return {find, add, change, del};
+  return {Data}
 }
 
 export default DataRepository;
