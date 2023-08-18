@@ -168,3 +168,12 @@ template_train |
 template_timetable |
 template__data |
 template_rgb
+
+export type template_eventList = {
+  onChange?: React.ChangeEventHandler<HTMLInputElement>, 
+  onBlur?: React.FocusEventHandler<HTMLInputElement>,
+  onFocus?: React.FocusEventHandler<HTMLInputElement>,
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>,
+  onSelect?: React.ReactEventHandler<HTMLInputElement>,
+  onMouseDown?: React.MouseEventHandler<HTMLInputElement>
+}

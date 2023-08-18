@@ -24,6 +24,10 @@ header {
       height: 100%;
       & li {
         margin: 0;
+        & img {
+          fill: #ffffff !important;
+          color: #ffffff !important;
+        }
       }
       & li:has(h1) {
         width: 100%;
@@ -56,8 +60,9 @@ main {
         margin: auto 0;
         & label:has(input:checked) {
           background-color: #ffffff;
-        } 
+        }
         & img {
+          height: 100%;
           width: 2rem;
           fill: #000000;
           margin: auto;
@@ -117,6 +122,7 @@ main {
           & input {
             width: 100%;
           }
+          
         }
         & dd {
           margin: 0 0 1rem 1.5rem;
@@ -158,10 +164,10 @@ main {
 }
 
 /* 枠 */
-[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details {
+[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, textarea {
   display: block;
   left: 0;
-  height: calc(1em + 0.25rem);
+  
   padding: calc(0.125rem - 1px);
   border: 1px solid black;
   box-sizing: border-box;
@@ -169,6 +175,16 @@ main {
   line-height: 1em;
   /* z-index: 1; */
   background-color: white;
+  
+}
+
+[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details {
+  height: calc(1em + 0.25rem);
+}
+
+textarea {
+  height: calc(5em + 0.25rem);
+  resize: none;
 }
 
 input[type="color"] {
@@ -203,7 +219,7 @@ input::-webkit-color-swatch {
 }
 
 /* 入力欄 */
-:where(input[type="text"], input[type="number"], input[type="color"], select, details) {
+:where(input[type="text"], input[type="number"], input[type="color"], select, details, textarea) {
   outline: none;
   width: 12rem;
 }
@@ -217,13 +233,20 @@ button {
 /* 活性 */
 button:active,
 input:focus,
+textarea:focus,
 :where(.checkbox, .radio):has(:where(input[type=checkbox], input[type=radio]):checked) {
   background-color: black;
   color: white;
 }
 
 /* 非活性時ホバー */
-button:hover, input[type=text]:hover, input[type=number]:hover, .checkbox:hover {
+:where(
+  button,
+  input[type=text],
+  input[type=number],
+  textarea,
+  .checkbox
+):hover {
   background-color: #c0c0c0;
 }
 
@@ -323,6 +346,13 @@ ul, ol {
     justify-content: space-between;
     line-height: 1.25em;
     margin: 0 0 0.25rem 0;
+
+    & textarea {
+      width: 100%;
+    }
+  }
+  & li:has(textarea) {
+    flex-direction: column;
   }
 }
 
@@ -339,23 +369,4 @@ ul, ol {
 
 *:has(input) {
   position: relative;
-}
-
-input {position: relative;}
-
-.gray {
-  /* background-color: #000 !important; */
-}
-
-.gray::after {
-  content: "あああ" !important;
-  /* position: absolute;
-  top: 0;
-  left: -10rem;
-  width: 1rem;
-  height: 1rem;
-  color: #808080;
-  z-index: 3;
-  background-color: #000; */
-  /* opacity: 1; */
 }

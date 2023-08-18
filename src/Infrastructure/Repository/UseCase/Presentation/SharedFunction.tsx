@@ -27,7 +27,13 @@ export function TimeConverter(value: number): string {
 }
 
 export function SecondsConverter(value: string): number {
+  for (let i = 0; i <= 9; i += 3) {
+    value.substring(i, i + 2)
+  }
+  
+  
   const values = value.split("-")
-  const time: number = Number(values[0].trim()) * 3600 + Number(values[1]) * 60 + Number(values[2])
-	return (time)
+  const time: number = Number(values[0].trim()) * 3600 % 86400 + Number(values[1].trim()) * 60 + Number(values[2].trim())
+  if (isNaN(time)) {return 0}
+	return time
 }

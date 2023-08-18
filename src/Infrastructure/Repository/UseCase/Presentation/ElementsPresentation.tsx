@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList } from "./Entity/Entity"
+import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList } from "./Entity/Entity"
 import { isStation, isRgb, RgbConverter, isTimetableFont, TimeConverter } from "./SharedFunction";
 
 type InputProps = {
@@ -18,6 +18,7 @@ type InputProps = {
   textArea?: boolean;
   time?: boolean;
   dataGray?: string;
+  eventList?: template_eventList;
 }
 
 export function Input(props: InputProps) {
@@ -25,11 +26,8 @@ export function Input(props: InputProps) {
     <>
       {typeof props.value === "string" &&
         (!props.textArea
-          ? (props.onFocus
-            ? (props.dataGray
-              ? <input type="text" className={props.className + " gray"} value={props.value} onChange={props.onChange} onFocus={props.onFocus} disabled={props.disabled} data-gray={props.dataGray} />
-              : <input type="text" className={props.className} value={props.value} onChange={props.onChange} onFocus={props.onFocus} disabled={props.disabled} />
-            )
+          ? (props.eventList
+            ? <input type="text" {...props.eventList} className={props.className} value={props.value} disabled={props.disabled} data-gray={props.dataGray} />
             : <input type="text" className={props.className} value={props.value} onChange={props.onChange} disabled={props.disabled} />
           )
           : <textarea className={props.className} onChange={props.onChange} disabled={props.disabled}>{props.value}</textarea>
