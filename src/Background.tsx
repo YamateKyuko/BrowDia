@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import SetStationPresentation from './Infrastructure/Repository/UseCase/Presentation/Settings/SetStationPresentation';
+import SetStationPresentation from './Infrastructure/Repository/UseCase/Presentation/SetStationPresentation';
 
 import Infrastructure from './Infrastructure/Infrastructure';
 
@@ -12,8 +12,9 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-import Header from './Infrastructure/Repository/UseCase/Presentation/Settings/HeaderPresentation';
-import Setting from './Infrastructure/Repository/UseCase/Presentation/Settings/SettingPresentation';
+import Header from './Infrastructure/Repository/UseCase/Presentation/HeaderPresentation';
+import Setting from './Infrastructure/Repository/UseCase/Presentation/SettingPresentation';
+import Home from './Infrastructure/Repository/UseCase/Presentation/home';
 
 function Background() {
   const PageIndex = useRecoilValue<number>(Infrastructure().PageIndex);
@@ -21,7 +22,7 @@ function Background() {
   return (
     <>
       <Header />
-      {PageIndex == 0 && <Setting />}
+      {PageIndex == 0 && <Home />}
     </>
   );
 }

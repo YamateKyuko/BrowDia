@@ -20,12 +20,22 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-import { template } from './Entity/Entity';
+
+import { template , indexArrayType } from './Entity/Entity';
 
 function Header() {
   const [PageIndex, SetPageIndex] = useRecoilState<number>(Infrastructure().PageIndex);
 
   const Atom = useRecoilValue<template>(Infrastructure().Atom)
+
+  const settingIndexArray: indexArrayType[] = [
+    {src: BrowDia, component: <></>},
+    {src: Dia, component: <></>},
+    {src: Timetable, component: <></>},
+    {src: StationTimetable, component: <></>},
+    {src: Atom.railway.name, component: <></>},
+    {src: Save, component: <></>},
+  ]
 
   return (
     <header>
@@ -47,7 +57,6 @@ function Header() {
 type ImageInputProps = {
   src: string;
   alt: string;
-  
 }
 
 function ImageInput(props: ImageInputProps) {

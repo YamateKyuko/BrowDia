@@ -177,3 +177,8 @@ export type template_eventList = {
   onSelect?: React.ReactEventHandler<HTMLInputElement>,
   onMouseDown?: React.MouseEventHandler<HTMLInputElement>
 }
+
+export type indexArrayType = {
+  src: string;
+  component: JSX.Element;
+}

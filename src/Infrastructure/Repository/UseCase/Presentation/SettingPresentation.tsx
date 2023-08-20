@@ -21,18 +21,15 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-import { template } from './Entity/Entity';
+import { template , indexArrayType } from './Entity/Entity';
 import { Input } from "./ElementsPresentation"
 
-type settingIndexArrayType = {
-  src: string;
-  component: JSX.Element;
-}
+
 
 function Setting() {
   const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().SettingIndex);
 
-  const settingIndexArray: settingIndexArrayType[] = [
+  const settingIndexArray: indexArrayType[] = [
     {src: General, component: <SetPresentation />},
     {src: Style, component: <SetDisplayPresentation />},
     {src: Station, component: <SetStationPresentation />},
@@ -43,7 +40,7 @@ function Setting() {
     <main>
       <nav>
         <ul>
-          {settingIndexArray.map((value: settingIndexArrayType, index: number) => (
+          {settingIndexArray.map((value: indexArrayType, index: number) => (
             <li key={index}><SettingIndexInputHandler SettingIndex={SettingIndex} SetSettingIndex={SetSettingIndex} label={<img src={value.src} />} index={index} /></li>
           ))}
         </ul>
