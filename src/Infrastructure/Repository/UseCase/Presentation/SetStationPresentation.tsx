@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_track } from "./Entity/Entity"
+import { template, template_station, template_track } from './Entity/Entity'
 
 import {
   useRecoilState,
@@ -11,12 +11,12 @@ import {
   SetterOrUpdater
 } from 'recoil';
 
-import Infrastructure from "../../../Infrastructure";
-import StationRepository from "../../StationRepository";
-import DirectionNameRepository from "../../DirectionRepositry";
-import { Input, IndexListbox } from "./ElementsPresentation"
-import Tracks from "./TracksPresentation";
-import OuterTerminal from "./SetOuterTerminalPresentation";
+import Infrastructure from '../../../Infrastructure';
+import StationRepository from '../../StationRepository';
+import DirectionNameRepository from '../../DirectionRepositry';
+import { Input, IndexListbox } from './ElementsPresentation'
+import Tracks from './TracksPresentation';
+import OuterTerminal from './SetOuterTerminalPresentation';
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 

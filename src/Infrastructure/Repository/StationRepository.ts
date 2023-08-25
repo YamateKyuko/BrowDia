@@ -1,7 +1,7 @@
-import React from "react";
-import Infrastructure from "./../Infrastructure"
+import React from 'react';
+import Infrastructure from './../Infrastructure'
 
-import { template, template_station } from "./UseCase/Presentation/Entity/Entity"
+import { template, template_station } from './UseCase/Presentation/Entity/Entity'
 import {
   RecoilRoot,
   atom,

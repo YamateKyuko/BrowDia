@@ -1,6 +1,6 @@
-import React from "react";
-import JSON from "../Data.json"
-import { template } from "./Repository/UseCase/Presentation/Entity/Entity";
+import React from 'react';
+import JSON from '../Data.json'
+import { template } from './Repository/UseCase/Presentation/Entity/Entity';
 import {
   RecoilRoot,
   atom,

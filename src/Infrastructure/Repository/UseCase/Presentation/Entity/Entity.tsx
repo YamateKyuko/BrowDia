@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 // 型宣言ファイル
 // ここの型宣言の解釈が間違っていましたらご一報ください。
 
@@ -180,5 +180,8 @@ export type template_eventList = {
 
 export type indexArrayType = {
   src: string;
+  alt: string;
   component: JSX.Element;
+  str?: boolean;
+
 }

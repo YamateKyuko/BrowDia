@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_displayProperty, template_outerTerminal, template_timetableFont } from "./Entity/Entity"
+import { template, template_displayProperty, template_outerTerminal, template_timetableFont } from './Entity/Entity'
 
 import {
   RecoilRoot,
@@ -16,10 +16,10 @@ import {
   SetterOrUpdater
 } from 'recoil';
 
-import Infrastructure from "../../../Infrastructure";
-import StationRepository from "../../StationRepository";
-import DirectionNameRepository from "../../DirectionRepositry";
-import { Input } from "./ElementsPresentation"
+import Infrastructure from '../../../Infrastructure';
+import StationRepository from '../../StationRepository';
+import DirectionNameRepository from '../../DirectionRepositry';
+import { Input } from './ElementsPresentation'
 
 type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 

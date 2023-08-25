@@ -1,4 +1,4 @@
-import { template_station, template_track, template_timetableFont, template_rgb, template_displayProperty, template_trainType } from "./Entity/Entity";
+import { template_station, template_track, template_timetableFont, template_rgb, template_displayProperty, template_trainType } from './Entity/Entity';
 
 export function isStation(value: any): value is template_station {
   return typeof value == "object" && "customTimetableStyle" in value;

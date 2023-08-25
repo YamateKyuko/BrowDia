@@ -1,7 +1,7 @@
-import React from "react";
-import Infrastructure from "../Infrastructure"
+import React from 'react';
+import Infrastructure from '../Infrastructure'
 
-import { template, template_displayProperty, template_railway, template_station } from "./UseCase/Presentation/Entity/Entity"
+import { template, template_displayProperty, template_railway, template_station } from './UseCase/Presentation/Entity/Entity'
 import {
   RecoilRoot,
   atom,
@@ -14,7 +14,7 @@ import {
   useSetRecoilState,
   RecoilState
 } from 'recoil';
-import DataRepository from "./DataRepository";
+import DataRepository from './DataRepository';
 
 const RailwayRepository = () => {
   const Railway = selector<template_railway>({

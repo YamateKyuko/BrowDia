@@ -26,8 +26,7 @@ header {
         margin: 0;
         fill: #fff;
         & img {
-          fill: #ffffff !important;
-          color: #ffffff !important;
+          height: 100%;
         }
       }
       & li:has(h1) {
@@ -46,6 +45,7 @@ header {
     }
   }
 }
+
 
 main {
   & nav {
@@ -162,6 +162,11 @@ main {
   & article:has(nav) > section {
     width: calc(100% - 18rem);
   }
+}
+
+input[type="img"] {
+  background-color: transparent;
+  border: none;
 }
 
 /* 枠 */

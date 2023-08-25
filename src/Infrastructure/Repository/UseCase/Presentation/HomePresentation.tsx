@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template, template_station, template_trainType, template_listStyle } from "./Entity/Entity";
-import BrowDia from 'img/BrowDia.svg';
+import { template, template_station, template_trainType, template_listStyle } from './Entity/Entity';
+import BrowDia from './img/BrowDia.svg';
 
 import {
   RecoilRoot,
@@ -17,12 +17,12 @@ import {
   SetterOrUpdater
 } from 'recoil';
 
-import Infrastructure from "../../../Infrastructure";
-import DirectionNameRepository from "../../DirectionRepositry";
-import { Input, IndexListbox } from "./ElementsPresentation"
+import Infrastructure from '../../../Infrastructure';
+import DirectionNameRepository from '../../DirectionRepositry';
+import { Input, IndexListbox } from './ElementsPresentation';
 
-import { isRgb, HexConverter } from "./SharedFunction";
-import TrainTypeRepository from "../../TrainTypeRepository";
+import { isRgb, HexConverter } from './SharedFunction';
+import TrainTypeRepository from '../../TrainTypeRepository';
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
@@ -52,35 +52,22 @@ function Component(props: ComponentProps) {
   return (
     <article>
       <section>
+      <img src={BrowDia} alt="BrowDia" />
         <dl>
           <dt>
-            <img src={BrowDia} alt="BrowDia" />
+            
           </dt>
           <dd>
             <ul>
               <li>
-                略称
-                
+                BrowDia をご利用頂き誠に有難う御座います。
               </li>
               <li>
-                フォント番号
-                
+                ブラウザでダイヤの制作閲覧ができるよう現在鋭意開発中です。
               </li>
               <li>
-                文字色
-                
-              </li>
-              <li>
-                線色
-                
-              </li>
-              <li>
-                背景色
-                
-              </li>
-              <li>
-                線のスタイル
-                
+                Github
+                <a href="https://github.com/swallow3/BrowDia">BrowDia</a>
               </li>
             </ul>
           </dd>

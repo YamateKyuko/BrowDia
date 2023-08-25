@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { template_station, template_outerTerminal } from "./Entity/Entity"
+import { template_station, template_outerTerminal } from './Entity/Entity'
 
-import { Input } from "./ElementsPresentation"
+import { Input } from './ElementsPresentation'
 
 type TracksComponentProps = {
   outerTerminal: template_outerTerminal[] | null;

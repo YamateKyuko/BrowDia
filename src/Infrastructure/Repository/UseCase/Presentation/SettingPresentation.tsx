@@ -22,7 +22,7 @@ import {
   useRecoilValue,
 } from 'recoil';
 import { template , indexArrayType } from './Entity/Entity';
-import { Input } from "./ElementsPresentation"
+import { Input } from './ElementsPresentation'
 
 
 
@@ -30,10 +30,10 @@ function Setting() {
   const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().SettingIndex);
 
   const settingIndexArray: indexArrayType[] = [
-    {src: General, component: <SetPresentation />},
-    {src: Style, component: <SetDisplayPresentation />},
-    {src: Station, component: <SetStationPresentation />},
-    {src: Type, component: <SetTrainTypePresentation />},
+    {src: General, alt: "設定", component: <SetPresentation />},
+    {src: Style, alt: "スタイル", component: <SetDisplayPresentation />},
+    {src: Station, alt: "-駅-", component: <SetStationPresentation />},
+    {src: Type, alt: "種別", component: <SetTrainTypePresentation />},
   ]
 
   return (

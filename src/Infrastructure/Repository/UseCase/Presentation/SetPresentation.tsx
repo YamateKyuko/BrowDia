@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../../../../App.css';
 import './css/Element.css';
 import './css/Set.css';
-import { entitiesList, template, template_displayProperty, template_eventList, template_railway, template_rgb } from "./Entity/Entity"
+import { entitiesList, template, template_displayProperty, template_eventList, template_railway, template_rgb } from './Entity/Entity'
 
 import {
   useRecoilState,
@@ -11,11 +11,11 @@ import {
   useSetRecoilState
 } from 'recoil';
 
-import DirectionNameRepository from "../../DirectionRepositry";
-import { Input } from "./ElementsPresentation"
-import DataRepository from "../../DataRepository";
-import RailwayRepository from "../../SetRepository";
-import { SecondsConverter, TimeConverter } from "./SharedFunction";
+import DirectionNameRepository from '../../DirectionRepositry';
+import { Input } from './ElementsPresentation'
+import DataRepository from '../../DataRepository';
+import RailwayRepository from '../../SetRepository';
+import { SecondsConverter, TimeConverter } from './SharedFunction';
 
 type ComponentProps = {
   data: template;
