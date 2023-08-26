@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import './../../../../App.css';
-import './css/Element.css';
-import './css/Set.css';
-import { template, template_station, template_track } from './Entity/Entity'
+import './../../css/Element.css';
+import './../../css/Set.css';
+import { template, template_station, template_track } from './../../Entity/Entity'
 
 import {
   useRecoilState,
@@ -11,10 +10,10 @@ import {
   SetterOrUpdater
 } from 'recoil';
 
-import Infrastructure from '../../../Infrastructure';
-import StationRepository from '../../StationRepository';
-import DirectionNameRepository from '../../DirectionRepositry';
-import { Input, IndexListbox } from './ElementsPresentation'
+import Infrastructure from './../../Infrastructure/Infrastructure';
+import StationRepository from './../../Infrastructure/Repository/StationRepository';
+import DirectionNameRepository from './../../Infrastructure/Repository/DirectionRepositry';
+import { Input, IndexListbox } from './../../Presentation/ElementsPresentation'
 import Tracks from './TracksPresentation';
 import OuterTerminal from './SetOuterTerminalPresentation';
 

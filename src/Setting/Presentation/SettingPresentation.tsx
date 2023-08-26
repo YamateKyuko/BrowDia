@@ -6,12 +6,12 @@ import SetDisplayPresentation from './SetDisplayPropertyPresentation'
 import SetStationPresentation from './SetStationPresentation';
 import SetTrainTypePresentation from './SetTrainTypePresentation'
 
-import Infrastructure from '../../../Infrastructure';
+import Infrastructure from './../../Infrastructure/Infrastructure';
 
-import General from './img/General.svg';
-import Style from './img/Style.svg';
-import Station from './img/Station.svg';
-import Type from './img/Type.svg';
+import General from './../../img/General.svg';
+import Style from './../../img/Style.svg';
+import Station from './../../img/Station.svg';
+import Type from './../../img/Type.svg';
 
 import {
   RecoilRoot,
@@ -21,8 +21,8 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-import { template , indexArrayType } from './Entity/Entity';
-import { Input } from './ElementsPresentation'
+import { template , indexArrayType } from './../../Entity/Entity';
+import { Input } from './../../Presentation/ElementsPresentation'
 
 
 

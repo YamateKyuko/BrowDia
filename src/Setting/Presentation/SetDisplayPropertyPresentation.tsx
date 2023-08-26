@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import './../../../../App.css';
-import './css/Element.css';
-import './css/Set.css';
-import { template_displayProperty, template_rgb } from './Entity/Entity';
+import './../../css/Element.css';
+import './../../css/Set.css';
+import { template_displayProperty, template_rgb } from '../../Entity/Entity';
 
 import {
   useRecoilState,
   useRecoilValue
 } from 'recoil';
 
-import DirectionNameRepository from '../../DirectionRepositry';
-import { Input } from './ElementsPresentation'
-import DisplayPropertyRepository from '../../DisplayPropertyRepository';
+import DirectionNameRepository from '../../Infrastructure/Repository/DirectionRepositry';
+import { Input } from '../../Presentation/ElementsPresentation'
+import DisplayPropertyRepository from '../../Infrastructure/Repository/DisplayPropertyRepository';
 import TimetableFont from './SetTimetableFontPresentation';
 import NamedFont from './SetNamedFontPresentation';
-import { isRgb, HexConverter } from './SharedFunction'
+import { isRgb, HexConverter } from '../../Presentation/SharedFunction'
 
 type ComponentProps = {
   displayProperty: template_displayProperty;

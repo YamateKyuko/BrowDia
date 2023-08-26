@@ -1,10 +1,9 @@
 import React from 'react';
-import './../../../../App.css';
-import './css/Element.css';
-import './css/Set.css';
-import { template_station, template_track } from './Entity/Entity';
+import './../../css/Element.css';
+import './../../css/Set.css';
+import { template_station, template_track } from '../../Entity/Entity';
 
-import { Input } from './ElementsPresentation';
+import { Input } from '../../Presentation/ElementsPresentation';
 
 type TracksComponentProps = {
   tracks: template_station["tracks"];

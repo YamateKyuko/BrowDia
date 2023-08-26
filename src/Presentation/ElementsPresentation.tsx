@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import './../../../../App.css';
-import './css/Element.css';
-import './css/Set.css';
-import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList } from './Entity/Entity';
+import './../css/Element.css';
+import './../css/Set.css';
+import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList } from '../Entity/Entity';
 import { isStation, isRgb, RgbConverter, isTimetableFont, TimeConverter } from './SharedFunction';
 
 type InputProps = {

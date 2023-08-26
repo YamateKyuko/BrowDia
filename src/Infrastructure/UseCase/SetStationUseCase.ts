@@ -1,10 +1,10 @@
 import React from 'react';
-import StationRepository from '../StationRepository';
-import DirectionRepository from '../DirectionRepositry';
-import { template, template_station } from './Presentation/Entity/Entity'
-import Presentation from './Presentation/SetStationPresentation'
+import StationRepository from '../Repository/StationRepository';
+import DirectionRepository from '../Repository/DirectionRepositry';
+import { template, template_station } from '../../Entity/Entity'
+import Presentation from './../../Setting/Presentation/SetStationPresentation'
 import { selector, selectorFamily, DefaultValue } from 'recoil';
-import Infrastructure from '../../Infrastructure';
+import Infrastructure from '../Infrastructure';
 
 type BrunchOrderType = {
   isMain: boolean;

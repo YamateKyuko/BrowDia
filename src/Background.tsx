@@ -1,8 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import SetStationPresentation from './SetStationPresentation';
 
-import Infrastructure from '../../../Infrastructure';
+import Infrastructure from './Infrastructure/Infrastructure';
 
 import { indexArrayType , template } from './Entity/Entity';
 
@@ -22,10 +20,9 @@ import {
   SetterOrUpdater,
 } from 'recoil';
 
-// import Header from './HeaderPresentation';
-import Setting from './SettingPresentation';
-import Home from './HomePresentation';
-import { Input } from './ElementsPresentation';
+import Setting from './Setting/Presentation/SettingPresentation';
+import Home from './Home/Repository/HomePresentation';
+import { Input } from './Presentation/ElementsPresentation';
 
 function Background() {
   const [pageIndex, SetPageIndex] = useRecoilState<number>(Infrastructure().PageIndex);
