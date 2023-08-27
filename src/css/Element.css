@@ -8,161 +8,174 @@
   font-family: Dia;
   appearance: none;
   transition: all .2s;
+  /* ; */
 }
 
-header {
-  height: 2rem;
-  & nav {
-    position: fixed;
-    width: 100%;
+#root {
+  height: 100vh;
+  & header {
     height: 2rem;
-    background-color: #000;
-    z-index: 2;
-    & ul {
-      display: flex;
+    & nav {
+      /* position: fixed; */
       width: 100%;
-      height: 100%;
-      & li {
-        margin: 0;
-        fill: #fff;
-        & img {
-          height: 100%;
-        }
-      }
-      & li:has(h1) {
+      height: 2rem;
+      background-color: #000;
+      z-index: 2;
+      & ul {
+        display: flex;
         width: 100%;
-        padding: 0 1rem;
-        & h1 {
-          width: 100%;
+        height: 100%;
+        & li {
           margin: 0;
-          font-size: 1rem;
-          line-height: 2.5rem;
-          overflow: hidden;
-          text-overflow: clip;
-          color: white;
+          fill: #fff;
+          & img {
+            height: 100%;
+          }
+        }
+        & li:has(h1) {
+          width: 100%;
+          padding: 0 1rem;
+          & h1 {
+            width: 100%;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 2.5rem;
+            overflow: hidden;
+            text-overflow: clip;
+            color: white;
+          }
         }
       }
     }
   }
-}
-
-
-main {
-  & nav {
-    height: 1.25rem;
-    & ul {
-      position: fixed;
+  & main {
+    > img {
+      background-color: #000;
+    }
+    & nav {
+      height: 1.25rem;
+      & ul {
+        display: flex;
+        width: 100%;
+        height: 1.25rem;
+        background-color: #808080;
+        z-index: 2;
+        & li {
+          margin: auto 0;
+          & label:has(input:checked) {
+            background-color: #ffffff;
+          }
+          & img {
+            height: 100%;
+            width: 2rem;
+            margin: auto;
+          }
+        }
+        &li:has(img) {
+          background-color: #808080;
+        }
+        
+      }
+    }
+    & article {
+      overflow-y: scroll;
       display: flex;
       width: 100%;
-      height: 1.25rem;
-      background-color: #808080;
-      z-index: 2;
-      & li {
-        margin: auto 0;
-        & label:has(input:checked) {
-          background-color: #ffffff;
+      
+      & nav {
+        width: 16rem;
+        & fieldset {
+          position: fixed;
+          width: 16rem;
+          height: calc(100% - 3.25rem);
+          & :after {
+            position: absolute;
+            content: "";
+            top: 1.25rem;
+            left: 0.0625rem;
+            width: 1.125rem;
+            height: 0.25rem;
+            background-color: #808080;
+            z-index: 1;
+          }
+          .border {
+            &:after {
+              position: absolute;
+              content: "";
+              bottom: -0.25rem !important;
+              left: 0;
+              width: 1.25rem;
+              height: 0.125rem;
+              background-color: #000000;
+              z-index: 1;
+            }
+          }
+          .gray {
+            color: #808080;
+            &:before {
+              border-color: #808080;
+            }
+          }
         }
-        & img {
-          height: 100%;
-          width: 2rem;
-          fill: #000000;
-          margin: auto;
+      }
+      & section {
+        height: calc(100vh - 3.25rem);
+        width: calc(100% - 2rem);
+        & dl {
+          width: 100%;
+          margin: 1rem;
+          & dt {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+            & input {
+              width: 100%;
+            }
+            
+          }
+          & dd {
+            margin: 0 0 1rem 1.5rem;
+            & table {
+              width: 100%;
+              border-spacing: 0;
+              & thead {font-size: 0.5rem;} 
+              & thead, tbody, tfoot {
+                width: 100%;
+                & tr {
+                  & th, td {
+                    box-sizing: border-box;
+                    line-height: 1em;
+                    padding: 0.125rem;
+                  }
+                  & th {
+                    width: 100%;
+                    text-align: left;
+                    font-weight: normal;
+                    & * {
+                      width: 100%;
+                    }
+                  }
+                  > :first-child {padding-left: 0;}
+                  > :last-child {padding-right: 0;}
+                }
+              }
+              & :first-child {> :first-child {& th, td {padding-top: 0;}}}
+              & :last-child {> :last-child {& th, td {padding-bottom: 0;}}}
+            }
+          }
         }
       }
       
     }
-  }
-  & article {
-    display: flex;
-    width: 100%;
-    & nav {
-      width: 16rem;
-      & fieldset {
-        position: fixed;
-        width: 16rem;
-        height: calc(100% - 3.25rem);
-        & :after {
-          position: absolute;
-          content: "";
-          top: 1.25rem;
-          left: 0.0625rem;
-          width: 1.125rem;
-          height: 0.25rem;
-          background-color: #808080;
-          z-index: 1;
-        }
-        .border {
-          &:after {
-            position: absolute;
-            content: "";
-            bottom: -0.25rem !important;
-            left: 0;
-            width: 1.25rem;
-            height: 0.125rem;
-            background-color: #000000;
-            z-index: 1;
-          }
-        }
-        .gray {
-          color: #808080;
-          &:before {
-            border-color: #808080;
-          }
-        }
-      }
+    & article:has(nav) > section {
+      width: calc(100% - 18rem);
     }
-    & section {
-      width: calc(100% - 2rem);
-      & dl {
-        width: 100%;
-        margin: 1rem;
-        & dt {
-          margin: 0 0 0.5rem 0;
-          font-size: 1.5rem;
-          line-height: 1.5rem;
-          & input {
-            width: 100%;
-          }
-          
-        }
-        & dd {
-          margin: 0 0 1rem 1.5rem;
-          & table {
-            width: 100%;
-            border-spacing: 0;
-            & thead {font-size: 0.5rem;} 
-            & thead, tbody, tfoot {
-              width: 100%;
-              & tr {
-                & th, td {
-                  box-sizing: border-box;
-                  line-height: 1em;
-                  padding: 0.125rem;
-                }
-                & th {
-                  width: 100%;
-                  text-align: left;
-                  font-weight: normal;
-                  & * {
-                    width: 100%;
-                  }
-                }
-                > :first-child {padding-left: 0;}
-                > :last-child {padding-right: 0;}
-              }
-            }
-            & :first-child {> :first-child {& th, td {padding-top: 0;}}}
-            & :last-child {> :last-child {& th, td {padding-bottom: 0;}}}
-          }
-        }
-      }
-    }
-    
   }
-  & article:has(nav) > section {
-    width: calc(100% - 18rem);
-  }
-}
+} 
+
+
+
+
 
 input[type="img"] {
   background-color: transparent;

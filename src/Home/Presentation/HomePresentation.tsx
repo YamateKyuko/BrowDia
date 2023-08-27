@@ -49,30 +49,33 @@ function Component(props: ComponentProps) {
   }
 
   return (
-    <article>
-      <section>
+    <main>
       <img src={BrowDia} alt="BrowDia" />
-        <dl>
-          <dt>
-            
-          </dt>
-          <dd>
-            <ul>
-              <li>
-                BrowDia をご利用頂き誠に有難う御座います。
-              </li>
-              <li>
-                ブラウザでダイヤの制作閲覧ができるよう現在鋭意開発中です。
-              </li>
-              <li>
-                Github
-                <a href="https://github.com/swallow3/BrowDia">BrowDia</a>
-              </li>
-            </ul>
-          </dd>
-        </dl>
-      </section>
-    </article>
+      <article>
+        <section>
+        {/*  */}
+          <dl>
+            <dt>
+              
+            </dt>
+            <dd>
+              <ul>
+                <li>
+                  BrowDia をご利用頂き誠に有難う御座います。
+                </li>
+                <li>
+                  ブラウザでダイヤの制作閲覧ができるよう現在鋭意開発中です。
+                </li>
+                <li>
+                  Github
+                  <a href="https://github.com/swallow3/BrowDia">BrowDia</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+        </section>
+      </article>
+    </main>
   );
 }
 

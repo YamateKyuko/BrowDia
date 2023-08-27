@@ -122,7 +122,7 @@ export type template_train = { // 列車
   "type": number, // 種別
   "number": string, // 列車番号
   "name": string, // 列車名
-  "count": string, // 列車番号
+  "count": string, // 号数
   "timetable": template_timetable,
   "note": null | string, // 情報
   "operations": null | string // 時刻表備考
