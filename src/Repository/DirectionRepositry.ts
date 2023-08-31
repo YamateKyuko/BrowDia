@@ -1,7 +1,7 @@
 import React from 'react';
-import Infrastructure from './../Infrastructure';
+import Infrastructure from '../Infrastructure/Infrastructure';
 
-import { template, template_station } from '../../Entity/Entity';
+import { template, template_station } from '../Entity/Entity';
 
 import {
   RecoilRoot,
@@ -15,11 +15,15 @@ import {
   useSetRecoilState
 } from 'recoil';
 
+import InImg from './../img/InImg.svg';
+import OutImg from './../img/OutImg.svg';
+
 const DirectionNameRepository = () => {
   const DirectionNameSelector = selector<string[]>({
     key: "DirectionsSelector",
     get: ({get}) => {
       const Data: template = get(Infrastructure().Atom)
+
       return Data.railway.directionName;
     },
     set: ({set}, newValue) => {
@@ -34,8 +38,11 @@ const DirectionNameRepository = () => {
   const DirectionNameSelectorFamily = selectorFamily<string, number>({
     key: "StationSelectorFamily",
     get: (index: number) => ({get}) => {
-      const directionName: string[] = get(DirectionNameSelector)
-      return directionName[index];
+      const directionName: string = get(DirectionNameSelector)[index];
+      let directionImg: string = ""
+      if (directionName == "上り") {directionImg = InImg}
+      if (directionName == "上り") {directionImg = OutImg}
+      return directionName;
     },
     set: (index: number) => ({set}, newValue) => {
       set(

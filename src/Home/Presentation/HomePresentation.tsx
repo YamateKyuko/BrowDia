@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
 import { template, template_station, template_trainType, template_listStyle } from '../../Entity/Entity';
-import BrowDia from './../../img/BrowDia.svg';
+import BrowDia from './../../img/BrowDiaImg.svg';
 
 import {
   RecoilRoot,
@@ -17,11 +17,11 @@ import {
 } from 'recoil';
 
 import Infrastructure from '../../Infrastructure/Infrastructure';
-import DirectionNameRepository from '../../Infrastructure/Repository/DirectionRepositry';
+import DirectionNameRepository from '../../Repository/DirectionRepositry';
 import { Input, IndexListbox } from '../../Presentation/ElementsPresentation';
 
 import { isRgb, HexConverter } from '../../Presentation/SharedFunction';
-import TrainTypeRepository from '../../Infrastructure/Repository/TrainTypeRepository';
+import TrainTypeRepository from '../../Repository/TrainTypeRepository';
 
 type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 

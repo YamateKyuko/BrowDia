@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../css/Element.css';
 import './../css/Set.css';
-import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList } from '../Entity/Entity';
+import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList, navArray } from '../Entity/Entity';
 import { isStation, isRgb, RgbConverter, isTimetableFont, TimeConverter } from './SharedFunction';
+import { SetterOrUpdater } from 'recoil';
 
 type InputProps = {
   value: any;
@@ -109,6 +110,44 @@ function IndexListboxHandler(props: IndexListboxHandlerProps) {
 
   return (
     <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
+  )
+}
+
+type NavProps = {
+  select: number;
+  SetSelect: SetterOrUpdater<number>;
+  array: navArray[];
+}
+
+export function Nav(props: NavProps) {
+  return (
+    <nav>
+      <ul>
+        {props.array.map((value: navArray, index: number) => (
+          <NavChild index={index} select={props.select} SetSelect={props.SetSelect} value={value} key={index} />
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+type NavChildProps = {
+  index: number;
+  select: number;
+  SetSelect: SetterOrUpdater<number>;
+  value: navArray;
+}
+
+function NavChild(props: NavChildProps) {
+  const onChange: React.ChangeEventHandler<HTMLElement> = (() => {
+    props.SetSelect(props.index)
+  })
+
+  return (
+    <li>
+      <Input value={props.index == props.select} onChange={onChange} label={<img src={props.value.src} alt={props.value.alt} />} />
+    </li>
+    
   )
 }
 

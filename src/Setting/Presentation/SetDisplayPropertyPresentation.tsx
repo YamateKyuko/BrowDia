@@ -9,9 +9,9 @@ import {
   useRecoilValue
 } from 'recoil';
 
-import DirectionNameRepository from '../../Infrastructure/Repository/DirectionRepositry';
+import DirectionNameRepository from '../../Repository/DirectionRepositry';
 import { Input } from '../../Presentation/ElementsPresentation'
-import DisplayPropertyRepository from '../../Infrastructure/Repository/DisplayPropertyRepository';
+import DisplayPropertyRepository from '../../Repository/DisplayPropertyRepository';
 import TimetableFont from './SetTimetableFontPresentation';
 import NamedFont from './SetNamedFontPresentation';
 import { isRgb, HexConverter } from '../../Presentation/SharedFunction'

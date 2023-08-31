@@ -20,9 +20,8 @@ import {
 
 import Infrastructure from '../../Infrastructure/Infrastructure';
 import { Nav } from '../../Presentation/ElementsPresentation';
-
-import StationSide from './StationSidePresentation';
-import TrainSide from './TrainSidePresentation';
+import DirectionNameRepository from '../../Repository/DirectionRepositry';
+import Side from '../../Side/Presentation/StationSidePresentation';
 
 type ComponentProps = {
 }
@@ -31,24 +30,32 @@ function Component(props: ComponentProps) {
   const [sideIndex, SetSideIndex] = useRecoilState<number>(Infrastructure().sideIndex);
 
   const sideNavArray: navArray[] = [
-    {src: Station, alt: "駅", component: <StationSide />},
-    {src: In, alt: "列車", component: <TrainSide />},
+    {src: Station, alt: "", component: <></>},
+    {src: In, alt: "", component: <></>},
   ]
 
   return (
-    <main>
-      <Nav select={sideIndex} SetSelect={SetSideIndex} array={sideNavArray} />
-      <article>
-        <section>
-          {sideNavArray[sideIndex].component}
-        </section>
-      </article>
-    </main>
+    <>
+      <main>
+        <Nav select={sideIndex} SetSelect={SetSideIndex} array={sideNavArray} />
+        <article>
+          <figure>
+            <svg></svg>
+          </figure>
+        </article>
+      </main>
+      <Side />
+    </>
+    
   );
 }
 
-function Side() {
+// function Timetable
+
+function Timetable() {
   const Atom: template = useRecoilValue(Infrastructure().Atom);
+
+  const [directionName, SetDirectionName] = useRecoilState<string[]>(DirectionNameRepository().DirectionNameSelector);
 
   return (
     <Component
@@ -56,4 +63,4 @@ function Side() {
   )
 }
 
-export default Side;
+export default Timetable;

@@ -2,14 +2,14 @@ import React from 'react';
 
 import Infrastructure from '../../Infrastructure/Infrastructure';
 
-import { indexArrayType , template } from '../../Entity/Entity';
+import { navArray , template } from '../../Entity/Entity';
 
-import BrowDia from './../../img/BrowDia.svg'
-import Set from './../../img/Set.svg';
-import Timetable from './../../img/Timetable.svg'
-import StationTimetable from './../../img/StationTimetable.svg'
-import Dia from './../../img/Dia.svg';
-import Save from './../../img/Save.svg';
+import BrowDiaImg from './../../img/BrowDiaImg.svg'
+import SetImg from './../../img/SetImg.svg';
+import TimetableImg from './../../img/TimetableImg.svg'
+import StationTimetableImg from './../../img/StationTimetableImg.svg'
+import DiaImg from './../../img/DiaImg.svg';
+import SaveImg from './../../img/SaveImg.svg';
 
 import {
   RecoilRoot,
@@ -23,6 +23,7 @@ import {
 import Setting from '../../Setting/Presentation/SettingPresentation';
 import Home from '../../Home/Presentation/HomePresentation';
 import Side from '../../Side/Presentation/SidePresentation';
+import Timetable from '../../Timetable/Presentation/TimetablePresentation';
 import { Input } from '../../Presentation/ElementsPresentation';
 
 function Background() {
@@ -30,14 +31,14 @@ function Background() {
 
   const Atom = useRecoilValue<template>(Infrastructure().Atom)
 
-  const settingIndexArray: indexArrayType[] = [
-    {src: BrowDia, alt: "ﾎｰﾑ", component: <Home />},
-    {src: Set, alt: "設定", component: <Setting />},
-    {src: Dia, alt: "ﾀﾞｲﾔ", component: <Side />},
-    {src: Timetable, alt: "時刻表", component: <></>},
-    {src: StationTimetable, alt: "駅時刻表", component: <></>},
+  const settingIndexArray: navArray[] = [
+    {src: BrowDiaImg, alt: "ﾎｰﾑ", component: <Home />},
+    {src: SetImg, alt: "設定", component: <Setting />},
+    {src: DiaImg, alt: "ﾀﾞｲﾔ", component: <Side />},
+    {src: TimetableImg, alt: "時刻表", component: <Timetable />},
+    {src: StationTimetableImg, alt: "駅時刻表", component: <></>},
     {src: Atom.railway.name, alt: "", component: <></>, str: true},
-    {src: Save, alt: "保存", component: <></>},
+    {src: SaveImg, alt: "保存", component: <></>},
   ]
 
   return (
@@ -45,7 +46,7 @@ function Background() {
       <header>
         <nav>
           <ul>
-            {settingIndexArray.map((value: indexArrayType, index: number) => (
+            {settingIndexArray.map((value: navArray, index: number) => (
               <li key={index}><PageIndexInputHandler pageIndex={pageIndex} SetPageIndex={SetPageIndex} label={<img src={value.src} alt={value.alt} />} index={index} str={!!value.src} /></li>
             ))}
           </ul>

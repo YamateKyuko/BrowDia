@@ -1,7 +1,7 @@
 import React from 'react';
-import Infrastructure from '../Infrastructure';
+import Infrastructure from '../Infrastructure/Infrastructure';
 
-import { template, template_trainType } from '../../Entity/Entity';
+import { template, template_trainType } from '../Entity/Entity';
 import {
   RecoilRoot,
   atom,

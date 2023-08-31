@@ -2,7 +2,7 @@ import React from 'react';
 import StationRepository from '../../Repository/StationRepository';
 import DirectionRepository from '../../Repository/DirectionRepositry';
 import { template, template_station } from '../../Entity/Entity'
-import Presentation from '../Presentation/SetStationPresentation'
+// import Presentation from '../Presentation/SetStationPresentation'
 import { selector, selectorFamily, DefaultValue } from 'recoil';
 import Infrastructure from '../../Infrastructure/Infrastructure';
 
@@ -12,27 +12,31 @@ type BrunchOrderType = {
   Brunch: BrunchOrderType[];
 }
 
+type Timetable = {
+
+} 
+
 const SetStaionUseCase = (() => {
 
   const StaionsUseCase = selector<template_station[]>({
     key: "StationsUseCase",
     get: ({get}) => {
       const staions: template_station[] = get(StationRepository().Stations)
-      const brunchList: BrunchOrderType[] = staions.map((station: template_station, index: number) => {
-        const BrunchOrder: BrunchOrderType[] = []
-        if (station.brunchCoreStationIndex != null) {
-          for (let i: number = 0; i == index; i++) {
+      // const brunchList: BrunchOrderType[] = staions.map((station: template_station, index: number) => {
+      //   const BrunchOrder: BrunchOrderType[] = []
+      //   if (station.brunchCoreStationIndex != null) {
+      //     for (let i: number = 0; i == index; i++) {
 
-          }
-        }
+      //     }
+      //   }
 
-        return {
-          isMain: station.isMain,
-          border: station.border,
-          Brunch: BrunchOrder,
-        }
-      })
-      return staions;
+      //   return {
+      //     isMain: station.isMain,
+      //     border: station.border,
+      //     Brunch: BrunchOrder,
+      //   }
+      // })
+      // return staions;
     }
   })
 

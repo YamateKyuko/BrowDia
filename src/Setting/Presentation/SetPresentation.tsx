@@ -10,10 +10,10 @@ import {
   useSetRecoilState
 } from 'recoil';
 
-import DirectionNameRepository from './../../Infrastructure/Repository/DirectionRepositry';
+import DirectionNameRepository from '../../Repository/DirectionRepositry';
 import { Input } from './../../Presentation/ElementsPresentation'
-import DataRepository from './../../Infrastructure/Repository/DataRepository';
-import RailwayRepository from './../../Infrastructure/Repository/SetRepository';
+import DataRepository from '../../Repository/DataRepository';
+import RailwayRepository from '../../Repository/SetRepository';
 import { SecondsConverter, TimeConverter } from './../../Presentation/SharedFunction';
 
 type ComponentProps = {

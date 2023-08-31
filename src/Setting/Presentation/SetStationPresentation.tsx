@@ -11,8 +11,8 @@ import {
 } from 'recoil';
 
 import Infrastructure from './../../Infrastructure/Infrastructure';
-import StationRepository from './../../Infrastructure/Repository/StationRepository';
-import DirectionNameRepository from './../../Infrastructure/Repository/DirectionRepositry';
+import StationRepository from '../../Repository/StationRepository';
+import DirectionNameRepository from '../../Repository/DirectionRepositry';
 import { Input, IndexListbox } from './../../Presentation/ElementsPresentation'
 import Tracks from './TracksPresentation';
 import OuterTerminal from './SetOuterTerminalPresentation';

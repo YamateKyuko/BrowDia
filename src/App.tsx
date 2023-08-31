@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './logoImg.svg';
 import Background from './Background/Presentaation/BackgroundPresentation';
 
 import {

@@ -123,7 +123,7 @@ export type template_train = { // 列車
   "number": string, // 列車番号
   "name": string, // 列車名
   "count": string, // 号数
-  "timetable": template_timetable,
+  "timetable": template_timetable, // 時刻表
   "note": null | string, // 情報
   "operations": null | string // 時刻表備考
 }
@@ -178,10 +178,9 @@ export type template_eventList = {
   onMouseDown?: React.MouseEventHandler<HTMLInputElement>
 }
 
-export type indexArrayType = {
+export type navArray = {
   src: string;
   alt: string;
   component: JSX.Element;
   str?: boolean;
-
 }

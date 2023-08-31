@@ -14,14 +14,15 @@ import {
 const Infrastructure = () => {
   const Atom = atom<template>({key: "Data", default: JSON as template,})
 
-  const PageIndex = atom<number>({key: "PageIndex", default: 0,})
-  const SettingIndex = atom<number>({key: "SettingIndex", default: 0,})
+  const pageIndex = atom<number>({key: "pageIndex", default: 0,})
+  const settingIndex = atom<number>({key: "settingIndex", default: 0,})
+  const sideIndex = atom<number>({key: "sideIndex", default: 0,})
 
-  const StationIndex = atom<number>({key: "StationIndex", default: 2,})
-  const TypeIndex = atom<number>({key: "TypeIndex", default: 0,})
+  const stationIndex = atom<number>({key: "StationIndex", default: 2,})
+  const typeIndex = atom<number>({key: "TypeIndex", default: 0,})
   const ID = atom<number>({key: "ID", default: 0,})
   
-  return { Atom, PageIndex, SettingIndex, StationIndex, TrainTypeIndex: TypeIndex, ID };
+  return { Atom, PageIndex: pageIndex, SettingIndex: settingIndex, sideIndex, StationIndex: stationIndex, TrainTypeIndex: typeIndex, ID };
 }
 
 export default Infrastructure;

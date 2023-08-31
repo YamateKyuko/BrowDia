@@ -1,6 +1,6 @@
 import React from 'react';
-import StationRepository from '../../Infrastructure/Repository/StationRepository';
-import DirectionRepository from '../../Infrastructure/Repository/DirectionRepositry';
+import StationRepository from '../../Repository/StationRepository';
+import DirectionRepository from '../../Repository/DirectionRepositry';
 import { template, template_station } from '../../Entity/Entity'
 // import Presentation from '../../../Presentation/SetStationPresentation'
 import { selector, selectorFamily, DefaultValue } from 'recoil';
