@@ -179,8 +179,6 @@ export type template_eventList = {
 }
 
 export type navArray = {
-  src: string;
-  alt: string;
+  label: JSX.Element;
   component: JSX.Element;
-  str?: boolean;
 }

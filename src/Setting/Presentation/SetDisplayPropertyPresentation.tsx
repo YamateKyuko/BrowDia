@@ -24,7 +24,7 @@ type ComponentProps = {
 
 function Component(props: ComponentProps) {
   return (
-    <article>
+    <>
       <section>
         <dl>
         <dt>スタイル</dt>
@@ -78,7 +78,7 @@ function Component(props: ComponentProps) {
           </dd>
         </dl>
       </section>
-    </article>
+    </>
   );
 }
 

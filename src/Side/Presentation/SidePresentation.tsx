@@ -19,7 +19,7 @@ import {
 } from 'recoil';
 
 import Infrastructure from '../../Infrastructure/Infrastructure';
-import { Nav } from '../../Presentation/ElementsPresentation';
+import { NavMolecule } from '../../Presentation/ElementsPresentation';
 
 import StationSide from './StationSidePresentation';
 import TrainSide from './TrainSidePresentation';
@@ -31,19 +31,17 @@ function Component(props: ComponentProps) {
   const [sideIndex, SetSideIndex] = useRecoilState<number>(Infrastructure().sideIndex);
 
   const sideNavArray: navArray[] = [
-    {src: Station, alt: "駅", component: <StationSide />},
-    {src: In, alt: "列車", component: <TrainSide />},
+    {label: <img src={Station} alt="駅" />, component:  <StationSide />},
+    {label: <img src={In} alt="列車" />, component:  <TrainSide />},
   ]
 
   return (
-    <main>
-      <Nav select={sideIndex} SetSelect={SetSideIndex} array={sideNavArray} />
-      <article>
-        <section>
-          {sideNavArray[sideIndex].component}
-        </section>
-      </article>
-    </main>
+    <aside>
+      <NavMolecule navIndex={sideIndex} SetNavIndex={SetSideIndex} value={sideNavArray} />
+      <section>
+        {sideNavArray[sideIndex].component}
+      </section>
+    </aside>
   );
 }
 

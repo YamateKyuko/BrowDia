@@ -113,41 +113,44 @@ function IndexListboxHandler(props: IndexListboxHandlerProps) {
   )
 }
 
-type NavProps = {
-  select: number;
-  SetSelect: SetterOrUpdater<number>;
-  array: navArray[];
+type NavMoleculeProps = {
+  navIndex: number;
+  SetNavIndex: SetterOrUpdater<number>;
+  value: navArray[];
 }
 
-export function Nav(props: NavProps) {
+export function NavMolecule(props: NavMoleculeProps) {
+  const handler = ((index: number) => {
+    props.SetNavIndex(index)
+  })
+
   return (
     <nav>
       <ul>
-        {props.array.map((value: navArray, index: number) => (
-          <NavChild index={index} select={props.select} SetSelect={props.SetSelect} value={value} key={index} />
+        {props.value.map((value: navArray, index: number) => (
+          <NavAtom index={index} select={props.navIndex} value={value} handler={handler} key={index} />
         ))}
       </ul>
     </nav>
   )
 }
 
-type NavChildProps = {
+type NavAtomProps = {
   index: number;
   select: number;
-  SetSelect: SetterOrUpdater<number>;
   value: navArray;
+  handler: (index: number) => void;
 }
 
-function NavChild(props: NavChildProps) {
+function NavAtom(props: NavAtomProps) {
   const onChange: React.ChangeEventHandler<HTMLElement> = (() => {
-    props.SetSelect(props.index)
+    props.handler(props.index)
   })
 
   return (
     <li>
-      <Input value={props.index == props.select} onChange={onChange} label={<img src={props.value.src} alt={props.value.alt} />} />
+      <Input value={props.index == props.select} onChange={onChange} label={props.value.label} />
     </li>
-    
   )
 }
 

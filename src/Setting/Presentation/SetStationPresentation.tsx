@@ -30,10 +30,10 @@ type ComponentProps = {
 
 function Component(props: ComponentProps) {
   return (
-    <article>
-      <nav>
+    <>
+      <aside>
         <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
-      </nav>
+      </aside>
       <section>
         <dl>
           <dt data-logo={props.stationIndex + 1} className="">
@@ -111,7 +111,7 @@ function Component(props: ComponentProps) {
           </dt>
         </dl>
       </section>
-    </article>
+    </>
   );
 }
 

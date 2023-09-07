@@ -48,10 +48,10 @@ function Component(props: ComponentProps) {
   }
 
   return (
-    <article>
-      <nav>
+    <>
+      <aside>
         <StationIndexHandler trainTypes={props.trainTypes} trainTypeIndex={props.stationIndex} setTrainTypeIndex={props.SetTrainTypeIndex} />
-      </nav>
+      </aside>
       <section>
         <dl>
           <dt data-logo={props.stationIndex + 1}>
@@ -95,7 +95,7 @@ function Component(props: ComponentProps) {
           </dd>
         </dl>
       </section>
-    </article>
+    </>
   );
 }
 

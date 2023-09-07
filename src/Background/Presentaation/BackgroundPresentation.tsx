@@ -24,7 +24,7 @@ import Setting from '../../Setting/Presentation/SettingPresentation';
 import Home from '../../Home/Presentation/HomePresentation';
 import Side from '../../Side/Presentation/SidePresentation';
 import Timetable from '../../Timetable/Presentation/TimetablePresentation';
-import { Input } from '../../Presentation/ElementsPresentation';
+import { Input, NavMolecule } from '../../Presentation/ElementsPresentation';
 
 function Background() {
   const [pageIndex, SetPageIndex] = useRecoilState<number>(Infrastructure().PageIndex);
@@ -32,51 +32,28 @@ function Background() {
   const Atom = useRecoilValue<template>(Infrastructure().Atom)
 
   const settingIndexArray: navArray[] = [
-    {src: BrowDiaImg, alt: "ﾎｰﾑ", component: <Home />},
-    {src: SetImg, alt: "設定", component: <Setting />},
-    {src: DiaImg, alt: "ﾀﾞｲﾔ", component: <Side />},
-    {src: TimetableImg, alt: "時刻表", component: <Timetable />},
-    {src: StationTimetableImg, alt: "駅時刻表", component: <></>},
-    {src: Atom.railway.name, alt: "", component: <></>, str: true},
-    {src: SaveImg, alt: "保存", component: <></>},
+    {label: <img src={BrowDiaImg} alt="ﾎｰﾑ" />, component:  <Home />},
+    {label: <img src={SetImg} alt="設定" />, component:  <Setting />},
+    {label: <img src={DiaImg} alt="ﾀﾞｲﾔ" />, component:  <Side />},
+    {label: <img src={TimetableImg} alt="時刻表" />, component:  <Timetable />},
+    {label: <img src={StationTimetableImg} alt="駅時刻表" />, component:  <></>},
+    {label: <h1>{Atom.railway.name}</h1>, component:  <></>},
+    {label: <img src={SaveImg} alt="保存" />, component:  <></>},
   ]
 
   return (
     <>
       <header>
-        <nav>
-          <ul>
-            {settingIndexArray.map((value: navArray, index: number) => (
-              <li key={index}><PageIndexInputHandler pageIndex={pageIndex} SetPageIndex={SetPageIndex} label={<img src={value.src} alt={value.alt} />} index={index} str={!!value.src} /></li>
-            ))}
-          </ul>
-        </nav>
+        <NavMolecule navIndex={pageIndex} SetNavIndex={SetPageIndex} value={settingIndexArray} />
       </header>
-      {settingIndexArray[pageIndex].component}
+      <main>
+        {settingIndexArray[pageIndex].component}
+      </main>
     </>
   );
 }
 
 
-type PageInputHandlerProps = {
-  pageIndex: number;
-  SetPageIndex: SetterOrUpdater<number>;
-  label: React.ReactElement;
-  index: number;
-  str?: boolean;
-}
-
-function PageIndexInputHandler(props: PageInputHandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLElement> = (() => {
-    props.SetPageIndex(props.index)
-  })
-
-  return (
-    <>
-      <Input value={props.pageIndex == props.index} onChange={onChange} label={props.label} />
-    </>
-  )
-}
 
 
 export default Background;

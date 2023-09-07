@@ -50,8 +50,8 @@ function Component(props: ComponentProps) {
 
   return (
     <main>
-      <img src={BrowDia} alt="BrowDia" />
       <article>
+        <img src={BrowDia} alt="BrowDia" />
         <section>
         {/*  */}
           <dl>

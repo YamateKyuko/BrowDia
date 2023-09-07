@@ -29,7 +29,7 @@ type ComponentProps = {
 function Component(props: ComponentProps) {
 
   return (
-    <article>
+    <>
       <section>
         <dl>
           <dt><RailwayPropHandler railway={props.railway} propKey="name" SetRailwayProp={props.SetRailwayProp} /></dt>
@@ -62,7 +62,7 @@ function Component(props: ComponentProps) {
           </dd>
         </dl>
       </section>
-    </article>
+    </>
   );
 }
 

@@ -8,14 +8,18 @@
   font-family: Dia;
   appearance: none;
   transition: all .2s;
-  /* ; */
+  
+}
+
+html {
+  overflow-y: hidden;
 }
 
 #root {
   height: 100vh;
   & header {
     height: 2rem;
-    & nav {
+    > nav {
       /* position: fixed; */
       width: 100%;
       height: 2rem;
@@ -42,6 +46,7 @@
             line-height: 2.5rem;
             overflow: hidden;
             text-overflow: clip;
+            /* white-space: nowrap; */
             color: white;
           }
         }
@@ -54,7 +59,7 @@
     }
     & nav {
       height: 1.25rem;
-      & ul {
+      > ul {
         display: flex;
         width: 100%;
         height: 1.25rem;
@@ -77,17 +82,21 @@
         
       }
     }
-    & article {
-      overflow-y: scroll;
+    > article {
       display: flex;
       width: 100%;
-      
-      & nav {
+      > aside {
         width: 16rem;
+        position: relative;
+        & section {
+          position: absolute;
+          width: 12rem;
+          height: 100%;
+        }
         & fieldset {
-          position: fixed;
-          width: 16rem;
-          height: calc(100% - 3.25rem);
+          position: absolute;
+          width: 12rem;
+          height: 100%;
           & :after {
             position: absolute;
             content: "";
@@ -118,11 +127,12 @@
           }
         }
       }
-      & section {
+      > section {
+        overflow-y: auto;
         height: calc(100vh - 3.25rem);
-        width: calc(100% - 2rem);
+        width: calc(100%);
         & dl {
-          width: 100%;
+          width: auto;
           margin: 1rem;
           & dt {
             margin: 0 0 0.5rem 0;
@@ -165,11 +175,10 @@
           }
         }
       }
-      
     }
-    & article:has(nav) > section {
-      width: calc(100% - 18rem);
-    }
+    /* & article:has(nav) > section {
+      width: calc(100% - 10rem);
+    } */
   }
 } 
 
@@ -314,6 +323,8 @@ fieldset {
     height: 1.25rem;
     margin: 0.25rem 0 0.25rem 1.25rem;
     line-height: 1.25rem;
+    text-overflow: clip;
+    white-space: nowrap;
   }
 }
 

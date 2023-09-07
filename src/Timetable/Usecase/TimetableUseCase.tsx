@@ -16,29 +16,10 @@ type Timetable = {
 
 } 
 
-const SetStaionUseCase = (() => {
+const TimetableUseCase = (() => {
 
-  const StaionsUseCase = selector<template_station[]>({
-    key: "StationsUseCase",
-    get: ({get}) => {
-      const staions: template_station[] = get(StationRepository().Stations)
-      // const brunchList: BrunchOrderType[] = staions.map((station: template_station, index: number) => {
-      //   const BrunchOrder: BrunchOrderType[] = []
-      //   if (station.brunchCoreStationIndex != null) {
-      //     for (let i: number = 0; i == index; i++) {
+  // const TimetableUseCase = selector<template_
 
-      //     }
-      //   }
-
-      //   return {
-      //     isMain: station.isMain,
-      //     border: station.border,
-      //     Brunch: BrunchOrder,
-      //   }
-      // })
-      // return staions;
-    }
-  })
 
   const StaionUseCase = selectorFamily<template_station, number>({
     key: "StationsUseCase",
@@ -54,25 +35,6 @@ const SetStaionUseCase = (() => {
       )
     }
   })
-
-  // const getStation = (index: number) => {
-  //   const station = StationRepository().find(index)
-  //   return station;
-  // }
-  // : GetStation
-
-  // const changeStation = (index, key, property) => {
-  //   const result = StationRepository().change(index, "name", property)
-  //   return result;
-  // }
-  // : ChangeStation
-
-  // const getDirectionName: GetDirectionName = () => {
-  //   const directions =  DirectionRepository().find()
-  //   return directions;
-  // }
-
-  // return {getStation, changeStation, getDirectionName}
 })
 
-export default SetStaionUseCase;
+export default TimetableUseCase;

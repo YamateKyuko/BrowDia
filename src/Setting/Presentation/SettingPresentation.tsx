@@ -22,7 +22,7 @@ import {
   useRecoilValue,
 } from 'recoil';
 import { template , navArray } from './../../Entity/Entity';
-import { Input, Nav } from './../../Presentation/ElementsPresentation'
+import { Input, NavMolecule } from './../../Presentation/ElementsPresentation'
 
 
 
@@ -30,25 +30,20 @@ function Setting() {
   const [SettingIndex, SetSettingIndex] = useRecoilState<number>(Infrastructure().SettingIndex);
 
   const settingNavArray: navArray[] = [
-    {src: General, alt: "設定", component: <SetPresentation />},
-    {src: Style, alt: "スタイル", component: <SetDisplayPresentation />},
-    {src: Station, alt: "-駅-", component: <SetStationPresentation />},
-    {src: Type, alt: "種別", component: <SetTrainTypePresentation />},
+    {label: <img src={General} alt="設定" />, component:  <SetPresentation />},
+    {label: <img src={Style} alt="スタイル" />, component:  <SetDisplayPresentation />},
+    {label: <img src={Station} alt="-駅-" />, component:  <SetStationPresentation />},
+    {label: <img src={Type} alt="種別" />, component:  <SetTrainTypePresentation />},
   ]
 
   return (
-    <main>
-      <Nav array={settingNavArray} select={SettingIndex} SetSelect={SetSettingIndex} />
-      {settingNavArray[SettingIndex].component}
-    </main>
+    <>
+      <NavMolecule value={settingNavArray} navIndex={SettingIndex} SetNavIndex={SetSettingIndex} />
+      <article>
+        {settingNavArray[SettingIndex].component}
+      </article>
+    </>
   );
-}
-
-type ImageInputProps = {
-  SettingIndex: number;
-  SetSettingIndex: SetterOrUpdater<number>;
-  label: React.ReactElement;
-  index: number;
 }
 
 export default Setting;
