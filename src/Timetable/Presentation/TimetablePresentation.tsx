@@ -30,7 +30,7 @@ type ComponentProps = {
 }
 
 function Component(props: ComponentProps) {
-  const [sideIndex, SetSideIndex] = useRecoilState<number>(Infrastructure().sideIndex);
+  const [directionIndex, SetDirectionIndex] = useRecoilState<number>(Infrastructure().directionIndex);
 
   // const sideNavArray: navArray[] = props.diagrams.map((value: template_diagram, index: number) => {
   //   return {src: value.src, alt: value.alt />, component:  <Side diagram={value} />}
@@ -43,17 +43,19 @@ function Component(props: ComponentProps) {
 
   return (
     <>
-      <>
-        <NavMolecule navIndex={sideIndex} SetNavIndex={SetSideIndex} value={sideNavArray} />
-        <article>
-          あああ
-          <figure>
-            <svg></svg>
-          </figure>
-        </article>
-      </>
-      <Side />
+      <NavMolecule navIndex={directionIndex} SetNavIndex={SetDirectionIndex} value={sideNavArray} />
+      <article>
+        <section>
+          <dl>
+            <dt>a</dt>
+            <dd>a</dd>
+          </dl>
+          
+        </section>
+        <Side />
+      </article>
     </>
+    
   );
 }
 

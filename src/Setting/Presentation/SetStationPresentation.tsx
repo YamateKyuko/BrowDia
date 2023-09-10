@@ -35,9 +35,10 @@ function Component(props: ComponentProps) {
         <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
       </aside>
       <section>
+        <h2 data-logo={props.stationIndex + 1}><StationPropHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} /></h2>
         <dl>
-          <dt data-logo={props.stationIndex + 1} className="">
-            <StationPropHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
+          <dt>
+            一般
           </dt>
           <dd>
             <ul>

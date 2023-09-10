@@ -35,42 +35,53 @@ const lineStyleList: template_listStyle[] = [
 const lineStyleListIndexConverter = (lineStyle: template_trainType["lineStyle"]): number => lineStyleList.findIndex((value: template_listStyle, index: number) => value.value == lineStyle)
 
 type ComponentProps = {
-  trainTypes: template_trainType[];
-  trainType: template_trainType;
-  directionName: string[];
-  stationIndex: number;
-  SetTrainTypeIndex: SetterOrUpdater<number>;
-  SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
+  Atom: template;
+  // trainTypes: template_trainType[];
+  // trainType: template_trainType;
+  // directionName: string[];
+  // stationIndex: number;
+  // SetTrainTypeIndex: SetterOrUpdater<number>;
+  // SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
 }
 
 function Component(props: ComponentProps) {
-  const lineStyleHandler = (index: number): void => {
-    props.SetTrainTypeProperty("lineStyle", lineStyleList[index].value)
+  const [downroad, setDownroad] = React.useState<string>("");
+
+  const Save: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    
+    var resultJson = JSON.stringify(props.Atom);
+    var downLoadLink = document.createElement("a");
+    downLoadLink.textContent = 'download';
+    downLoadLink.download = downroad + ".json";
+    downLoadLink.href = URL.createObjectURL(new Blob([resultJson], {type: "text.plain"}));
+    downLoadLink.dataset.downloadurl = ["text/plain", downLoadLink.download, downLoadLink.href].join(":");
+    downLoadLink.click();
+  }
+
+  const downroadHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setDownroad(event.target.value);
   }
 
   return (
     <>
       <article>
-        
         <section>
+          <h2>保存</h2>
           <dl>
             <dt>
-              <img src={BrowDia} alt="BrowDia" />
+              各種設定
             </dt>
             <dd>
               <ul>
                 <li>
-                  BrowDia をご利用頂き誠に有難う御座います。
-                </li>
-                <li>
-                  ブラウザでダイヤの制作閲覧ができるよう現在鋭意開発中です。
-                </li>
-                <li>
-                  Github
-                  <a href="https://github.com/swallow3/BrowDia">BrowDia</a>
+                  ファイル名
+                  <Input value={downroad} onChange={downroadHandler} />
                 </li>
               </ul>
             </dd>
+            <dt>
+              <button onClick={Save}>保存</button>
+            </dt>
           </dl>
         </section>
       </article>
@@ -78,7 +89,8 @@ function Component(props: ComponentProps) {
   );
 }
 
-function Home() {
+function Save() {
+  const Atom = useRecoilValue<template>(Infrastructure().Atom)
   const [trainTypeIndex, SetTrainTypeIndex] = useRecoilState(Infrastructure().TrainTypeIndex)
 
   const trainTypes: template_trainType[] = useRecoilValue<template_trainType[]>(TrainTypeRepository().TrainTypes);
@@ -86,7 +98,7 @@ function Home() {
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
 
-  const Atom: template = useRecoilValue(Infrastructure().Atom);
+  // const Atom: template = useRecoilValue(Infrastructure().Atom);
 
   const SetTrainTypeProperty = <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P): void => {
     setTrainType((prev: template_trainType) => ({...prev, [key]: property}))
@@ -94,14 +106,15 @@ function Home() {
 
   return (
     <Component
-      trainTypes={trainTypes}
-      trainType={trainType}
-      stationIndex={trainTypeIndex}
-      SetTrainTypeIndex={SetTrainTypeIndex}
-      directionName={DirectionName}
-      SetTrainTypeProperty={SetTrainTypeProperty}
+    Atom={Atom}
+      // trainTypes={trainTypes}
+      // trainType={trainType}
+      // stationIndex={trainTypeIndex}
+      // SetTrainTypeIndex={SetTrainTypeIndex}
+      // directionName={DirectionName}
+      // SetTrainTypeProperty={SetTrainTypeProperty}
     />
   )
 }
 
-export default Home;
+export default Save;

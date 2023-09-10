@@ -26,8 +26,9 @@ function Component(props: ComponentProps) {
   return (
     <>
       <section>
+        <h2>スタイル</h2>
         <dl>
-        <dt>スタイル</dt>
+          <dt>一般</dt>
           <dd>
             <ul>
               {(Object.keys(props.displayProperty) as (keyof template_displayProperty)[]).map((key: keyof template_displayProperty, index: number) => (
