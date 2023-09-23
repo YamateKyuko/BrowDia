@@ -1,0 +1,40 @@
+.settingSection {
+  display: flex;
+  width: 20rem;
+  margin: 0 0 0.5rem 0;
+  justify-content: space-between;
+  background-color: aqua;
+}
+
+.tracksTr {
+  & * > * {display: block;}
+  & :nth-child(3) > * {width: 3.25rem;}
+  & :nth-child(4) > * {width: 3.25rem;}
+  & :nth-child(5) > * {width: 3rem;}
+}
+
+.timetableFontTr {
+  & * > * {display: block;}
+  & :nth-child(1) > * {width: 1.25rem;}
+  & :nth-child(3) > * {width: 3.25rem;}
+  & :nth-child(4) > * {width: 1.25rem;}
+  & :nth-child(5) > * {width: 1.25rem;}
+  & :nth-child(6) > * {width: 3rem;}
+}
+
+.NamedFontTr {
+  & * > * {display: block;}
+  & :nth-child(3) > * {width: 3.25rem;}
+  & :nth-child(4) > * {width: 1.25rem;}
+  & :nth-child(5) > * {width: 1.25rem;}
+  & :nth-child(6) > * {width: 3rem;}
+}
+
+.outerTerminalsTr {
+  & * > * {display: block;}
+  & :nth-child(3) > * {width: 3.25rem;}
+  & :nth-child(4) > * {width: 1.25rem;}
+  & :nth-child(5) > * {width: 3.25rem;}
+  & :nth-child(6) > * {width: 1.25rem;}
+  & :nth-child(7) > * {width: 3rem;}
+}

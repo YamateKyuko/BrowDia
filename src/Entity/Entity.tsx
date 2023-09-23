@@ -42,7 +42,7 @@ export type template_timetableFont = {
 }
 
 export type template_railway = {
-  "name": string, // 鉄道路線系統名など
+  "name": string, // 鉄道路線名など
   "directionName": string[], // 方向文字
   "startTime": number, // ダイヤの最初にくる時刻
   "stationInterval": number, // 駅間隔初期設定
@@ -56,10 +56,7 @@ export type template_railway = {
 export type template_station = { // 駅リスト
   "name": string, // 駅名
   "abbrName": string, // 駅名略称
-  "timetableStyle": { // 時刻表時刻表示
-    "arrival": boolean[],
-    "departure": boolean[]
-  },
+  "timetableStyle": template_timetableStyle, // 時刻表時刻表示
   "isMain": boolean, // 主要駅判定
   "border": boolean, // ボーダーライン
   "visibleDiagramInfo": ("Origin" | "Anytime" | "Not")[], // ダイヤ列車情報
@@ -75,15 +72,22 @@ export type template_station = { // 駅リスト
   "nextStaionDistance": null | number, // 次駅間隔
   "timetableTrackOmit": boolean, // 番線名省略
   "operationLength": number[], // ? 下り前・上り後作業欄数
-  "customTimetableStyle": { // 時刻表各種表示
-    "arrival": boolean[], // timetableStyle
-    "departure": boolean[], // timetableStyle
-    "trainNumber": boolean[],
-    "operationNumber": boolean[],
-    "trainType": boolean[],
-    "trainName": boolean[]
-  }
+  "customTimetableStyle": template_customTimetableStyle // 時刻表各種表示
 };
+
+export type template_timetableStyle = { // 時刻表時刻表示
+  "arrival": boolean[],
+  "departure": boolean[]
+}
+
+export type template_customTimetableStyle = { // 時刻表各種表示
+  "arrival": boolean[], // timetableStyle
+  "departure": boolean[], // timetableStyle
+  "trainNumber": boolean[],
+  "operationNumber": boolean[],
+  "trainType": boolean[],
+  "trainName": boolean[]
+}
 
 export type template_outerTerminal = {
   "name": string,
@@ -182,3 +186,20 @@ export type navArray = {
   label: JSX.Element;
   component: JSX.Element;
 }
+
+export type template_timetableRow = {
+  type: number;
+  stationIndex: number;
+  height: number;
+
+}
+
+export type template_timetableSide = {
+  rowIndex: number;
+  height: number;
+  value: string;
+  name: string;
+  type: number;
+}
+
+export type template_rowKeyList = keyof template_customTimetableStyle | "track" | "none"

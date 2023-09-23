@@ -15,8 +15,8 @@ import {
   useSetRecoilState
 } from 'recoil';
 
-import InImg from './../img/InImg.svg';
-import OutImg from './../img/OutImg.svg';
+import InImg from './../Tab/img/InImg.svg';
+import OutImg from './../Tab/img/OutImg.svg';
 
 const DirectionNameRepository = () => {
   const DirectionNameSelector = selector<string[]>({

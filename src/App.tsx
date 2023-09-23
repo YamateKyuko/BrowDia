@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logoImg.svg';
-import Background from './Background/Presentaation/BackgroundPresentation';
+import Background from './Tab/Background/Presentaation/BackgroundPresentation';
 
 import {
   RecoilRoot,
