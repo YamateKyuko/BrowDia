@@ -55,7 +55,7 @@ function Component(props: ComponentProps) {
         <section>
           <NavMolecule navIndex={directionIndex} SetNavIndex={SetDirectionIndex} value={directionNavArray} />
           <figure>
-            <svg viewBox={`props.timetableSide.length`}>
+            <svg viewBox={`0 0 ${props.timetableSide.length * props.fontSize}`}>
               <TimetableSide timetableSide={props.timetableSide} />
             </svg>
           </figure>
@@ -96,6 +96,7 @@ function Timetable() {
 
   const timetableSide = useRecoilValue<template_timetableSide[]>(TimetableUseCase().timetableSide);
   const FontSize = useRecoilValue<number>(Infrastructure().FontSize);
+  // const displayProperty =
 
   return (
     <Component
