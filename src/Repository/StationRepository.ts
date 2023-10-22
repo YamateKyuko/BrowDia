@@ -31,13 +31,26 @@ const StationRepository = () => {
     },
   });
 
-  const Station = selectorFamily<template_station, number>({
-    key: "Station",
+  const directionalStations = selectorFamily<template_station[], number>({
+    key: "directionalStations",
     get: (index: number) => ({get}) => {
+
+      const stations: template_station[] = get(Infrastructure().Atom).railway.stations
+      if (index == 1) {return [...stations].reverse()}
+      return stations;
+    }
+  });
+  
+
+  const Station = selector<template_station>({
+    key: "Station",
+    get: ({get}) => {
       const station: template_station[] = get(Stations);
+      const index: number = get(Infrastructure().StationIndex);
       return station[index];
     },
-    set: (index: number) => ({set}, newValue) => {
+    set:({get, set}, newValue) => {
+      const index: number = get(Infrastructure().StationIndex);
       set(
         Stations,
         newValue instanceof DefaultValue ? newValue :
@@ -46,7 +59,7 @@ const StationRepository = () => {
     }
   })
 
-  return {Stations, Station}
+  return {Stations, Station, directionalStations}
 }
 
 export default StationRepository;

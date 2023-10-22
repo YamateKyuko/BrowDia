@@ -18,7 +18,7 @@ import {
 
 import Infrastructure from '../../../Infrastructure/Infrastructure';
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
-import { Input, IndexListbox } from '../../Presentation/ElementsPresentation';
+import { IndexListbox, StringInput } from '../../Presentation/ElementsPresentation';
 
 import { isRgb, HexConverter } from '../../Presentation/SharedFunction';
 import TrainTypeRepository from '../../../Repository/TrainTypeRepository';
@@ -58,8 +58,8 @@ function Component(props: ComponentProps) {
     downLoadLink.click();
   }
 
-  const downroadHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDownroad(event.target.value);
+  const set = (value: string): void => {
+    setDownroad(value);
   }
 
   return (
@@ -75,7 +75,7 @@ function Component(props: ComponentProps) {
               <ul>
                 <li>
                   ファイル名
-                  <Input value={downroad} onChange={downroadHandler} />
+                  <StringInput value={downroad} set={set} />
                 </li>
               </ul>
             </dd>
@@ -93,16 +93,16 @@ function Save() {
   const Atom = useRecoilValue<template>(Infrastructure().Atom)
   const [trainTypeIndex, SetTrainTypeIndex] = useRecoilState(Infrastructure().TrainTypeIndex)
 
-  const trainTypes: template_trainType[] = useRecoilValue<template_trainType[]>(TrainTypeRepository().TrainTypes);
-  const [trainType, setTrainType] = useRecoilState<template_trainType>(TrainTypeRepository().TrainType(trainTypeIndex));
+  // const trainTypes: template_trainType[] = useRecoilValue<template_trainType[]>(TrainTypeRepository().TrainTypes);
+  // const [trainType, setTrainType] = useRecoilState<template_trainType>(TrainTypeRepository().TrainType(trainTypeIndex));
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
 
   // const Atom: template = useRecoilValue(Infrastructure().Atom);
 
-  const SetTrainTypeProperty = <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P): void => {
-    setTrainType((prev: template_trainType) => ({...prev, [key]: property}))
-  }
+  // const SetTrainTypeProperty = <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P): void => {
+  //   setTrainType((prev: template_trainType) => ({...prev, [key]: property}))
+  // }
 
   return (
     <Component

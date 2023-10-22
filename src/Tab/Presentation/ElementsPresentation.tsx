@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import './../css/Element.css';
 import './../css/Set.css';
-import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList, navArray } from '../../Entity/Entity';
-import { isStation, isRgb, RgbConverter, isTimetableFont, TimeConverter } from './SharedFunction';
+import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList, navArray, template_rgb } from '../../Entity/Entity';
+import { isStation, isRgb, RgbConverter, isTimetableFont, SecondsConverter, HexConverter } from './SharedFunction';
 import { SetterOrUpdater } from 'recoil';
 
 type InputProps = {
@@ -22,6 +22,8 @@ type InputProps = {
 }
 
 export function Input(props: InputProps) {
+
+
   return (
     <>
       {typeof props.value === "string" &&
@@ -67,6 +69,109 @@ export function Input(props: InputProps) {
   )
 }
 
+type StringInputProps = {
+  value: string;
+  set: (value: string) => void;
+  textarea?: boolean;
+  className?: string;
+  disabled?: boolean;
+}
+
+export function StringInput(props: StringInputProps) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    props.set(event.target.value)
+  }
+
+  const textareaOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    props.set(event.target.value)
+  }
+
+  return (
+    <>
+      {!props.textarea
+        ? <input type="text" className={props.className} onChange={onChange} value={props.value} disabled={props.disabled} />
+        : <textarea className={props.className} onChange={textareaOnChange} disabled={props.disabled}>{props.value}</textarea>
+      }
+    </>
+  )
+}
+
+type NumberInputProps = {
+  value: number;
+  set: (value: number) => void;
+  className?: string;
+  disabled?: boolean;
+}
+
+export function NumberInput(props: NumberInputProps) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    props.set(Number(event.target.value))
+  }
+
+  return (
+    <input type="number" className={props.className} onChange={onChange} value={props.value} disabled={props.disabled} />
+  )
+}
+
+type BooleanInputProps = {
+  value: boolean;
+  set: (value: boolean) => void;
+  className?: string;
+  disabled?: boolean;
+  label?: string | React.ReactElement;
+  dataLogo?: any;
+}
+
+export function BooleanInput(props: BooleanInputProps) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    props.set(event.target.checked)
+  }
+
+  return (
+    <>
+      {!props.label
+        ?
+          <label className={"checkbox " + props.className}>
+            <input type="checkbox" onChange={onChange} checked={props.value} />
+          </label>
+        : (!props.dataLogo
+          ?
+            <>
+              <label className={"radio_" + props.className}>
+                <input type="radio" onChange={onChange} checked={props.value} />
+                {props.label}
+              </label>
+            </>
+          :
+            <>
+              <label data-logo={props.dataLogo} className={"radio_" + props.className}>
+                <input type="radio" onChange={onChange} checked={props.value} />
+                {props.label}
+              </label>
+            </>
+        )
+      }
+    </>
+  )
+}
+
+type ColorInputProps = {
+  value: template_rgb;
+  set: (value: template_rgb) => void;
+  className?: string;
+  disabled?: boolean;
+}
+
+export function ColorInput(props: ColorInputProps) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    props.set(HexConverter(event.target.value))
+  }
+
+  return (
+    <input type="color" className={props.className} onChange={onChange} value={RgbConverter(props.value)} disabled={props.disabled} />
+  )
+}
+
 type IndexListboxProps = {
   values: template_station[] | template_track[] | template_trainType[] | template_timetableFont[] | template_listStyle[];
   selectedIndex: number;
@@ -104,12 +209,12 @@ type IndexListboxHandlerProps = {
 }
 
 function IndexListboxHandler(props: IndexListboxHandlerProps) {
-  const onChange = (): void => {
+  const set = (): void => {
     props.set(props.index)
   }
 
   return (
-    <Input value={props.selectedIndex == props.index} onChange={onChange} label={props.label} dataLogo={props.index + 1} className={props.className} />
+    <BooleanInput value={props.selectedIndex == props.index} set={set} label={props.label} dataLogo={props.index + 1} className={props.className} />
   )
 }
 
@@ -143,14 +248,52 @@ type NavAtomProps = {
 }
 
 function NavAtom(props: NavAtomProps) {
-  const onChange: React.ChangeEventHandler<HTMLElement> = (() => {
+  const set = () => {
     props.handler(props.index)
-  })
+  }
 
   return (
     <li>
-      <Input value={props.index == props.select} onChange={onChange} label={props.value.label} />
+      <BooleanInput value={props.index == props.select} set={set} label={props.value.label} />
     </li>
+  )
+}
+
+type TrackProps = {
+  tracks: template_track[];
+  value: number;
+  set: (index: number) => void;
+}
+
+export function Track(props: TrackProps) {
+  return (
+    <>
+      <details>
+        <summary data-logo={props.value + 1}>
+          {props.tracks[props.value].name}
+        </summary>
+        <IndexListbox values={props.tracks} selectedIndex={props.value} set={props.set} />
+      </details>
+    </>
+  )
+}
+
+type TrainTypeProps = {
+  trainTypes: template_trainType[];
+  value: number;
+  set: (index: number) => void;
+}
+
+export function TrainType(props: TrainTypeProps) {
+  return (
+    <>
+      <details>
+        <summary data-logo={props.value + 1}>
+          {props.trainTypes[props.value].name}
+        </summary>
+        <IndexListbox values={props.trainTypes} selectedIndex={props.value} set={props.set} />
+      </details>
+    </>
   )
 }
 

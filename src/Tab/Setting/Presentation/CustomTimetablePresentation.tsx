@@ -2,7 +2,7 @@ import React from 'react';
 
 import { template, template_customTimetableStyle, template_station, template_timetable, template_timetableStyle, template_track } from '../../../Entity/Entity'
 
-import { Input } from '../../Presentation/ElementsPresentation';
+import { BooleanInput } from '../../Presentation/ElementsPresentation';
 
 type CustomTimetableStyleProps = {
   station: template_station;
@@ -52,7 +52,6 @@ function CustomTimetableStyle(props: CustomTimetableStyleProps) {
 
 type CustomTimetableStyleInputProps = {
   station: template_station;
-
   PropertyKey: keyof template_station["customTimetableStyle"];
   ArrayIndex: number;
   SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
@@ -60,7 +59,7 @@ type CustomTimetableStyleInputProps = {
 
 function CustomTimetableStyleInput(props: CustomTimetableStyleInputProps) {
 
-  const SetCustomTimetableStyle: React.ChangeEventHandler<HTMLInputElement> = (() => {
+  const set = (() => {
     props.SetStationProperty(
       "customTimetableStyle",
         {...props.station.customTimetableStyle,
@@ -70,7 +69,7 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleInputProps) {
 
   return (
     <>
-      <Input value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
+      <BooleanInput value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} set={set} />
     </>
   )
 }

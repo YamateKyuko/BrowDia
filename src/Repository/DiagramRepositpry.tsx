@@ -20,27 +20,7 @@ const DiagramRepository = () => {
     key: "Diagrams",
     get: ({get}) => {
       const Data: template_diagram[] = get(Infrastructure().Atom).railway.diagrams
-      const Diagram = selectorFamily<template_diagram, number>({
-        key: "Diagram",
-        get: (index: number) => ({get}) => {
-          const Data: template_diagram = get(Diagrams)[index]
-          const Trains = selector<template_train[][]>({
-            key: "Trains",
-            get: ({get}) => {
-              const Data: template_train[][] = get(Diagram(index)).trains
-              return Data;
-            },
-          })
-          return Data;
-        },
-        set: (index: number) => ({set}, newValue) => {
-          set(
-            Diagrams,
-            newValue instanceof DefaultValue ? newValue :
-            (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex == index ? newValue : diagram)))
-          )
-        }
-      })
+      
       return Data;
     },
     set: ({set}, newValue) => {
@@ -52,38 +32,24 @@ const DiagramRepository = () => {
     },
   });
 
-  // const Timetable = selectorFamily<template_diagram, number>({
-  //   key: "Timetable",
-  //   get: (index: number) => ({get}) => {
-  //     const Data: template_diagram = get(Diagrams)[index]
-  //     return Data;
-  //   },
-  //   set: (index: number) => ({set}, newValue) => {
-  //     set(
-  //       Diagrams,
-  //       newValue instanceof DefaultValue ? newValue :
-  //       (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex == index ? newValue : diagram)))
-  //     )
-  //   }
-  // })
+  const Diagram = selector<template_diagram>({
+    key: "Diagram",
+    get: ({get}) => {
+      const diagram: template_diagram[] = get(Diagrams)
+      const diagramIndex: number = get(Infrastructure().DiagramIndex)
+      return diagram[diagramIndex];
+    },
+    set: ({get, set}, newValue) => {
+      const diagramIndex: number = get(Infrastructure().DiagramIndex)
+      set(
+        Diagrams,
+        newValue instanceof DefaultValue ? newValue :
+        (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex == diagramIndex ? newValue : diagram)))
+      )
+    }
+  })
 
-  // const _data = selectorFamily<template_diagram, number>({
-  //   key: "_data",
-  //   get: (index: number) => ({get}) => {
-  //     const Data: template_diagram = get(Diagrams)[index]
-  //     return Data;
-  //   },
-  //   set: (index: number) => ({set}, newValue) => {
-  //     set(
-  //       Diagrams,
-  //       newValue instanceof DefaultValue ? newValue :
-  //       (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex == index ? newValue : diagram)))
-  //     )
-  //   }
-  // })
-
-
-  return {Diagrams}
+  return {Diagrams, Diagram}
 }
 
 export default DiagramRepository;

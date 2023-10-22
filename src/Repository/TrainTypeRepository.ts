@@ -16,7 +16,7 @@ import {
 } from 'recoil';
 
 const TrainTypeRepository = () => {
-  const TrainTypes: RecoilState<template_trainType[]> = selector<template_trainType[]>({
+  const trainTypes: RecoilState<template_trainType[]> = selector<template_trainType[]>({
     key: "trainTypes",
     get: ({get}) => {
       const Data: template = get(Infrastructure().Atom)
@@ -31,22 +31,22 @@ const TrainTypeRepository = () => {
     },
   });
 
-  const TrainType = selectorFamily<template_trainType, number>({
+  const trainType = selectorFamily<template_trainType, number>({
     key: "TrainType",
     get: (index: number) => ({get}) => {
-      const trainType: template_trainType[] = get(TrainTypes);
+      const trainType: template_trainType[] = get(trainTypes);
       return trainType[index];
     },
     set: (index: number) => ({set}, newValue) => {
       set(
-        TrainTypes,
+        trainTypes,
         newValue instanceof DefaultValue ? newValue :
         (prevState: template_trainType[]) => (prevState.map((trainType: template_trainType, mapIndex: number) => (mapIndex == index ? newValue : trainType)))
       )
     }
   })
 
-  return {TrainTypes, TrainType}
+  return {trainTypes, trainType}
 }
 
 export default TrainTypeRepository;

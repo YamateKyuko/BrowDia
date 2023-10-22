@@ -14,7 +14,7 @@ import Infrastructure from '../../../Infrastructure/Infrastructure';
 import StationRepository from '../../../Repository/StationRepository';
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
 import CustomTimetableStyle from './CustomTimetablePresentation';
-import { Input, IndexListbox } from '../../Presentation/ElementsPresentation'
+import { BooleanInput, IndexListbox, StringInput, Track } from '../../Presentation/ElementsPresentation'
 import Tracks from './TracksPresentation';
 import OuterTerminal from './SetOuterTerminalPresentation';
 import { type } from 'os';
@@ -38,7 +38,9 @@ function Component(props: ComponentProps) {
         <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
       </aside>
       <section>
-        <h2 data-logo={props.stationIndex + 1}><StationPropHandler station={props.station} stationKey="name" SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} /></h2>
+        <h2 data-logo={props.stationIndex + 1}>
+          <StringStationPropHandler stationKey="name" value={props.station.name} SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
+        </h2>
         <dl>
           <dt>
             一般
@@ -47,19 +49,19 @@ function Component(props: ComponentProps) {
             <ul>
               <li>
                 略称
-                <StationPropHandler station={props.station} stationKey="abbrName" SetStationProperty={props.SetStationProperty} />
+                <StringStationPropHandler stationKey="abbrName" value={props.station.abbrName} SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 主要駅
-                <StationPropHandler station={props.station} stationKey="isMain" SetStationProperty={props.SetStationProperty} />
+                <BooleanStationPropHandler stationKey="isMain" value={props.station.isMain} SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 下線
-                <StationPropHandler station={props.station} stationKey="border" SetStationProperty={props.SetStationProperty} />
+                <BooleanStationPropHandler stationKey="border" value={props.station.border} SetStationProperty={props.SetStationProperty} />
               </li>
               <li>
                 ダイヤ番線表示
-                <StationPropHandler station={props.station} stationKey="visibleDiagramTrack" SetStationProperty={props.SetStationProperty} />
+                <BooleanStationPropHandler stationKey="visibleDiagramTrack" value={props.station.visibleDiagramTrack} SetStationProperty={props.SetStationProperty} />
               </li>
               <TimetableStyle
                 station={props.station}
@@ -107,10 +109,11 @@ function Component(props: ComponentProps) {
               {props.directionName.map((directionName: string, index: number) => (
                 <li key={index}>
                   {directionName}本線
-                  <details>
-                    <summary data-logo={index + 1}>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary>
+
+                  {/* <details> */}
+                    {/* <summary data-logo={index + 1}>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary> */}
                     <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
-                  </details>
+                  {/* </details> */}
                 </li>
               ))}
             </ul>
@@ -173,17 +176,17 @@ type TimetableStyleInputProps = {
 }
 
 function TimetableStyleInput(props: TimetableStyleInputProps) {
-  const SetCustomTimetableStyle: React.ChangeEventHandler<HTMLInputElement> = (() => {
+  const set = () => {
     props.SetStationProperty(
       "timetableStyle",
         {...props.station.customTimetableStyle,
         [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex == index ? !property : property))}
     )
-  })
+  }
 
   return (
     <>
-      <Input value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
+      <BooleanInput value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} set={set} />
     </>
   )
 }
@@ -216,10 +219,10 @@ function CanNullStationPropStationIndexHandler(props: CanNullStationPropStationI
             <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
           </details>
         :
-          <Input value={""} onChange={() => {}} disabled={true} />
+          <StringInput value={""} set={() => {}} disabled={true} />
         }
       </td>
-      <td><Input value={props.station[props.propKey] !== null} onChange={nullOnChange}/></td>
+      <td><BooleanInput value={props.station[props.propKey] !== null} set={nullOnChange}/></td>
     </>
   )
 }
@@ -247,31 +250,49 @@ type MainTrackHandlerProps = {
 
 function MainTrackHandler(props: MainTrackHandlerProps) {
   const set = (value: number): void => {
-    props.setStationProperty("mainTrack", props.mainTrack.map((mainTrack: number, mapIndex: number) => (props.index == mapIndex ? value : mainTrack)))
+    console.log(value)
+    props.setStationProperty(
+      "mainTrack",
+      props.mainTrack.map((mainTrack: number, mapIndex: number) => (
+        props.index == mapIndex ? value : mainTrack
+      ))
+    )
   }
 
-  return (<IndexListbox values={props.tracks} selectedIndex={props.mainTrack[props.index]} set={set} />)
+  return (<Track tracks={props.tracks} value={props.mainTrack[props.index]} set={set} />)
 }
 
-type StationPropHandlerProps = {
-  station: template_station;
+type StringStationPropHandlerProps = {
   stationKey: keyof template_station;
+  value: string;
   SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
   className?: string;
 }
 
-function StationPropHandler(props: StationPropHandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.station[props.stationKey] === "string") {
-      props.SetStationProperty(props.stationKey, event.target.value)
-    }
-    if (typeof props.station[props.stationKey] === "boolean") {
-      props.SetStationProperty(props.stationKey, event.target.checked)
-    }
-  })
+function StringStationPropHandler(props: StringStationPropHandlerProps) {
+  const set = (value: string) => {
+    props.SetStationProperty(props.stationKey, value)
+  }
 
   return (
-    <Input value={props.station[props.stationKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <StringInput value={props.value} set={set} className={props.className ? props.className : ""} />
+  )
+}
+
+type BooleanStationPropHandlerProps = {
+  stationKey: keyof template_station;
+  value: boolean;
+  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
+  className?: string;
+}
+
+function BooleanStationPropHandler(props: BooleanStationPropHandlerProps) {
+  const set = (value: boolean) => {
+    props.SetStationProperty(props.stationKey, !props.value)
+  }
+
+  return (
+    <BooleanInput value={props.value} set={set} className={props.className ? props.className : ""} />
   )
 }
 
@@ -279,7 +300,7 @@ function SetStationPresentation() {
   const [stationIndex, SetStationIndex] = useRecoilState(Infrastructure().StationIndex)
 
   const Stations: template_station[] = useRecoilValue(StationRepository().Stations);
-  const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station(stationIndex));
+  const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station);
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
 

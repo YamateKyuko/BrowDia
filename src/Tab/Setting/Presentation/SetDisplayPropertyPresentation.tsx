@@ -10,7 +10,7 @@ import {
 } from 'recoil';
 
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
-import { Input } from '../../Presentation/ElementsPresentation'
+import { BooleanInput, ColorInput, NumberInput } from '../../Presentation/ElementsPresentation'
 import DisplayPropertyRepository from '../../../Repository/DisplayPropertyRepository';
 import TimetableFont from './SetTimetableFontPresentation';
 import NamedFont from './SetNamedFontPresentation';
@@ -38,7 +38,7 @@ function Component(props: ComponentProps) {
                     {key == "visibleOuterTerminalOriginSide" && "路線外分岐駅表示"}
                     {key == "visibleOuterTerminalTerminalSide" && "路線外終着駅表示"}
                     {key == "visibleOuterTerminal" && "路線外発着駅表示"}
-                    <DisplayPropertyPropHandler displayProperty={props.displayProperty} displayPropertyPropKey={key} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
+                    <BooleanDisplayPropertyPropHandler displayPropertyPropKey={key} value={props.displayProperty[key] as boolean} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )
               ))}
@@ -49,7 +49,7 @@ function Component(props: ComponentProps) {
                     {key == "timetableTrainWidth" && "時刻表列車幅"}
                     {key == "anySecondIncDec1" && "任意秒移動1"}
                     {key == "anySecondIncDec2" && "任意秒移動2"}
-                    <DisplayPropertyPropHandler displayProperty={props.displayProperty} displayPropertyPropKey={key} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
+                    <NumberDisplayPropertyPropHandler displayPropertyKey={key} value={props.displayProperty[key] as number} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )
               ))}
@@ -71,7 +71,7 @@ function Component(props: ComponentProps) {
                     {key == "stdOpeTimeHigherColor" && "基準より長い"}
                     {key == "stdOpeTimeUndefColor" && "基準未定義"}
                     {key == "stdOpeTimeIllegalColor" && "時刻不正"}
-                    <DisplayPropertyPropHandler displayProperty={props.displayProperty} displayPropertyPropKey={key} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
+                    <ColorDisplayPropertyPropHandler displayPropertyKey={key} value={props.displayProperty[key] as template_rgb} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )
               ))}
@@ -83,30 +83,51 @@ function Component(props: ComponentProps) {
   );
 }
 
-type StationElementshandlerProps = {
-  displayProperty: template_displayProperty;
+type BooleanDisplayPropertyPropHandlerProps = {
   displayPropertyPropKey: keyof template_displayProperty;
+  value: boolean;
   SetDisplayPropertyProp: <K extends keyof template_displayProperty, P extends template_displayProperty[K]>(key: K, property: P) => void;
-  className?: string;
 }
 
-function DisplayPropertyPropHandler(props: StationElementshandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.displayProperty[props.displayPropertyPropKey] === "boolean") {
-      props.SetDisplayPropertyProp(props.displayPropertyPropKey, event.target.checked)
-    }
-    if (typeof props.displayProperty[props.displayPropertyPropKey] === "number") {
-      console.log(Number(event.target.value))
-      props.SetDisplayPropertyProp(props.displayPropertyPropKey, Number(event.target.value))
-    }
-    if (isRgb(props.displayProperty[props.displayPropertyPropKey])) {
-      console.log(event.target.value + "HEX")
-      props.SetDisplayPropertyProp(props.displayPropertyPropKey, HexConverter(event.target.value))
-    }
-  })
+function BooleanDisplayPropertyPropHandler(props: BooleanDisplayPropertyPropHandlerProps) {
+  const set = (value: boolean): void => {
+    props.SetDisplayPropertyProp(props.displayPropertyPropKey, value)
+  }
 
   return (
-    <Input value={props.displayProperty[props.displayPropertyPropKey]} onChange={onChange} className={props.className ? props.className : ""} />
+    <BooleanInput value={props.value} set={set} />
+  )
+}
+
+type NumberDisplayPropertyPropHandlerProps = {
+  displayPropertyKey: keyof template_displayProperty;
+  value: number;
+  SetDisplayPropertyProp: <K extends keyof template_displayProperty, P extends template_displayProperty[K]>(key: K, property: P) => void;
+}
+
+function NumberDisplayPropertyPropHandler(props: NumberDisplayPropertyPropHandlerProps) {
+  const set = (value: number): void => {
+    props.SetDisplayPropertyProp(props.displayPropertyKey, value)
+  }
+
+  return (
+    <NumberInput value={props.value} set={set} />
+  )
+}
+
+type ColorDisplayPropertyPropHandlerProps = {
+  displayPropertyKey: keyof template_displayProperty;
+  value: template_rgb;
+  SetDisplayPropertyProp: <K extends keyof template_displayProperty, P extends template_displayProperty[K]>(key: K, property: P) => void;
+}
+
+function ColorDisplayPropertyPropHandler(props: ColorDisplayPropertyPropHandlerProps) {
+  const set = (value: template_rgb): void => {
+    props.SetDisplayPropertyProp(props.displayPropertyKey, value)
+  }
+
+  return (
+    <ColorInput value={props.value} set={set} />
   )
 }
 
@@ -127,6 +148,5 @@ function SetDisplayPropertyPresentation() {
     />
   )
 }
-
 
 export default SetDisplayPropertyPresentation;

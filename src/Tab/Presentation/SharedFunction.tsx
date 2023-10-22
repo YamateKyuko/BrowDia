@@ -22,18 +22,45 @@ export function HexConverter(value: string): template_rgb {
 	return {r: parseInt(value.slice(0, 2), 16), g: parseInt(value.slice(2, 4), 16), b: parseInt(value.slice(4, 6), 16)}
 }
 
-export function TimeConverter(value: number): string {
+export function SecondsConverter(value: number | null): string {
+  if (value === null) {return "⚪︎"}
 	return (`${Math.floor(value / 3600).toString().padStart(2, " ")}-${Math.floor(value % 3600 / 60).toString().padStart(2, "0")}-${Math.floor(value % 60).toString().padStart(2, "0")}`)
 }
 
-export function SecondsConverter(value: string): number {
+export function MinutesConverter(value: number | null): string {
+  if (value === null) {return "⚪︎"}
+  return (`${Math.floor(value / 3600).toString().padStart(2, " ")}${Math.floor(value % 3600 / 60).toString().padStart(2, "0")}`)
+}
+
+export function TimeConverter(value: string): number {
   for (let i = 0; i <= 9; i += 3) {
     value.substring(i, i + 2)
   }
-  
-  
+
   const values = value.split("-")
   const time: number = Number(values[0].trim()) * 3600 % 86400 + Number(values[1].trim()) * 60 + Number(values[2].trim())
   if (isNaN(time)) {return 0}
 	return time
+}
+
+export function ToString(value: any): string {
+  return String(value);
+  // if (typeof value !== "string") {return ""}
+  // return value.toString();
+}
+
+export const SVGClickPoint = (event: React.MouseEvent<SVGSVGElement, MouseEvent>): DOMPoint => {
+  const target = event.currentTarget
+  const point = target.createSVGPoint()
+
+  point.x = event.clientX
+  point.y = event.clientY
+
+  const ctm = target.getScreenCTM()
+  if (ctm) {
+    const cursorPoint: DOMPoint = point.matrixTransform(ctm.inverse())
+    console.log(cursorPoint)
+    return cursorPoint;
+  }
+  return point;
 }

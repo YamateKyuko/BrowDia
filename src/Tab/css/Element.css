@@ -85,31 +85,19 @@ html {
         
       }
     }
-    > article {
+    & article {
       display: flex;
       width: 100%;
       > aside {
+        background-color: #ffffff;
         width: 16rem;
         position: relative;
-        & section {
+        
+        & fieldset, section {
           position: absolute;
-          width: 12rem;
+          width: 100%;
           height: 100%;
-        }
-        & fieldset {
-          position: absolute;
-          width: 12rem;
-          height: 100%;
-          & :after {
-            position: absolute;
-            content: "";
-            top: 1.25rem;
-            left: 0.0625rem;
-            width: 1.125rem;
-            height: 0.25rem;
-            background-color: #808080;
-            z-index: 1;
-          }
+          overflow-y: scroll;
           .border {
             &:after {
               position: absolute;
@@ -129,11 +117,33 @@ html {
             }
           }
         }
+        & section {
+          padding: 1rem;
+          box-sizing: border-box;
+          > input, div, details {width: 7.5rem;}
+          overflow-y: hidden;
+        }
       }
       & section {
-        overflow-y: auto;
+        overflow-y: scroll;
         height: calc(100vh - 3.25rem);
-        width: calc(100%);
+        width: 100%;
+        & figure {
+          width: 100%;
+          width: fit-content;
+          display: flex;
+          margin: 0;
+          .timetableStation {
+            position: sticky;
+            /* top: 0; */
+            left: 0;
+          }
+          .timetableTimetable {
+            /* position: sticky;
+            top: 0;
+            left: 0; */
+          }
+        }
         & h2 {
           margin: 1rem 1rem 0 1rem;
           font-size: 2rem;
@@ -198,7 +208,7 @@ input[type="img"] {
 }
 
 /* 枠 */
-[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, textarea {
+[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, textarea, .flexButton {
   display: block;
   left: 0;
   
@@ -212,7 +222,7 @@ input[type="img"] {
   
 }
 
-[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details {
+[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, .flexButton {
   height: calc(1em + 0.25rem);
 }
 
@@ -328,8 +338,8 @@ fieldset {
     display: block;
     height: 1.25rem;
     margin: 0.25rem 0 0.25rem 1.25rem;
-    line-height: 1.25rem;
     overflow: hidden;
+    line-height: 1.25rem;
     /* white-space: nowrap; */
   }
 }
@@ -346,8 +356,8 @@ details {
     border-left-color: black;
   }
   & summary {
+    list-style: none;
     padding-left: calc(3rem - 1px) !important;
-    list-style-type: none;
     &::marker {list-style-type: none;}
     &::before {
       top: -2px;
@@ -359,11 +369,12 @@ details {
     position: absolute;
     top: calc(1.25rem - 2px);
     left: -1px;
-    width: 12rem;
-    max-height: calc(8rem - 2px);
+    width: 100%;
+    height: max-content;
+    max-height: 8rem;
     border: 1px solid black;
     background-color: white;
-    box-sizing: border-box !important;
+    /* box-sizing: border-box !important; */
     z-index: 5;
   }
 }
@@ -406,3 +417,23 @@ ul, ol {
 *:has(input) {
   position: relative;
 }
+
+.select {
+  background-color: #000;
+  color: #fff;
+}
+
+.flexButton {
+  display: flex;
+  width: 8rem;
+  justify-content: space-between;
+
+  padding: 0;
+  & * {width: 100%;}
+  & button {
+    height: 100%;
+    border: none;
+    padding: 0;
+  }
+}
+

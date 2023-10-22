@@ -203,3 +203,11 @@ export type template_timetableSide = {
 }
 
 export type template_rowKeyList = keyof template_customTimetableStyle | "track" | "none"
+
+export type template_timetableCell = {
+  value: string;
+  height: number;
+  stationIndex: number;
+  color: string;
+  backgroundColor: string;
+}

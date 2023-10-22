@@ -14,7 +14,7 @@ import DirectionNameRepository from '../../../Repository/DirectionRepositry';
 import { Input } from '../../Presentation/ElementsPresentation'
 import DataRepository from '../../../Repository/DataRepository';
 import RailwayRepository from '../../../Repository/SetRepository';
-import { SecondsConverter, TimeConverter } from '../../Presentation/SharedFunction';
+import { TimeConverter, SecondsConverter } from '../../Presentation/SharedFunction';
 
 type ComponentProps = {
   data: template;
@@ -130,7 +130,7 @@ function RailwayTimePropHandler(props: {
   // const a = JSON.parse(data)
 
   
-  const [value, setValue] = React.useState(TimeConverter(Number(props.railway[props.propKey])))
+  const [value, setValue] = React.useState(SecondsConverter(Number(props.railway[props.propKey])))
   
   if (isNumber(props.railway[props.propKey])) {
     
