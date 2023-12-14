@@ -63,7 +63,6 @@ function Component(props: ComponentProps) {
       props.SetStationIndex(Math.floor((SVGHeight - clickPoint.y) / cellHeight))
       props.SetTrainIndex(Math.floor(clickPoint.x / cellWidth))
     }
-    
 
     SetX(clickPoint.x)
     SetY(clickPoint.y)
@@ -115,10 +114,8 @@ function Component(props: ComponentProps) {
                   fill="none"
                   strokeWidth="1"
                 />
-
               </svg>
             </div>
-            
           </figure>
         </section>
         <Side />
@@ -133,8 +130,6 @@ type TimetableCellsProps = {
   cellWidth: number;
   cellHeight: number;
   fontsize: number;
-  // StationIndex: number;
-  // TrainIndex: number;
 }
 
 function TimetableCells(props: TimetableCellsProps) {
@@ -147,8 +142,6 @@ function TimetableCells(props: TimetableCellsProps) {
           fontsize={props.fontsize}
           cellWidth={props.cellWidth}
           cellHeight={props.cellHeight}
-          // StationIndex={props.StationIndex}
-          // TrainIndex={props.TrainIndex == index}
         />
       ))}
     </g>
@@ -161,8 +154,6 @@ type TimeTableColumnProps = {
   fontsize: number;
   cellWidth: number;
   cellHeight: number;
-  // StationIndex: number;
-  // TrainIndex: boolean;
 }
 
 function TimetableColumn(props: TimeTableColumnProps) {
@@ -176,8 +167,6 @@ function TimetableColumn(props: TimeTableColumnProps) {
           fontsize={props.fontsize}
           cellWidth={props.cellWidth}
           cellHeight={props.cellHeight}
-          // StationIndex={props.StationIndex == timetableCell.stationIndex}
-          // TrainIndex={props.TrainIndex}
         />
       ))}
     </g>
@@ -191,8 +180,6 @@ type TimetableCellProps = {
   fontsize: number;
   cellWidth: number;
   cellHeight: number;
-  // StationIndex: boolean;
-  // TrainIndex: boolean;
 }
 
 function TimetableCell(props: TimetableCellProps) {
@@ -206,7 +193,6 @@ function TimetableCell(props: TimetableCellProps) {
         dominantBaseline="text-before-edge"
         textAnchor="middle"
         fill={props.timetableCell.color}
-        // style={{color: props.timetableCell.color, backgroundColor: props.timetableCell.backgroundColor}}
       >
         {props.timetableCell.value}
       </text>
@@ -226,7 +212,6 @@ function TimetableSide(props: TimetableSideProps) {
     <>
       {props.timetableSide.map((value: template_timetableSide, index: number) => (
         <>
-          
           <text
             x="0"
             y={index * 16}
@@ -244,7 +229,6 @@ function TimetableSide(props: TimetableSideProps) {
           >
             {value.value}
           </text>
-          
         </>
       ))}
     </>

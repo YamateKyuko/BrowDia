@@ -1,13 +1,10 @@
-import React from 'react';
 import StationRepository from '../../../Repository/StationRepository';
-import DirectionRepository from '../../../Repository/DirectionRepositry';
-import DiagramRepository from '../../../Repository/DiagramRepositpry';
 import TrainRepository from '../../../Repository/TrainRepository';
-import { template_diagram, template_station, template_timetableRow, template_timetableSide, template_train, template_timetableCell, template__data, template_trainType } from '../../../Entity/Entity'
+import { template_station, template_timetableRow, template_timetableSide, template_train, template_timetableCell, template__data, template_trainType } from '../../../Entity/Entity'
 // import Presentation from '../Presentation/SetStationPresentation'
-import { selector, selectorFamily, DefaultValue } from 'recoil';
+import { selector } from 'recoil';
 import Infrastructure from '../../../Infrastructure/Infrastructure';
-import { MinutesConverter, RgbConverter, SecondsConverter, ToString } from '../../Presentation/SharedFunction';
+import { MinutesConverter, RgbConverter, ToString } from '../../Presentation/SharedFunction';
 import TrainTypeRepository from '../../../Repository/TrainTypeRepository';
 
 const TimetableUseCase = () => {
@@ -66,7 +63,7 @@ const TimetableUseCase = () => {
       }
 
       const directionalStationIndex = (index: number): number => {
-        if (directionIndex == 1) return directionalStations.length - index - 1
+        if (directionIndex === 1) return directionalStations.length - index - 1
         return index
       } 
 
@@ -126,10 +123,6 @@ const TimetableUseCase = () => {
     get: ({get}) => {
       const timetableRow: template_timetableRow[] = get(TimetableUseCase().timetableRow)
       const timetableCell: template_timetableCell[][] = [[]]
-      const directionIndex: number = get(Infrastructure().DirectionIndex)
-      const diagramIndex: number = get(Infrastructure().DiagramIndex)
-      const diagram: template_diagram = get(DiagramRepository().Diagrams)[diagramIndex]
-
       const directionalTrains = get(TrainRepository().directionalTrains)
 
       const conv = (key: number, train: template_train, _dataCall: (key: keyof template__data) => string): string => {
@@ -175,7 +168,7 @@ const TimetableUseCase = () => {
             const _data = train.timetable._data[row.stationIndex]
             
             if (_data) {
-              if (key == "arrival" || key == "departure") {
+              if (key === "arrival" || key === "departure") {
                 switch (_data.stopType) {
                   case 0:
                     return isRange(row.stationIndex) ? "║" : "…";
@@ -186,9 +179,6 @@ const TimetableUseCase = () => {
                 }
               }
               
-              // if (_data.stopType == 2) {return "⇂"}
-              // if (key == "arrival" || key == "departure") {return MinutesConverter(_data[key])}
-              // if (_data[key] == null) {return "○"}
               return ToString(_data[key]);
             } else {
               return isRange(row.stationIndex) ? "║" : "…"

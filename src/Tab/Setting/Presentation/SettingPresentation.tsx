@@ -1,11 +1,9 @@
 import React from 'react';
-import logo from './logoImg.svg';
 
 import SetPresentation from './SetPresentation'
 import SetDisplayPresentation from './SetDisplayPropertyPresentation'
 import SetStationPresentation from './SetStationPresentation';
 import SetTrainTypePresentation from './SetTrainTypePresentation'
-
 import Infrastructure from '../../../Infrastructure/Infrastructure';
 
 import General from './../../img/GeneralImg.svg';
@@ -13,16 +11,9 @@ import Style from './../../img/StyleImg.svg';
 import Station from './../../img/StationImg.svg';
 import Type from './../../img/TypeImg.svg';
 
-import {
-  RecoilRoot,
-  SetterOrUpdater,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import { template , navArray } from '../../../Entity/Entity';
-import { Input, NavMolecule } from '../../Presentation/ElementsPresentation'
+import { useRecoilState } from 'recoil';
+import { navArray } from '../../../Entity/Entity';
+import { NavMolecule } from '../../Presentation/ElementsPresentation'
 
 
 

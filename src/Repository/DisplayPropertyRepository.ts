@@ -56,7 +56,7 @@ const DisplayPropertyRepository = () => {
   //     set(
   //       Stations,
   //       newValue instanceof DefaultValue ? newValue :
-  //       (prevState: template_station[]) => (prevState.map((station: template_station, mapIndex: number) => (mapIndex == index ? newValue : station)))
+  //       (prevState: template_station[]) => (prevState.map((station: template_station, mapIndex: number) => (mapIndex === index ? newValue : station)))
   //     )
   //   }
   // })

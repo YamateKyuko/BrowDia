@@ -155,7 +155,7 @@ function TimetableFont(props: TimetableFontProps) {
     props.SetDisplayPropertyProp(
       "timetableFont",
       props.displayProperty.timetableFont.map(
-        (timetableFont: template_timetableFont, mapIndex: number) => (mapIndex == index ? newValue : timetableFont)
+        (timetableFont: template_timetableFont, mapIndex: number) => (mapIndex === index ? newValue : timetableFont)
       )
     )
   }

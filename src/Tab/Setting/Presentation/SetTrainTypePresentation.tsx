@@ -1,28 +1,19 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
-import { template, template_station, template_trainType, template_listStyle, template_rgb } from '../../../Entity/Entity'
+import { template_trainType, template_listStyle, template_rgb } from '../../../Entity/Entity'
 
 import {
-  RecoilRoot,
-  atom,
-  selector,
   useRecoilState,
   useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
   SetterOrUpdater
 } from 'recoil';
 
 import Infrastructure from '../../../Infrastructure/Infrastructure';
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
-import { BooleanInput, ColorInput, IndexListbox, StringInput } from '../../Presentation/ElementsPresentation'
+import {  ColorInput, IndexListbox, StringInput } from '../../Presentation/ElementsPresentation'
 
-import { isRgb, HexConverter } from '../../Presentation/SharedFunction';
 import TrainTypeRepository from '../../../Repository/TrainTypeRepository';
-
-type KeyOfCustomTimetableStyle = keyof template_station["customTimetableStyle"]
 
 const lineStyleList: template_listStyle[] = [
   {name: "実線", value: "Jissen", strokeDasharray: ""},
@@ -31,7 +22,7 @@ const lineStyleList: template_listStyle[] = [
   {name: "一点鎖線", value: "Ittensasen", strokeDasharray: "8, 2, 2, 2"}
 ]
 
-const lineStyleListIndexConverter = (lineStyle: template_trainType["lineStyle"]): number => lineStyleList.findIndex((value: template_listStyle, index: number) => value.value == lineStyle)
+const lineStyleListIndexConverter = (lineStyle: template_trainType["lineStyle"]): number => lineStyleList.findIndex((value: template_listStyle, index: number) => value.value === lineStyle)
 
 type ComponentProps = {
   trainTypes: template_trainType[];
@@ -43,129 +34,106 @@ type ComponentProps = {
 }
 
 function Component(props: ComponentProps) {
+  return (
+    <>
+      <TrainTypeIndexHandler trainTypes={props.trainTypes} trainTypeIndex={props.stationIndex} setTrainTypeIndex={props.SetTrainTypeIndex} />
+      {props.trainType
+        ? <Section trainType={props.trainType} stationIndex={props.stationIndex} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+        : <NotFound />
+      }
+    </>
+  );
+}
+
+function NotFound() {
+  return (
+    <section>
+      <h2>種別が見つかりませんでした。</h2>
+      <dl>
+        <dd>
+          <ul>
+            <li>
+              種別を作成してください。
+            </li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+  )
+}
+
+type SectionProps = {
+  trainType: template_trainType;
+  stationIndex: number;
+  SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
+}
+
+function Section(props: SectionProps) {
   const lineStyleHandler = (index: number): void => {
     props.SetTrainTypeProperty("lineStyle", lineStyleList[index].value)
   }
 
   return (
-    <>
-      <aside>
-        <StationIndexHandler trainTypes={props.trainTypes} trainTypeIndex={props.stationIndex} setTrainTypeIndex={props.SetTrainTypeIndex} />
-      </aside>
-      <section>
-        <h2 data-logo={props.stationIndex + 1}>
-          <StringTrainTypePropHandler propKey="name" value={props.trainType.name} SetTrainTypeProperty={props.SetTrainTypeProperty} />
-        </h2>
-        <dl>
-          <dt>
-            
-          </dt>
-          <dd>
-            <ul>
-              <li>
-                略称
-                <StringTrainTypePropHandler propKey="abbrName" value={props.trainType.abbrName} SetTrainTypeProperty={props.SetTrainTypeProperty} />
-              </li>
-              <li>
-                フォント番号
-                <details>
-                  <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
-                  <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
-                </details>
-              </li>
-              <li>
-                文字色
-                <ColorTrainTypePropHandler propKey="textColor" value={props.trainType.textColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
-              </li>
-              <li>
-                線色
-                <ColorTrainTypePropHandler propKey="strokeColor" value={props.trainType.strokeColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
-              </li>
-              <li>
-                背景色
-                <ColorTrainTypePropHandler propKey="backgroundColor" value={props.trainType.backgroundColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
-              </li>
-              <li>
-                線のスタイル
-                <details>
-                  <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
-                  <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
-                </details>
-              </li>
-              {/* "SenStyle_Jissen", "SenStyle_Hasen", "SenStyle_Tensen", "SenStyle_Ittensasen" */}
-            </ul>
-          </dd>
-        </dl>
-      </section>
-    </>
-  );
+    <section>
+      <h2 data-logo={props.stationIndex + 1}>
+        <StringTrainTypePropHandler propKey="name" value={props.trainType.name} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+      </h2>
+      <dl>
+        <dt>
+          
+        </dt>
+        <dd>
+          <ul>
+            <li>
+              略称
+              <StringTrainTypePropHandler propKey="abbrName" value={props.trainType.abbrName} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+            </li>
+            <li>
+              フォント番号
+              <details>
+                <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
+                <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
+              </details>
+            </li>
+            <li>
+              文字色
+              <ColorTrainTypePropHandler propKey="textColor" value={props.trainType.textColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+            </li>
+            <li>
+              線色
+              <ColorTrainTypePropHandler propKey="strokeColor" value={props.trainType.strokeColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+            </li>
+            <li>
+              背景色
+              <ColorTrainTypePropHandler propKey="backgroundColor" value={props.trainType.backgroundColor} SetTrainTypeProperty={props.SetTrainTypeProperty} />
+            </li>
+            <li>
+              線のスタイル
+              <details>
+                <summary data-logo={lineStyleListIndexConverter(props.trainType.lineStyle) + 1}>{lineStyleList[lineStyleListIndexConverter(props.trainType.lineStyle)].name}</summary>
+                <IndexListbox values={lineStyleList} selectedIndex={lineStyleListIndexConverter(props.trainType.lineStyle)} set={lineStyleHandler} />
+              </details>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+  )
 }
 
-type CustomTimetableStyleCheckboxProps = {
-  station: template_station;
-  PropertyKey: keyof template_station["customTimetableStyle"];
-  ArrayIndex: number;
-  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
-}
-
-// function CustomTimetableStyleInput(props: CustomTimetableStyleCheckboxProps) {
-
-//   const SetCustomTimetableStyle: React.ChangeEventHandler<HTMLInputElement> = (() => {
-//     props.SetStationProperty(
-//       "customTimetableStyle",
-//         {...props.station.customTimetableStyle,
-//         [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex == index ? !property : property))}
-//     )
-//   })
-
-//   return (
-//     <>
-//       <StringInput value={props.station.customTimetableStyle[props.PropertyKey][props.ArrayIndex]} onChange={SetCustomTimetableStyle} />
-//     </>
-//   )
-// }
-
-type stationIndexHandlerProps = {
+type TrainTypeIndexHandlerProps = {
   trainTypes: template_trainType[];
   trainTypeIndex: number;
   setTrainTypeIndex: SetterOrUpdater<number>;
 }
 
-function StationIndexHandler(props: stationIndexHandlerProps) {
+function TrainTypeIndexHandler(props: TrainTypeIndexHandlerProps) {
   const set = (index: number): void => {
     props.setTrainTypeIndex(index)
   }
 
-  return (<IndexListbox values={props.trainTypes} selectedIndex={props.trainTypeIndex} set={set} />)
+  return (<aside><IndexListbox values={props.trainTypes} selectedIndex={props.trainTypeIndex} set={set} /></aside>)
 }
-
-// type TrainTypePropHandlerProps = {
-//   trainType: template_trainType;
-//   propKey: keyof template_trainType;
-//   SetTrainTypeProperty: <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P) => void;
-//   className?: string;
-// }
-
-// function TrainTypePropHandler(props: TrainTypePropHandlerProps) {
-//   const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-//     if (typeof props.trainType[props.propKey] === "string") {
-//       props.SetTrainTypeProperty(props.propKey, event.target.value)
-//     }
-//     if (typeof props.trainType[props.propKey] === "number") {
-//       props.SetTrainTypeProperty(props.propKey, Number(event.target.value))
-//     }
-//     if (typeof props.trainType[props.propKey] === "boolean") {
-//       props.SetTrainTypeProperty(props.propKey, event.target.checked)
-//     }
-//     if (isRgb(props.trainType[props.propKey])) {
-//       props.SetTrainTypeProperty(props.propKey, HexConverter(event.target.value))
-//     }
-//   })
-
-//   return (
-//     <Input value={props.trainType[props.propKey]} onChange={onChange} className={props.className ? props.className : ""} />
-//   )
-// }
 
 type StringTrainTypePropHandlerProps = {
   propKey: keyof template_trainType;
@@ -207,8 +175,6 @@ function SetTrainTypePresentation() {
   const [trainType, setTrainType] = useRecoilState<template_trainType>(TrainTypeRepository().trainType(trainTypeIndex));
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
-
-  const Atom: template = useRecoilValue(Infrastructure().Atom);
 
   const SetTrainTypeProperty = <K extends keyof template_trainType, P extends template_trainType[K]>(key: K, property: P): void => {
     setTrainType((prev: template_trainType) => ({...prev, [key]: property}))

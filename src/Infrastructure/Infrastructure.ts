@@ -1,13 +1,13 @@
-import JSON from '../Data.json'
 import { template } from '../Entity/Entity';
+import { initial } from '../Initial/Initial';
 import {
   atom,
 } from 'recoil';
 
 const Infrastructure = () => {
-  const Atom = atom<template>({key: "Data", default: JSON as template,})
+  const Atom = atom<template>({key: "Data", default: initial,})
 
-  const pageIndex = atom<number>({key: "pageIndex", default: 3,})
+  const pageIndex = atom<number>({key: "pageIndex", default: 0,})
   const SettingIndex = atom<number>({key: "settingIndex", default: 0,})
   const sideIndex = atom<number>({key: "sideIndex", default: 0,})
 
@@ -22,8 +22,10 @@ const Infrastructure = () => {
   const TrainIndex = atom<number>({key: "TrainIndex", default: 0,})
 
   const FontSize = atom<number>({key: "FontSize", default: 16,})
+
+  const stationTimetableType = atom<number>({key: "stationTimetableType", default: 0,})
   
-  return { Atom, PageIndex: pageIndex, SettingIndex, sideIndex, DirectionIndex, StationIndex, TrainTypeIndex, ID, DiagramIndex, FontSize, TrainIndex };
+  return { Atom, PageIndex: pageIndex, SettingIndex, sideIndex, DirectionIndex, StationIndex, TrainTypeIndex, ID, DiagramIndex, FontSize, TrainIndex, stationTimetableType };
 }
 
 export default Infrastructure;

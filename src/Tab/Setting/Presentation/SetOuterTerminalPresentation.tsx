@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
 import { template_station, template_outerTerminal } from '../../../Entity/Entity'
 
-import { Input } from '../../Presentation/ElementsPresentation'
+import { BooleanInput, ButtonInput, StringInput } from '../../Presentation/ElementsPresentation'
 
 type TracksComponentProps = {
   outerTerminal: template_outerTerminal[] | null;
@@ -17,10 +16,6 @@ type TracksComponentProps = {
 }
 
 function OuterTerminalComponent(props: TracksComponentProps) {
-  const onClick = (): void => {
-    props.AddOuterTerminalChild()
-  }
-
   return (
     <>
       <dt>路線外発着駅</dt>
@@ -46,7 +41,6 @@ function OuterTerminalComponent(props: TracksComponentProps) {
                         outerTerminal={outerTerminal}
                         SetOuterTerminalArray={props.SetOuterTerminalChild}
                         DeleteOuterTerminalArray={props.DeleteOuterTerminalChild}
-                        AddOuterTerminalArray={props.AddOuterTerminalChild}
                         index={index}
                         key={index}
                       />
@@ -80,20 +74,18 @@ type NullHandlerProps = {
 }
 
 function NullHandler(props: NullHandlerProps) {
-  const onChange = () => {
+  const set = () => {
     props.nullChange()
   }
 
-  return (<Input value={!!props.outerTerminal} onChange={onChange} />)
+  return (<BooleanInput value={!!props.outerTerminal} set={set} />)
 }
 
 type OuterTerminalChildProps = {
   outerTerminal: template_outerTerminal;
-  index: number;
-
   SetOuterTerminalArray: (index: number, newValue: template_outerTerminal) => void;
   DeleteOuterTerminalArray: (index: number) => void;
-  AddOuterTerminalArray: () => void;
+  index: number;
 }
 
 function OuterTerminalChild(props: OuterTerminalChildProps) {
@@ -105,9 +97,7 @@ function OuterTerminalChild(props: OuterTerminalChildProps) {
     <OuterTerminalChildComponent
       outerTerminal={props.outerTerminal}
       SetOuterTerminalArrayProperty={SetOuterTerminalChildProperty}
-      // SetOuterTerminalArray={props.SetOuterTerminalArray}
       DeleteOuterTerminalArray={props.DeleteOuterTerminalArray}
-      AddOuterTerminalArray={props.AddOuterTerminalArray}
       index={props.index}
     />
   )
@@ -115,12 +105,9 @@ function OuterTerminalChild(props: OuterTerminalChildProps) {
 
 type OuterTerminalChildComponentProps = {
   outerTerminal: template_outerTerminal;
-  index: number;
-
   SetOuterTerminalArrayProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
-  // SetOuterTerminalArray: (index: number, newValue: template_outerTerminal) => void;
   DeleteOuterTerminalArray: (index: number) => void;
-  AddOuterTerminalArray: () => void;
+  index: number;
 }
 
 function OuterTerminalChildComponent(props: OuterTerminalChildComponentProps) {
@@ -129,41 +116,37 @@ function OuterTerminalChildComponent(props: OuterTerminalChildComponentProps) {
   return (
     <tr className="outerTerminalsTr">
       <td><div className="data-logo">{props.index + 1}</div></td>
-      <th><OuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} PropertyKey="name" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} /></th>
-      <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="timetableName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
-      <CanNullOuterTerminalChildPropertyHandler outerTerminal={props.outerTerminal} propertyKey="diagramName" SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
+      <th><OuterTerminalChildPropHandler propKey="name" value={props.outerTerminal.name} SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} /></th>
+      <CanNullOuterTerminalChildPropHandler propKey="timetableName" value={props.outerTerminal.timetableName} SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
+      <CanNullOuterTerminalChildPropHandler propKey="diagramName" value={props.outerTerminal.diagramName} SetOuterTerminalProperty={props.SetOuterTerminalArrayProperty} />
       <td><OuterTerminalDelete index={props.index} DeleteOuterTerminalArray={props.DeleteOuterTerminalArray} /></td>
     </tr>
   )
 }
 
-type CanNullOuterTerminalChildPropertyHandlerProps = {
-  outerTerminal: template_outerTerminal;
-  propertyKey: keyof template_outerTerminal;
+type CanNullOuterTerminalChildPropHandlerProps = {
+  propKey: keyof template_outerTerminal;
+  value: string | null;
   SetOuterTerminalProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
-  className?: string;
 }
 
-function CanNullOuterTerminalChildPropertyHandler(props: CanNullOuterTerminalChildPropertyHandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLElement> = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.SetOuterTerminalProperty(props.propertyKey, event.target.value)
-  }
+function CanNullOuterTerminalChildPropHandler(props: CanNullOuterTerminalChildPropHandlerProps) {
+  const set = (value: string) => props.SetOuterTerminalProperty(props.propKey, value)
 
-  const nullOnChange = () => {
-    if (props.outerTerminal[props.propertyKey] === null) {props.SetOuterTerminalProperty(props.propertyKey, "")}
-    if (props.outerTerminal[props.propertyKey] !== null) {props.SetOuterTerminalProperty(props.propertyKey, null)}
+  const nullSet = () => {
+    if (!props.value) props.SetOuterTerminalProperty(props.propKey, "")
+    else props.SetOuterTerminalProperty(props.propKey, null)
   }
 
   return (
     <>
       <td>
-        {typeof props.outerTerminal[props.propertyKey] == "string" ?
-          <Input value={props.outerTerminal[props.propertyKey]} onChange={onChange} />
-        :
-          <Input value="" onChange={onChange} disabled={true} />
+        {props.value
+          ? <StringInput value={props.value} set={set} />
+          : <StringInput value={""} set={() => {}} disabled={true} />
         }
       </td>
-      <td><Input value={props.outerTerminal[props.propertyKey] !== null} onChange={nullOnChange}/></td>
+      <td><BooleanInput value={!!props.value} set={nullSet} /></td>
     </>
   )
 }
@@ -174,32 +157,19 @@ type OuterTerminalDeleteProps = {
 }
 
 function OuterTerminalDelete(props: OuterTerminalDeleteProps) {
-  const OnClick: React.MouseEventHandler<HTMLButtonElement> = (() => {
-    props.DeleteOuterTerminalArray(props.index)
-  })
-
-  return (
-    <button onClick={OnClick}>削除</button>
-  )
+  const set = () => props.DeleteOuterTerminalArray(props.index)
+  return <ButtonInput value={"削除"} set={set} />
 }
 
 type OuterTerminalChildPropertyHandlerProps = {
-  outerTerminal: template_outerTerminal;
-  PropertyKey: keyof template_outerTerminal;
+  propKey: keyof template_outerTerminal;
+  value: string;
   SetOuterTerminalProperty: <K extends keyof template_outerTerminal, P extends template_outerTerminal[K]>(key: K, property: P) => void;
-  className?: string;
 }
 
-function OuterTerminalChildPropertyHandler(props: OuterTerminalChildPropertyHandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.outerTerminal[props.PropertyKey] === "string") {
-      props.SetOuterTerminalProperty(props.PropertyKey, event.target.value)
-    }
-  })
-
-  return (
-    <Input value={props.outerTerminal[props.PropertyKey]} onChange={onChange} className={props.className ? props.className : ""} />
-  )
+function OuterTerminalChildPropHandler(props: OuterTerminalChildPropertyHandlerProps) {
+  const set = (value:string) => props.SetOuterTerminalProperty(props.propKey, value)
+  return <StringInput value={props.value} set={set} />
 }
 
 type OuterTerminalProps = {
@@ -213,7 +183,7 @@ function OuterTerminal(props: OuterTerminalProps) {
     if (props.station.outerTerminal) {
       props.SetStationProperty(
         "outerTerminal",
-        props.station.outerTerminal.map((outerTerminal: template_outerTerminal, mapIndex: number) => (mapIndex == index ? newValue : outerTerminal))
+        props.station.outerTerminal.map((outerTerminal: template_outerTerminal, mapIndex: number) => (mapIndex === index ? newValue : outerTerminal))
       )
     }
     

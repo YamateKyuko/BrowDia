@@ -45,7 +45,7 @@ const TrainRepository = () => {
       set(
         trains,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: template_train[][]) => (prevState.map((trains: template_train[], mapIndex: number) => (mapIndex == directionIndex ? newValue : trains)))
+        (prevState: template_train[][]) => (prevState.map((trains: template_train[], mapIndex: number) => (mapIndex === directionIndex ? newValue : trains)))
       )
     }
   })
@@ -63,7 +63,7 @@ const TrainRepository = () => {
       set(
         directionalTrains,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: template_train[]) => (prevState.map((train: template_train, mapIndex: number) => (mapIndex == trainIndex ? newValue : train)))
+        (prevState: template_train[]) => (prevState.map((train: template_train, mapIndex: number) => (mapIndex === trainIndex ? newValue : train)))
       )
     }
   })

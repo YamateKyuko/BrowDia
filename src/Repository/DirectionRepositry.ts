@@ -40,15 +40,15 @@ const DirectionNameRepository = () => {
     get: (index: number) => ({get}) => {
       const directionName: string = get(DirectionNameSelector)[index];
       let directionImg: string = ""
-      if (directionName == "上り") {directionImg = InImg}
-      if (directionName == "上り") {directionImg = OutImg}
+      if (directionName === "上り") {directionImg = InImg}
+      if (directionName === "上り") {directionImg = OutImg}
       return directionName;
     },
     set: (index: number) => ({set}, newValue) => {
       set(
         DirectionNameSelector,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: string[]) => (prevState.map((directionName: string, mapIndex: number) => (mapIndex == index ? newValue : directionName)))
+        (prevState: string[]) => (prevState.map((directionName: string, mapIndex: number) => (mapIndex === index ? newValue : directionName)))
       )
     }
   })

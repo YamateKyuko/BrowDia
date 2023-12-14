@@ -34,10 +34,10 @@ function Component(props: ComponentProps) {
               {(Object.keys(props.displayProperty) as (keyof template_displayProperty)[]).map((key: keyof template_displayProperty, index: number) => (
                 (typeof props.displayProperty[key] === "boolean" &&
                   <li key={index}>
-                    {key == "visibleTrainName" && "列車名表示"}
-                    {key == "visibleOuterTerminalOriginSide" && "路線外分岐駅表示"}
-                    {key == "visibleOuterTerminalTerminalSide" && "路線外終着駅表示"}
-                    {key == "visibleOuterTerminal" && "路線外発着駅表示"}
+                    {key === "visibleTrainName" && "列車名表示"}
+                    {key === "visibleOuterTerminalOriginSide" && "路線外分岐駅表示"}
+                    {key === "visibleOuterTerminalTerminalSide" && "路線外終着駅表示"}
+                    {key === "visibleOuterTerminal" && "路線外発着駅表示"}
                     <BooleanDisplayPropertyPropHandler displayPropertyPropKey={key} value={props.displayProperty[key] as boolean} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )
@@ -45,10 +45,10 @@ function Component(props: ComponentProps) {
               {(Object.keys(props.displayProperty) as (keyof template_displayProperty)[]).map((key: keyof template_displayProperty, index: number) => (
                 (typeof props.displayProperty[key] === "number" &&
                   <li key={index}>
-                    {key == "stationNameLength" && "時刻表駅名文字数"}
-                    {key == "timetableTrainWidth" && "時刻表列車幅"}
-                    {key == "anySecondIncDec1" && "任意秒移動1"}
-                    {key == "anySecondIncDec2" && "任意秒移動2"}
+                    {key === "stationNameLength" && "時刻表駅名文字数"}
+                    {key === "timetableTrainWidth" && "時刻表列車幅"}
+                    {key === "anySecondIncDec1" && "任意秒移動1"}
+                    {key === "anySecondIncDec2" && "任意秒移動2"}
                     <NumberDisplayPropertyPropHandler displayPropertyKey={key} value={props.displayProperty[key] as number} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )
@@ -63,14 +63,14 @@ function Component(props: ComponentProps) {
               {(Object.keys(props.displayProperty) as (keyof template_displayProperty)[]).map((key: keyof template_displayProperty, index: number) => (
                 (isRgb(props.displayProperty[key]) &&
                   <li key={index}>
-                    {key == "diagramTextColor" && "ﾀﾞｲﾔ文字"}
-                    {key == "diagramBackgroundColor" && "ﾀﾞｲﾔ背景"}
-                    {key == "diagramTrainColor" && "ﾀﾞｲﾔ列車"}
-                    {key == "diagramAxisColor" && "ﾀﾞｲﾔ軸"}
-                    {key == "stdOpeTimeLowerColor" && "基準より短い"}
-                    {key == "stdOpeTimeHigherColor" && "基準より長い"}
-                    {key == "stdOpeTimeUndefColor" && "基準未定義"}
-                    {key == "stdOpeTimeIllegalColor" && "時刻不正"}
+                    {key === "diagramTextColor" && "ﾀﾞｲﾔ文字"}
+                    {key === "diagramBackgroundColor" && "ﾀﾞｲﾔ背景"}
+                    {key === "diagramTrainColor" && "ﾀﾞｲﾔ列車"}
+                    {key === "diagramAxisColor" && "ﾀﾞｲﾔ軸"}
+                    {key === "stdOpeTimeLowerColor" && "基準より短い"}
+                    {key === "stdOpeTimeHigherColor" && "基準より長い"}
+                    {key === "stdOpeTimeUndefColor" && "基準未定義"}
+                    {key === "stdOpeTimeIllegalColor" && "時刻不正"}
                     <ColorDisplayPropertyPropHandler displayPropertyKey={key} value={props.displayProperty[key] as template_rgb} SetDisplayPropertyProp={props.SetDisplayPropertyProp} />
                   </li>
                 )

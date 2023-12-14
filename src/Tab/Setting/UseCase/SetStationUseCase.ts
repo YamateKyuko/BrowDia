@@ -19,7 +19,7 @@ const SetStaionUseCase = (() => {
       const brunchList: BrunchOrderType[] = staions.map((station: template_station, index: number) => {
         const BrunchOrder: BrunchOrderType[] = []
         if (station.brunchCoreStationIndex != null) {
-          for (let i: number = 0; i == index; i++) {
+          for (let i: number = 0; i === index; i++) {
 
           }
         }

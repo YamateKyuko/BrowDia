@@ -211,3 +211,15 @@ export type template_timetableCell = {
   color: string;
   backgroundColor: string;
 }
+
+export type template_stationTimetable_data = {
+  // trainIndex: number;
+  // type: number;
+  
+  value: string;
+  stopType: number;
+  color: string;
+  backgroundColor: string;
+  traintype: string;
+  terminalStation: string;
+}

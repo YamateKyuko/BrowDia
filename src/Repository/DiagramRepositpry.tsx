@@ -44,7 +44,7 @@ const DiagramRepository = () => {
       set(
         Diagrams,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex == diagramIndex ? newValue : diagram)))
+        (prevState: template_diagram[]) => (prevState.map((diagram: template_diagram, mapIndex: number) => (mapIndex === diagramIndex ? newValue : diagram)))
       )
     }
   })

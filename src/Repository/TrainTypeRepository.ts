@@ -3,15 +3,9 @@ import Infrastructure from '../Infrastructure/Infrastructure';
 
 import { template, template_trainType } from '../Entity/Entity';
 import {
-  RecoilRoot,
-  atom,
   selector,
-  useRecoilState,
-  useRecoilValue,
   DefaultValue,
   selectorFamily,
-  atomFamily,
-  useSetRecoilState,
   RecoilState
 } from 'recoil';
 
@@ -41,7 +35,7 @@ const TrainTypeRepository = () => {
       set(
         trainTypes,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: template_trainType[]) => (prevState.map((trainType: template_trainType, mapIndex: number) => (mapIndex == index ? newValue : trainType)))
+        (prevState: template_trainType[]) => (prevState.map((trainType: template_trainType, mapIndex: number) => (mapIndex === index ? newValue : trainType)))
       )
     }
   })

@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
-import { template, template_customTimetableStyle, template_station, template_timetable, template_timetableStyle, template_track } from '../../../Entity/Entity'
+import { template_station, template_timetableStyle, template_track } from '../../../Entity/Entity'
 
 import {
   useRecoilState,
@@ -17,10 +16,6 @@ import CustomTimetableStyle from './CustomTimetablePresentation';
 import { BooleanInput, IndexListbox, StringInput, Track } from '../../Presentation/ElementsPresentation'
 import Tracks from './TracksPresentation';
 import OuterTerminal from './SetOuterTerminalPresentation';
-import { type } from 'os';
-
-type KeyOfTimetableStyle = keyof template_timetableStyle
-type KeyOfCustomTimetableStyle = keyof template_customTimetableStyle
 
 type ComponentProps = {
   stations: template_station[];
@@ -34,97 +29,125 @@ type ComponentProps = {
 function Component(props: ComponentProps) {
   return (
     <>
-      <aside>
-        <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
-      </aside>
-      <section>
-        <h2 data-logo={props.stationIndex + 1}>
-          <StringStationPropHandler stationKey="name" value={props.station.name} SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
-        </h2>
-        <dl>
-          <dt>
-            一般
-          </dt>
-          <dd>
-            <ul>
-              <li>
-                略称
-                <StringStationPropHandler stationKey="abbrName" value={props.station.abbrName} SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                主要駅
-                <BooleanStationPropHandler stationKey="isMain" value={props.station.isMain} SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                下線
-                <BooleanStationPropHandler stationKey="border" value={props.station.border} SetStationProperty={props.SetStationProperty} />
-              </li>
-              <li>
-                ダイヤ番線表示
-                <BooleanStationPropHandler stationKey="visibleDiagramTrack" value={props.station.visibleDiagramTrack} SetStationProperty={props.SetStationProperty} />
-              </li>
-              <TimetableStyle
-                station={props.station}
-                directionName={props.directionName}
-                SetStationProperty={props.SetStationProperty}
-              />
-              <li>
-                <table>
-                  <thead>
-                    <tr><th></th><td>駅</td><td>有無</td></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>支線分岐駅</th>
-                      <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
-                    </tr>
-                    <tr>
-                      <th>環状線開始駅</th>
-                      <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
-                    </tr>
-                  </tbody>
-                </table>
-              </li>
-              
-            </ul>
-          </dd>
-          <CustomTimetableStyle
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <OuterTerminal
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <Tracks
-            station={props.station}
-            directionName={props.directionName}
-            SetStationProperty={props.SetStationProperty}
-          />
-          <dt>本線</dt>
-          <dd>
-            <ul>
-              {props.directionName.map((directionName: string, index: number) => (
-                <li key={index}>
-                  {directionName}本線
-
-                  {/* <details> */}
-                    {/* <summary data-logo={index + 1}>{props.station.tracks.length > props.station.mainTrack[index] ? props.station.tracks[props.station.mainTrack[index]].name : "不正な値"}</summary> */}
-                    <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
-                  {/* </details> */}
-                </li>
-              ))}
-            </ul>
-          </dd>
-          <dt>
-            <button>削除</button>
-          </dt>
-        </dl>
-      </section>
+      <StationIndexHandler stations={props.stations} stationIndex={props.stationIndex} setStationIndex={props.SetStationIndex} />
+      {props.station
+        ? <Section stations={props.stations} station={props.station} stationIndex={props.stationIndex} SetStationProperty={props.SetStationProperty} directionName={props.directionName} />
+        : <NotFound />
+      }
     </>
   );
+}
+
+function NotFound() {
+  return (
+    <section>
+      <h2>駅が見つかりませんでした。</h2>
+      <dl>
+        <dd>
+          <ul>
+            <li>
+              駅を作成してください。
+            </li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+  )
+}
+
+type SectionProps = {
+  stations: template_station[];
+  station: template_station;
+  stationIndex: number;
+  SetStationProperty: <K extends keyof template_station, P extends template_station[K]>(key: K, property: P) => void;
+  directionName: string[];
+}
+
+function Section(props: SectionProps) {
+  return (
+    <section>
+      <h2 data-logo={props.stationIndex + 1}>
+        <StringStationPropHandler stationKey="name" value={props.station.name} SetStationProperty={props.SetStationProperty} className={props.station.isMain ? "bold" : ""} />
+      </h2>
+      <dl>
+        <dt>
+          一般
+        </dt>
+        <dd>
+          <ul>
+            <li>
+              略称
+              <StringStationPropHandler stationKey="abbrName" value={props.station.abbrName} SetStationProperty={props.SetStationProperty} />
+            </li>
+            <li>
+              主要駅
+              <BooleanStationPropHandler stationKey="isMain" value={props.station.isMain} SetStationProperty={props.SetStationProperty} />
+            </li>
+            <li>
+              下線
+              <BooleanStationPropHandler stationKey="border" value={props.station.border} SetStationProperty={props.SetStationProperty} />
+            </li>
+            <li>
+              ダイヤ番線表示
+              <BooleanStationPropHandler stationKey="visibleDiagramTrack" value={props.station.visibleDiagramTrack} SetStationProperty={props.SetStationProperty} />
+            </li>
+            <TimetableStyle
+              station={props.station}
+              directionName={props.directionName}
+              SetStationProperty={props.SetStationProperty}
+            />
+            <li>
+              <table>
+                <thead>
+                  <tr><th></th><td>駅</td><td>有無</td></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>支線分岐駅</th>
+                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="brunchCoreStationIndex" SetStationProperty={props.SetStationProperty} />
+                  </tr>
+                  <tr>
+                    <th>環状線開始駅</th>
+                    <CanNullStationPropStationIndexHandler stations={props.stations} station={props.station} propKey="loopOriginStationIndex" SetStationProperty={props.SetStationProperty} />
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            
+          </ul>
+        </dd>
+        <CustomTimetableStyle
+          station={props.station}
+          directionName={props.directionName}
+          SetStationProperty={props.SetStationProperty}
+        />
+        <OuterTerminal
+          station={props.station}
+          directionName={props.directionName}
+          SetStationProperty={props.SetStationProperty}
+        />
+        <Tracks
+          station={props.station}
+          directionName={props.directionName}
+          SetStationProperty={props.SetStationProperty}
+        />
+        <dt>本線</dt>
+        <dd>
+          <ul>
+            {props.directionName.map((directionName: string, index: number) => (
+              <li key={index}>
+                {directionName}本線
+                  <MainTrackHandler index={index} setStationProperty={props.SetStationProperty} mainTrack={props.station.mainTrack} tracks={props.station.tracks} />
+              </li>
+            ))}
+          </ul>
+        </dd>
+        <dt>
+          <button>削除</button>
+        </dt>
+      </dl>
+    </section>
+  )
 }
 
 type TimetableStyleProps = {
@@ -151,8 +174,8 @@ function TimetableStyle(props: TimetableStyleProps) {
             {(Object.keys(props.station.timetableStyle) as [keyof template_timetableStyle]).map((propertyKey: keyof template_timetableStyle, propertyIndex: number) => (
               <tr className={propertyKey} key={propertyIndex}>
                 <th>
-                  {propertyKey == "arrival" && "到着"}
-                  {propertyKey == "departure" && "発車"}
+                  {propertyKey === "arrival" && "到着"}
+                  {propertyKey === "departure" && "発車"}
                 </th>
                 {props.station.customTimetableStyle[propertyKey].map((arrayElement: boolean, arrayIndex: number) => (
                   <td key={arrayIndex}>
@@ -180,7 +203,7 @@ function TimetableStyleInput(props: TimetableStyleInputProps) {
     props.SetStationProperty(
       "timetableStyle",
         {...props.station.customTimetableStyle,
-        [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex == index ? !property : property))}
+        [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex === index ? !property : property))}
     )
   }
 
@@ -213,7 +236,7 @@ function CanNullStationPropStationIndexHandler(props: CanNullStationPropStationI
   return (
     <>
       <td>
-        {typeof selectedIndex == "number" ?
+        {typeof selectedIndex === "number" ?
           <details>
             <summary data-logo={selectedIndex + 1}>{props.stations[selectedIndex].name}</summary>
             <IndexListbox values={props.stations} selectedIndex={selectedIndex} set={set} />
@@ -238,7 +261,7 @@ function StationIndexHandler(props: stationIndexHandlerProps) {
     props.setStationIndex(index)
   }
 
-  return (<IndexListbox values={props.stations} selectedIndex={props.stationIndex} set={set} />)
+  return (<aside><IndexListbox values={props.stations} selectedIndex={props.stationIndex} set={set} /></aside>)
 }
 
 type MainTrackHandlerProps = {
@@ -254,7 +277,7 @@ function MainTrackHandler(props: MainTrackHandlerProps) {
     props.setStationProperty(
       "mainTrack",
       props.mainTrack.map((mainTrack: number, mapIndex: number) => (
-        props.index == mapIndex ? value : mainTrack
+        props.index === mapIndex ? value : mainTrack
       ))
     )
   }
@@ -303,8 +326,6 @@ function SetStationPresentation() {
   const [Station, SetStation]: [template_station, SetterOrUpdater<template_station>] = useRecoilState(StationRepository().Station);
 
   const DirectionName: string[] = useRecoilValue(DirectionNameRepository().DirectionNameSelector); 
-
-  const Atom: template = useRecoilValue(Infrastructure().Atom);
 
   const SetStationProperty = <K extends keyof template_station, P extends template_station[K]>(key: K, property: P): void => {
     SetStation((prev: template_station) => ({...prev, [key]: property}))

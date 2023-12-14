@@ -7,13 +7,12 @@ import { entitiesList, template, template_displayProperty, template_eventList, t
 import {
   useRecoilState,
   useRecoilValue,
-  useSetRecoilState
 } from 'recoil';
 
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
 import { Input } from '../../Presentation/ElementsPresentation'
 import DataRepository from '../../../Repository/DataRepository';
-import RailwayRepository from '../../../Repository/SetRepository';
+import RailwayRepository from '../../../Repository/RailwayRepository';
 import { TimeConverter, SecondsConverter } from '../../Presentation/SharedFunction';
 
 type ComponentProps = {
@@ -114,7 +113,7 @@ function RailwayPropHandler(props: RailwayPropHandlerProps) {
 }
 
 const isNumber = (value: any): value is number => {
-  return typeof value == "number"
+  return typeof value === "number"
 }
 
 function RailwayTimePropHandler(props: {
@@ -144,16 +143,16 @@ function RailwayTimePropHandler(props: {
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
       // event.preventDefault();
       const Target = event.target as HTMLInputElement
-      if (event.code == "ArrowLeft") {
+      if (event.code === "ArrowLeft") {
         event.preventDefault();
         Target.setSelectionRange(Number(Target.selectionStart) - 3, Number(Target.selectionStart) - 3);
-        // if (Number(Target.selectionStart) % 3 == 2) {
+        // if (Number(Target.selectionStart) % 3 === 2) {
         //   Target.setSelectionRange(Number(Target.selectionStart) - 1, Number(Target.selectionStart) - 0);
         // }
-      } else if (event.code == "ArrowRight") {
+      } else if (event.code === "ArrowRight") {
         event.preventDefault();
         Target.setSelectionRange(Number(Target.selectionEnd) + 3, Number(Target.selectionEnd) + 3);
-        // if (Number(Target.selectionStart) % 3 == 2) {
+        // if (Number(Target.selectionStart) % 3 === 2) {
         //   Target.setSelectionRange(Number(Target.selectionStart) + 1, Number(Target.selectionStart) + 2);
         // }
       } else if (event.code) {
@@ -191,8 +190,8 @@ function RailwayTimePropHandler(props: {
       //   Target.setSelectionRange(Number(Target.selectionEnd) - 1, Target.selectionEnd);
       // }
       // console.log(event)
-      // Target.selectionStart == Target.value.length && Target.setSelectionRange(Number(Target.selectionStart) - 1, Target.selectionEnd);
-      // Target.selectionEnd == 0 && Target.setSelectionRange(Target.selectionEnd, Number(Target.selectionStart) + 1);
+      // Target.selectionStart === Target.value.length && Target.setSelectionRange(Number(Target.selectionStart) - 1, Target.selectionEnd);
+      // Target.selectionEnd === 0 && Target.setSelectionRange(Target.selectionEnd, Number(Target.selectionStart) + 1);
     }
 
     const onMouseDown: React.MouseEventHandler<HTMLInputElement> = (event) => {

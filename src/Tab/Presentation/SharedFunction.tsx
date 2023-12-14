@@ -1,15 +1,15 @@
-import { template_station, template_track, template_timetableFont, template_rgb, template_displayProperty, template_trainType } from '../../Entity/Entity';
+import { template_station, template_timetableFont, template_rgb } from '../../Entity/Entity';
 
 export function isStation(value: any): value is template_station {
-  return typeof value == "object" && "customTimetableStyle" in value;
+  return typeof value === "object" && "customTimetableStyle" in value;
 }
 
 export function isTimetableFont(value: any): value is template_timetableFont {
-  return typeof value == "object" && "height" in value && "family" in value && "bold" in value && "italic" in value;
+  return typeof value === "object" && "height" in value && "family" in value && "bold" in value && "italic" in value;
 }
 
 export function isRgb(value: any): value is template_rgb {
-  return value !== null && typeof value == "object" && "r" in value && "g" in value && "b" in value;
+  return value !== null && typeof value === "object" && "r" in value && "g" in value && "b" in value;
 }
 
 export function RgbConverter(value: template_rgb): string {
@@ -17,7 +17,7 @@ export function RgbConverter(value: template_rgb): string {
 }
 
 export function HexConverter(value: string): template_rgb {
-  if (value.slice(0, 1) == "#") {value = value.slice(1)}
+  if (value.slice(0, 1) === "#") {value = value.slice(1)}
 
 	return {r: parseInt(value.slice(0, 2), 16), g: parseInt(value.slice(2, 4), 16), b: parseInt(value.slice(4, 6), 16)}
 }
@@ -63,4 +63,8 @@ export const SVGClickPoint = (event: React.MouseEvent<SVGSVGElement, MouseEvent>
     return cursorPoint;
   }
   return point;
+}
+
+export function StationTimetableTimeConverter(value: number): string {
+  return String(Math.trunc(value % 3600 / 60)).padStart(2, '0')
 }

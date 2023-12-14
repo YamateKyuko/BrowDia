@@ -15,12 +15,15 @@ html {
   overflow-y: hidden;
 }
 
+body {
+  margin: 0;
+}
+
 #root {
   height: 100vh;
   & header {
     height: 2rem;
     > nav {
-      /* position: fixed; */
       width: 100%;
       height: 2rem;
       background-color: #000;
@@ -46,10 +49,7 @@ html {
             font-size: 1rem;
             line-height: 2.5rem;
             overflow: hidden;
-
-            /* white-space: nowrap; */
             overflow: hidden;
-            /* text-overflow: ellipsis; */
             color: #fff;
           }
         }
@@ -57,6 +57,7 @@ html {
     }
   }
   & main {
+    height: 100%;
     > img {
       background-color: #000;
     }
@@ -72,6 +73,7 @@ html {
           margin: auto 0;
           & label:has(input:checked) {
             background-color: #ffffff;
+            color: #000000;
           }
           & img {
             height: 100%;
@@ -88,11 +90,13 @@ html {
     & article {
       display: flex;
       width: 100%;
+      height: 100%;
+      
       > aside {
-        background-color: #ffffff;
-        width: 16rem;
         position: relative;
-        
+        background-color: #ffffff;
+        flex: 0 0 12rem;
+        box-sizing: border-box;
         & fieldset, section {
           position: absolute;
           width: 100%;
@@ -127,7 +131,7 @@ html {
       & section {
         overflow-y: scroll;
         height: calc(100vh - 3.25rem);
-        width: 100%;
+        flex: 1;
         & figure {
           width: 100%;
           width: fit-content;
@@ -135,13 +139,56 @@ html {
           margin: 0;
           .timetableStation {
             position: sticky;
-            /* top: 0; */
             left: 0;
           }
-          .timetableTimetable {
-            /* position: sticky;
-            top: 0;
-            left: 0; */
+
+          & table {
+            border-collapse: collapse;
+            & tr {
+              
+              & th, td {
+                width: 1.25rem;
+                height: 1.25rem;
+                border: 1px solid #000000;
+                /* padding:; */
+                padding: calc(1rem - 1px) calc(0.625rem - 1px) calc(0.25rem - 1px);
+                /* box-sizing: border-box; */
+                text-align: center;
+                line-height: 0.5em;
+              }
+              & td {
+                position: relative;
+                background-clip: content-box;
+                &:before, &:after {
+                  position: absolute;
+                  content: "";
+                  display: block;
+                  box-sizing: border-box;
+                  width: 1.25rem;
+                }
+                &:after {
+                  top: calc(0.375rem - 1px);
+                  left: calc(0.625rem - 1px);
+                  
+                  text-align: center;
+                  font-size: 0.5rem;
+                  content: attr(data-terminal);
+                  line-height: 1em;
+                  overflow: hidden;
+                  color: #000;
+                }
+                &:before {
+                  content: "";
+                  top: calc(1rem - 1px);
+                  left: calc(0.625rem - 1px);
+                  height: 1.25rem;
+                  border: 1px solid #000000;
+                }
+              }
+              & th {
+                background-color: #f00;
+              }
+            }
           }
         }
         & h2 {
@@ -159,8 +206,9 @@ html {
             margin: 0 0 0.5rem 0;
             font-size: 1.5rem;
             line-height: 1.5rem;
-            
-            
+            & img {
+              background-color: #000;
+            }
           }
           & dd {
             margin: 0 0 1rem 1.5rem;
@@ -208,7 +256,7 @@ input[type="img"] {
 }
 
 /* 枠 */
-[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, textarea, .flexButton {
+[data-logo]:before, .data-logo, input[type="button"], input[type="text"], input[type="number"], input[type="color"], .checkbox, details, textarea, .flexinput[type="button"] {
   display: block;
   left: 0;
   
@@ -222,7 +270,7 @@ input[type="img"] {
   
 }
 
-[data-logo]:before, .data-logo, button, input[type="text"], input[type="number"], input[type="color"], .checkbox, .radio, details, .flexButton {
+[data-logo]:before, .data-logo, input[type="button"], input[type="text"], input[type="number"], input[type="color"], .checkbox, details, .flexinput[type="button"] {
   height: calc(1em + 0.25rem);
 }
 
@@ -245,7 +293,7 @@ input::-webkit-color-swatch {
 }
 
 /* 正方形 */
-[data-logo]:before, .data-logo, .checkbox, .radio {
+[data-logo]:before, .data-logo, .checkbox {
   content: "";
   width: calc(1em + 0.25rem);
   text-align: center;
@@ -269,13 +317,13 @@ input::-webkit-color-swatch {
 }
 
 /* ボタン */
-button {
+input[type="button"] {
   padding-left: calc(0.5em - 1px);
   padding-right: calc(0.5em - 1px);
 }
 
 /* 活性 */
-button:active,
+input[type="button"]:active,
 input:focus,
 textarea:focus,
 :where(.checkbox, .radio):has(:where(input[type=checkbox], input[type=radio]):checked) {
@@ -285,7 +333,7 @@ textarea:focus,
 
 /* 非活性時ホバー */
 :where(
-  button,
+  input[type="button"],
   input[type=text],
   input[type=number],
   textarea,
@@ -423,17 +471,18 @@ ul, ol {
   color: #fff;
 }
 
-.flexButton {
+.flexinput[type="button"] {
   display: flex;
   width: 8rem;
   justify-content: space-between;
 
   padding: 0;
   & * {width: 100%;}
-  & button {
+  & input[type="button"] {
     height: 100%;
     border: none;
     padding: 0;
   }
 }
+
 

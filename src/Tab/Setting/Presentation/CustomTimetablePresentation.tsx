@@ -29,12 +29,12 @@ function CustomTimetableStyle(props: CustomTimetableStyleProps) {
             {(Object.keys(props.station.customTimetableStyle) as [keyof template_customTimetableStyle]).map((propertyKey: keyof template_customTimetableStyle, propertyIndex: number) => (
               <tr className={propertyKey} key={propertyIndex}>
                 <th>
-                  {propertyKey == "arrival" && "到着"}
-                  {propertyKey == "departure" && "発車"}
-                  {propertyKey == "trainNumber" && "列車番号"}
-                  {propertyKey == "operationNumber" && "運用番号"}
-                  {propertyKey == "trainType" && "種別"}
-                  {propertyKey == "trainName" && "名称"}
+                  {propertyKey === "arrival" && "到着"}
+                  {propertyKey === "departure" && "発車"}
+                  {propertyKey === "trainNumber" && "列車番号"}
+                  {propertyKey === "operationNumber" && "運用番号"}
+                  {propertyKey === "trainType" && "種別"}
+                  {propertyKey === "trainName" && "名称"}
                 </th>
                 {props.station.customTimetableStyle[propertyKey].map((arrayElement: boolean, arrayIndex: number) => (
                   <td key={arrayIndex}>
@@ -63,7 +63,7 @@ function CustomTimetableStyleInput(props: CustomTimetableStyleInputProps) {
     props.SetStationProperty(
       "customTimetableStyle",
         {...props.station.customTimetableStyle,
-        [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex == index ? !property : property))}
+        [props.PropertyKey]: props.station.customTimetableStyle[props.PropertyKey].map((property: boolean, index: number) => (props.ArrayIndex === index ? !property : property))}
     )
   })
 

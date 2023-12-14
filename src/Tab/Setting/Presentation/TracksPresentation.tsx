@@ -142,7 +142,7 @@ function TrackArrayElementsHandler(props: TrackArrayElementsHandlerProps) {
   if (Array.isArray(property)) {
     const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
       if (typeof props.track[props.trackKey][props.index] === "string") {
-        props.SetTrackProperty(props.trackKey, property.map((value: string, mapIndex: number) => (mapIndex == props.index ? event.target.value : value)))
+        props.SetTrackProperty(props.trackKey, property.map((value: string, mapIndex: number) => (mapIndex === props.index ? event.target.value : value)))
       }
     })
 
@@ -173,7 +173,7 @@ function Tracks(props: TracksProps) {
   const SetTracksArray = (index: number, newValue: template_track): void => {
     props.SetStationProperty(
       "tracks",
-      props.station.tracks.map((track: template_track, mapIndex: number) => (mapIndex == index ? newValue : track))
+      props.station.tracks.map((track: template_track, mapIndex: number) => (mapIndex === index ? newValue : track))
     )
   }
 

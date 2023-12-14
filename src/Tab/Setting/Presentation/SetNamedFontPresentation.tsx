@@ -1,25 +1,11 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
-import { template, template_displayProperty, template_outerTerminal, template_timetableFont } from '../../../Entity/Entity';
+import { template_displayProperty, template_timetableFont } from '../../../Entity/Entity';
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
-  SetterOrUpdater
-} from 'recoil';
-
-import { Input } from '../../Presentation/ElementsPresentation';
+import { BooleanInput, NumberInput, StringInput } from '../../Presentation/ElementsPresentation';
 
 import { isTimetableFont } from '../../Presentation/SharedFunction';
-
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
 type NamedFontComponentProps = {
   timetableFont: template_displayProperty["timetableFont"];
@@ -28,9 +14,6 @@ type NamedFontComponentProps = {
 }
 
 function NamedFontComponent(props: NamedFontComponentProps) {
-  // const onClick = (): void => {
-  //   props.AddNamedFontArray()
-  // }
 
   return (
     <>
@@ -68,15 +51,6 @@ function NamedFontComponent(props: NamedFontComponentProps) {
   )
 }
 
-type ConsoleLogProps = {
-  value: any;
-}
-
-function ConsoleLog(props: ConsoleLogProps) {
-  console.log(props.value)
-  return (<></>)
-}
-
 type NamedFontPropComponentProps = {
   NamedFont: template_timetableFont;
   propKey: keyof template_displayProperty;
@@ -88,17 +62,17 @@ function NamedFontPropComponent(props: NamedFontPropComponentProps) {
     <tr className="NamedFontTr">
       <th>
         <span>
-          {props.propKey == "timetableVFont" && "時刻表ﾋﾞｭｰ"}
-          {props.propKey == "diagramStationFont" && "ﾀﾞｲﾔ駅"}
-          {props.propKey == "diagramTimeFont" && "ﾀﾞｲﾔ時刻"}
-          {props.propKey == "diagramTrainFont" && "ﾀﾞｲﾔ列車"}
-          {props.propKey == "commentFont" && "ｺﾒﾝﾄ"}
+          {props.propKey === "timetableVFont" && "時刻表ﾋﾞｭｰ"}
+          {props.propKey === "diagramStationFont" && "ﾀﾞｲﾔ駅"}
+          {props.propKey === "diagramTimeFont" && "ﾀﾞｲﾔ時刻"}
+          {props.propKey === "diagramTrainFont" && "ﾀﾞｲﾔ列車"}
+          {props.propKey === "commentFont" && "ｺﾒﾝﾄ"}
         </span>
       </th>
-      <td><NamedFontPropHandler namedFont={props.NamedFont} propKey="family" SetNamedFontProp={props.setNamedFontProperty} /></td>
-      <td><NamedFontPropHandler namedFont={props.NamedFont} propKey="height" SetNamedFontProp={props.setNamedFontProperty} /></td>
-      <td><NamedFontPropHandler namedFont={props.NamedFont} propKey="bold" SetNamedFontProp={props.setNamedFontProperty} /></td>
-      <td><NamedFontPropHandler namedFont={props.NamedFont} propKey="italic" SetNamedFontProp={props.setNamedFontProperty} /></td>
+      <td><StringNamedFontPropHandler propKey="family" value={props.NamedFont.family} SetNamedFontProp={props.setNamedFontProperty} /></td>
+      <td><NumberNamedFontPropHandler propKey="height" value={props.NamedFont.height} SetNamedFontProp={props.setNamedFontProperty} /></td>
+      <td><BooleanNamedFontPropHandler propKey="bold" value={props.NamedFont.bold} SetNamedFontProp={props.setNamedFontProperty} /></td>
+      <td><BooleanNamedFontPropHandler propKey="italic" value={props.NamedFont.italic} SetNamedFontProp={props.setNamedFontProperty} /></td>
     </tr>
   )
 }
@@ -119,30 +93,37 @@ function NamedFontProp(props: NamedFontPropProps) {
   )
 }
 
-type NamedFontPropHandlerProps = {
-  namedFont: template_timetableFont;
+type StringNamedFontPropHandlerProps = {
   propKey: keyof template_timetableFont;
+  value: string;
   SetNamedFontProp: <K extends keyof template_timetableFont, P extends template_timetableFont[K]>(key: K, property: P) => void;
-  className?: string;
-  arrayKey?: number;
 }
 
-function NamedFontPropHandler(props: NamedFontPropHandlerProps) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof props.namedFont[props.propKey] === "string") {
-      props.SetNamedFontProp(props.propKey, event.target.value)
-    }
-    if (typeof props.namedFont[props.propKey] === "number") {
-      props.SetNamedFontProp(props.propKey, Number(event.target.value))
-    }
-    if (typeof props.namedFont[props.propKey] === "boolean") {
-      props.SetNamedFontProp(props.propKey, event.target.checked)
-    }
-  })
+function StringNamedFontPropHandler(props: StringNamedFontPropHandlerProps) {
+  const set = (value: string) => props.SetNamedFontProp(props.propKey, value)
+  return <StringInput value={props.value} set={set} />
+}
 
-  return (
-    <Input value={props.namedFont[props.propKey]} onChange={onChange} className={props.className ? props.className : ""} />
-  )
+type NumberNamedFontPropHandlerProps = {
+  propKey: keyof template_timetableFont;
+  value: number;
+  SetNamedFontProp: <K extends keyof template_timetableFont, P extends template_timetableFont[K]>(key: K, property: P) => void;
+}
+
+function NumberNamedFontPropHandler(props: NumberNamedFontPropHandlerProps) {
+  const set = (value: number) => props.SetNamedFontProp(props.propKey, value)
+  return <NumberInput value={props.value} set={set} />
+}
+
+type BooleanNamedFontPropHandlerProps = {
+  propKey: keyof template_timetableFont;
+  value: boolean;
+  SetNamedFontProp: <K extends keyof template_timetableFont, P extends template_timetableFont[K]>(key: K, property: P) => void;
+}
+
+function BooleanNamedFontPropHandler(props: BooleanNamedFontPropHandlerProps) {
+  const set = (value: boolean) => props.SetNamedFontProp(props.propKey, value)
+  return <BooleanInput value={props.value} set={set} />
 }
 
 type NamedFontProps = {

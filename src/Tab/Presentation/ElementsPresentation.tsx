@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../css/Element.css';
-import './../css/Set.css';
-import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, entitiesList, template_eventList, navArray, template_rgb } from '../../Entity/Entity';
-import { isStation, isRgb, RgbConverter, isTimetableFont, SecondsConverter, HexConverter } from './SharedFunction';
+import { template_listStyle, template_station, template_timetableFont, template_track, template_trainType, navArray, template_rgb, template_eventList, template } from '../../Entity/Entity';
+import { isStation, RgbConverter, isTimetableFont, HexConverter , isRgb } from './SharedFunction';
 import { SetterOrUpdater } from 'recoil';
 
 type InputProps = {
@@ -78,13 +76,9 @@ type StringInputProps = {
 }
 
 export function StringInput(props: StringInputProps) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    props.set(event.target.value)
-  }
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => props.set(event.target.value)
 
-  const textareaOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    props.set(event.target.value)
-  }
+  const textareaOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => props.set(event.target.value)
 
   return (
     <>
@@ -104,13 +98,8 @@ type NumberInputProps = {
 }
 
 export function NumberInput(props: NumberInputProps) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    props.set(Number(event.target.value))
-  }
-
-  return (
-    <input type="number" className={props.className} onChange={onChange} value={props.value} disabled={props.disabled} />
-  )
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => props.set(Number(event.target.value))
+  return <input type="number" className={props.className} onChange={onChange} value={props.value} disabled={props.disabled} />
 }
 
 type BooleanInputProps = {
@@ -123,9 +112,7 @@ type BooleanInputProps = {
 }
 
 export function BooleanInput(props: BooleanInputProps) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    props.set(event.target.checked)
-  }
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => props.set(event.target.checked)
 
   return (
     <>
@@ -137,14 +124,14 @@ export function BooleanInput(props: BooleanInputProps) {
         : (!props.dataLogo
           ?
             <>
-              <label className={"radio_" + props.className}>
+              <label className={"radio " + props.className}>
                 <input type="radio" onChange={onChange} checked={props.value} />
                 {props.label}
               </label>
             </>
           :
             <>
-              <label data-logo={props.dataLogo} className={"radio_" + props.className}>
+              <label data-logo={props.dataLogo} className={"radio " + props.className}>
                 <input type="radio" onChange={onChange} checked={props.value} />
                 {props.label}
               </label>
@@ -163,13 +150,51 @@ type ColorInputProps = {
 }
 
 export function ColorInput(props: ColorInputProps) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    props.set(HexConverter(event.target.value))
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => props.set(HexConverter(event.target.value))
+  return <input type="color" className={props.className} onChange={onChange} value={RgbConverter(props.value)} disabled={props.disabled} />
+}
+
+type ButtonProps = {
+  value: string;
+  set: () => void;
+  className?: string;
+  disabled?: boolean;
+}
+
+export function ButtonInput(props: ButtonProps) {
+  const onClick = (): void => props.set()
+  return <input type="button" value={props.value} onClick={onClick} className="" disabled={props.disabled} />
+}
+
+type FileInputProps = {
+  set: (value: template) => void;
+}
+
+export function FileInput(props: FileInputProps) {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
+    const files: FileList | null = event.target.files
+    files && read(files)
   }
 
-  return (
-    <input type="color" className={props.className} onChange={onChange} value={RgbConverter(props.value)} disabled={props.disabled} />
-  )
+  const read = (file: FileList): void => {
+    const reader = new FileReader()
+    reader.readAsText(file[0])
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      console.log(event.target?.result)
+      event.target?.result && JsonConv(event.target.result.toString())
+    }
+  }
+
+  const JsonConv = (value: string): void => {
+    const json = JSON.parse(value)
+
+    props.set(json as template)
+    
+
+    // as での型変換のため、なんとかしなければならない。
+  }
+
+  return <input type="file" onChange={onChange} accept=".json" />
 }
 
 type IndexListboxProps = {
@@ -181,7 +206,7 @@ type IndexListboxProps = {
 export function IndexListbox(props: IndexListboxProps) {
   const className = (value: template_station | template_track | template_trainType | template_listStyle, index: number): string => {
     if (isStation(value)) {
-      return `${!value.border && (index == props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
+      return `${!value.border && (index === props.values.length && "line")} ${value.brunchCoreStationIndex && "gray"}`
     }
     return "";
   }
@@ -209,13 +234,9 @@ type IndexListboxHandlerProps = {
 }
 
 function IndexListboxHandler(props: IndexListboxHandlerProps) {
-  const set = (): void => {
-    props.set(props.index)
-  }
+  const set = (): void => props.set(props.index)
 
-  return (
-    <BooleanInput value={props.selectedIndex == props.index} set={set} label={props.label} dataLogo={props.index + 1} className={props.className} />
-  )
+  return <BooleanInput value={props.selectedIndex === props.index} set={set} label={props.label} dataLogo={props.index + 1} className={props.className} />
 }
 
 type NavMoleculeProps = {
@@ -225,9 +246,7 @@ type NavMoleculeProps = {
 }
 
 export function NavMolecule(props: NavMoleculeProps) {
-  const handler = ((index: number) => {
-    props.SetNavIndex(index)
-  })
+  const handler = (index: number) => props.SetNavIndex(index)
 
   return (
     <nav>
@@ -248,13 +267,11 @@ type NavAtomProps = {
 }
 
 function NavAtom(props: NavAtomProps) {
-  const set = () => {
-    props.handler(props.index)
-  }
+  const set = () => props.handler(props.index)
 
   return (
     <li>
-      <BooleanInput value={props.index == props.select} set={set} label={props.value.label} />
+      <BooleanInput value={props.index === props.select} set={set} label={props.value.label} />
     </li>
   )
 }
@@ -267,14 +284,12 @@ type TrackProps = {
 
 export function Track(props: TrackProps) {
   return (
-    <>
-      <details>
-        <summary data-logo={props.value + 1}>
-          {props.tracks[props.value].name}
-        </summary>
-        <IndexListbox values={props.tracks} selectedIndex={props.value} set={props.set} />
-      </details>
-    </>
+    <details>
+      <summary data-logo={props.value + 1}>
+        {props.tracks[props.value].name}
+      </summary>
+      <IndexListbox values={props.tracks} selectedIndex={props.value} set={props.set} />
+    </details>
   )
 }
 

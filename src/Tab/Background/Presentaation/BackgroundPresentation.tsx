@@ -12,20 +12,16 @@ import DiaImg from './../../img/DiaImg.svg';
 import SaveImg from './../../img/SaveImg.svg';
 
 import {
-  RecoilRoot,
-  atom,
-  selector,
   useRecoilState,
   useRecoilValue,
-  SetterOrUpdater,
 } from 'recoil';
 
 import Setting from '../../Setting/Presentation/SettingPresentation';
 import Home from '../../Home/Presentation/HomePresentation';
-import Side from '../../Side/Presentation/SidePresentation';
 import Timetable from '../../Timetable/Presentation/TimetablePresentation';
-import { Input, NavMolecule } from '../../Presentation/ElementsPresentation';
+import { NavMolecule } from '../../Presentation/ElementsPresentation';
 import Save from '../../Save/Presentation/SavePresentation';
+import StationTimetable from '../../StationTimetable/Presentation/StationTimetablePresentation';
 
 function Background() {
   const [pageIndex, SetPageIndex] = useRecoilState<number>(Infrastructure().PageIndex);
@@ -37,7 +33,7 @@ function Background() {
     {label: <img src={SetImg} alt="設定" />, component:  <Setting />},
     {label: <img src={DiaImg} alt="ﾀﾞｲﾔ" />, component:  <></>},
     {label: <img src={TimetableImg} alt="時刻表" />, component:  <Timetable />},
-    {label: <img src={StationTimetableImg} alt="駅時刻表" />, component:  <></>},
+    {label: <img src={StationTimetableImg} alt="駅時刻表" />, component: <StationTimetable />},
     {label: <h1>{Atom.railway.name}</h1>, component:  <></>},
     {label: <img src={SaveImg} alt="保存" />, component:  <Save />},
   ]

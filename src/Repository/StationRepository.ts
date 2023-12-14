@@ -1,17 +1,10 @@
-import React from 'react';
 import Infrastructure from '../Infrastructure/Infrastructure'
 
 import { template, template_station } from '../Entity/Entity'
 import {
-  RecoilRoot,
-  atom,
   selector,
-  useRecoilState,
-  useRecoilValue,
   DefaultValue,
   selectorFamily,
-  atomFamily,
-  useSetRecoilState,
   RecoilState
 } from 'recoil';
 
@@ -36,11 +29,10 @@ const StationRepository = () => {
     get: (index: number) => ({get}) => {
 
       const stations: template_station[] = get(Infrastructure().Atom).railway.stations
-      if (index == 1) {return [...stations].reverse()}
+      if (index === 1) {return [...stations].reverse()}
       return stations;
     }
   });
-  
 
   const Station = selector<template_station>({
     key: "Station",
@@ -54,7 +46,7 @@ const StationRepository = () => {
       set(
         Stations,
         newValue instanceof DefaultValue ? newValue :
-        (prevState: template_station[]) => (prevState.map((station: template_station, mapIndex: number) => (mapIndex == index ? newValue : station)))
+        (prevState: template_station[]) => (prevState.map((station: template_station, mapIndex: number) => (mapIndex === index ? newValue : station)))
       )
     }
   })

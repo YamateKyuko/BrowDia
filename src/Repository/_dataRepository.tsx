@@ -25,7 +25,7 @@ const _dataRepository = () => {
         newValue instanceof DefaultValue ? newValue :
         (prevState: (template__data | null)[]) => (
           prevState.map((data: template__data | null, mapIndex: number) => (
-            mapIndex == StationIndex ? newValue : data
+            mapIndex === StationIndex ? newValue : data
           ))
         )
       )
