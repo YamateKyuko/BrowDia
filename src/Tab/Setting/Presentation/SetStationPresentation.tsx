@@ -143,7 +143,7 @@ function Section(props: SectionProps) {
           </ul>
         </dd>
         <dt>
-          <button>削除</button>
+          <input type="button" value="削除" />
         </dt>
       </dl>
     </section>

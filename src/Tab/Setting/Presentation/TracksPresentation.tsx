@@ -44,7 +44,7 @@ function TracksComponent(props: TracksComponentProps) {
               <th></th>
               <td></td>
               <td></td>
-              <td><button onClick={onClick}>追加</button></td>
+              <td><input type="button" onClick={onClick} value="追加" /></td>
             </tr>
           </tfoot>
         </table>
@@ -82,12 +82,12 @@ type trackDeleteProps = {
 }
 
 function TrackDelete(props: trackDeleteProps) {
-  const trackDeleteOnClick: React.MouseEventHandler<HTMLButtonElement> = (() => {
+  const trackDeleteOnClick: React.MouseEventHandler<HTMLInputElement> = (() => {
     props.DeleteTracksArray(props.index)
   })
 
   return (
-    <button onClick={trackDeleteOnClick}>削除</button>
+    <input type="button" onClick={trackDeleteOnClick} value="削除" />
   )
 }
 

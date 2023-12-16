@@ -1,6 +1,7 @@
 import React from 'react'
 // 型宣言ファイル
 // ここの型宣言の解釈が間違っていましたらご一報ください。
+// ファイルの形式は 大井さかな 氏から提供いただきました。
 
 export type template = {
   "fileType": string, // clowddia 0.1.0 のみ対応
@@ -223,3 +224,4 @@ export type template_stationTimetable_data = {
   traintype: string;
   terminalStation: string;
 }
+

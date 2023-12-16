@@ -28,10 +28,13 @@ function Component(props: ComponentProps) {
             <dt>
               <img src={BrowDia} alt="BrowDia" />
             </dt>
+          </dl>
+          <h2><FileInput set={set} /></h2>
+          <dl>
             <dd>
               <ul>
                 <li>
-                  <FileInput set={set} />
+                  ファイルを選択できます。選択しない場合は新規ファイルです。
                 </li>
                 <li>
                   <p>BrowDia をご利用頂き誠に有難う御座います。</p>
@@ -41,6 +44,9 @@ function Component(props: ComponentProps) {
                 </li>
                 <li>
                   <p><s>めんどくさくなったため</s>諸般の事情により開発を<s>多分もうやらない</s>中断しています。</p>
+                </li>
+                <li>
+                  <p><s>とか言いながら、微妙に開発されたりする。</s></p>
                 </li>
                 <li>
                   <p><s>途中でめんどくさくなったため</s>開発途上のためかなり<s>ひどい</s>不安定です。</p>

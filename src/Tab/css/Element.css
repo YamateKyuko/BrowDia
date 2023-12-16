@@ -62,18 +62,23 @@ body {
       background-color: #000;
     }
     & nav {
-      height: 1.25rem;
       > ul {
         display: flex;
         width: 100%;
-        height: 1.25rem;
+        height: 1.5rem;
         background-color: #808080;
         z-index: 2;
+        border-bottom: 0.125rem solid #fff;
+        box-sizing: border-box;
         & li {
-          margin: auto 0;
+          margin: 0.125rem 0.125rem 0;
+          & label {
+            padding: 0 0.25rem;
+            border-radius: 0.25rem 0.25rem 0 0;
+          }
           & label:has(input:checked) {
-            background-color: #ffffff;
-            color: #000000;
+            color: #000;
+            background-color: #fff;
           }
           & img {
             height: 100%;
@@ -91,7 +96,6 @@ body {
       display: flex;
       width: 100%;
       height: 100%;
-      
       > aside {
         position: relative;
         background-color: #ffffff;
@@ -244,28 +248,39 @@ body {
       }
     }
   }
-} 
-
-
-
-
+}
 
 input[type="img"] {
   background-color: transparent;
   border: none;
 }
 
+input::-webkit-file-upload-button {
+  /* appearance: none;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  cursor: pointer; */
+  display: none;
+}
+
+input::-webkit-file-upload-button {
+  display: none;
+}
+
 /* 枠 */
-[data-logo]:before, .data-logo, input[type="button"], input[type="text"], input[type="number"], input[type="color"], .checkbox, details, textarea, .flexinput[type="button"] {
+[data-logo]:before, .data-logo, input, .checkbox, details, textarea, .flexinput[type="button"] {
   display: block;
   left: 0;
-  
   padding: calc(0.125rem - 1px);
   border: 1px solid black;
   box-sizing: border-box;
   font-size: 1em;
   line-height: 1em;
-  /* z-index: 1; */
   background-color: white;
   
 }
@@ -471,18 +486,11 @@ ul, ol {
   color: #fff;
 }
 
-.flexinput[type="button"] {
+.flexButton {
   display: flex;
   width: 8rem;
-  justify-content: space-between;
-
-  padding: 0;
   & * {width: 100%;}
   & input[type="button"] {
     height: 100%;
-    border: none;
-    padding: 0;
   }
 }
-
-

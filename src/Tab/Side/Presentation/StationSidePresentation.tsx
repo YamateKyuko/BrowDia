@@ -104,9 +104,9 @@ function StopTypeInput(props: StopTypeInputProps) {
   }
 
   return (
-    <BooleanInput value={props.value} set={set} label={<button>{props.buttonValue}</button>} />
+    <BooleanInput value={props.value} set={set} label={<input type="button" value={props.buttonValue} />} />
     // <Input value={true} onChange={onChange} label={
-    //   <button>{props.value}</button>
+    //   <input type="button">{props.value}</button>
     // } />
   )
 }

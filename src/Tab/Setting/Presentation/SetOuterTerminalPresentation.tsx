@@ -54,7 +54,7 @@ function OuterTerminalComponent(props: TracksComponentProps) {
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td><button>追加</button></td>
+                      <td><input type="button" value="追加" /></td>
                     </tr>
                   </tfoot>
               </table>

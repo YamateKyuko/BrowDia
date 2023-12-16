@@ -1,23 +1,9 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import './../../css/Element.css';
 import './../../css/Set.css';
-import { template, template_displayProperty, template_outerTerminal, template_timetableFont } from '../../../Entity/Entity'
-
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-  DefaultValue,
-  useSetRecoilState,
-  SetterOrUpdater
-} from 'recoil';
+import { template_displayProperty, template_timetableFont } from '../../../Entity/Entity'
 
 import { Input } from '../../Presentation/ElementsPresentation'
-
-type OnchangeType = React.ChangeEventHandler<HTMLInputElement>
 
 type TimetableFontComponentProps = {
   timetableFont: template_displayProperty["timetableFont"];
@@ -58,7 +44,7 @@ function TimetableFontComponent(props: TimetableFontComponentProps) {
               <td></td>
               <td></td>
               <td></td>
-              <td><button onClick={onClick}>追加</button></td>
+              <td><input type="button" onClick={onClick} value="追加" /></td>
             </tr>
           </tfoot>
         </table>
@@ -93,12 +79,12 @@ type timetableFontDeleteProps = {
 }
 
 function TrackDelete(props: timetableFontDeleteProps) {
-  const timetableFontDeleteOnClick: React.MouseEventHandler<HTMLButtonElement> = (() => {
+  const timetableFontDeleteOnClick: React.MouseEventHandler<HTMLInputElement> = (() => {
     props.DeleteTimetableFontArray(props.index)
   })
 
   return (
-    <button onClick={timetableFontDeleteOnClick}>削除</button>
+    <input type="button" onClick={timetableFontDeleteOnClick} value="削除" />
   )
 }
 
