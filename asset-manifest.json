@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/browdia/static/css/main.e5f0d988.css",
+    "main.js": "/browdia/static/js/main.c3c610a1.js",
+    "static/js/453.57390b57.chunk.js": "/browdia/static/js/453.57390b57.chunk.js",
+    "static/media/BrowDiaImg.svg": "/browdia/static/media/BrowDiaImg.cb284d5be7561eae4458211f9dd3ff0f.svg",
+    "static/media/SetImg.svg": "/browdia/static/media/SetImg.3d7a4645a37563683ecfcb4f5fe79f68.svg",
+    "index.html": "/browdia/index.html",
+    "static/media/GeneralImg.svg": "/browdia/static/media/GeneralImg.cad3c57d8da9852fae6cbda4ac517370.svg",
+    "static/media/DiaImg.svg": "/browdia/static/media/DiaImg.ab347d47ccc809f5495feb1b4c53eceb.svg",
+    "static/media/StationImg.svg": "/browdia/static/media/StationImg.eaf85a564268d69d31c7ce539a9838c6.svg",
+    "static/media/SaveImg.svg": "/browdia/static/media/SaveImg.72c5aca424f661e8de1eaac5ea7d6345.svg",
+    "static/media/StationTimetableImg.svg": "/browdia/static/media/StationTimetableImg.a96764518b3f9e2069b90d2de54e41f4.svg",
+    "static/media/StyleImg.svg": "/browdia/static/media/StyleImg.674b1aed9dffa31bd69a2b21dc55d401.svg",
+    "static/media/TimetableImg.svg": "/browdia/static/media/TimetableImg.84b26363a2f3a2ce7007b84491a4314d.svg",
+    "static/media/OutImg.svg": "/browdia/static/media/OutImg.9724704a43d5dbaf3c028c8113068c8e.svg",
+    "static/media/TypeImg.svg": "/browdia/static/media/TypeImg.80c24c26aa597085fd2d23f77459f0b2.svg",
+    "static/media/InImg.svg": "/browdia/static/media/InImg.499ed84931e04bc7712f85b176ac1e3f.svg",
+    "main.e5f0d988.css.map": "/browdia/static/css/main.e5f0d988.css.map",
+    "main.c3c610a1.js.map": "/browdia/static/js/main.c3c610a1.js.map",
+    "453.57390b57.chunk.js.map": "/browdia/static/js/453.57390b57.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e5f0d988.css",
+    "static/js/main.c3c610a1.js"
+  ]
+}
