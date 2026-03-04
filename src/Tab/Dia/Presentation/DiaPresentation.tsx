@@ -15,7 +15,7 @@ import { NavMolecule } from '../../Presentation/ElementsPresentation';
 import DirectionNameRepository from '../../../Repository/DirectionRepositry';
 import Side from '../../Side/Presentation/SidePresentation';
 import DiagramRepository from '../../../Repository/DiagramRepositpry';
-import TimetableUseCase from '../Usecase/TimetableUseCase';
+import TimetableUseCase from '../UseCase/TimetableUseCase';
 import { RgbConverter, SVGClickPoint } from '../../Presentation/SharedFunction';
 
 type ComponentProps = {

@@ -22,6 +22,7 @@ import Timetable from '../../Timetable/Presentation/TimetablePresentation';
 import { NavMolecule } from '../../Presentation/ElementsPresentation';
 import Save from '../../Save/Presentation/SavePresentation';
 import StationTimetable from '../../StationTimetable/Presentation/StationTimetablePresentation';
+import Dia from '../../Dia/Presentation/DiaPresentation';
 
 function Background() {
   const [pageIndex, SetPageIndex] = useRecoilState<number>(Infrastructure().PageIndex);
@@ -31,7 +32,7 @@ function Background() {
   const settingIndexArray: navArray[] = [
     {label: <img src={BrowDiaImg} alt="ﾎｰﾑ" />, component:  <Home />},
     {label: <img src={SetImg} alt="設定" />, component:  <Setting />},
-    {label: <img src={DiaImg} alt="ﾀﾞｲﾔ" />, component:  <></>},
+    {label: <img src={DiaImg} alt="ﾀﾞｲﾔ" />, component:  <Dia />},
     {label: <img src={TimetableImg} alt="時刻表" />, component:  <Timetable />},
     {label: <img src={StationTimetableImg} alt="駅時刻表" />, component: <StationTimetable />},
     {label: <h1>{Atom.railway.name}</h1>, component:  <></>},
